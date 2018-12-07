@@ -47,10 +47,8 @@ function main(DBus){
         console.log('no case for ' + cmdNum);
         break;
     }
-
   });
   
-
   setInterval(()=>{
     if(iNetReachable.iface.Notifying && !bPrl.client.connected){iNetReachable.clearNotify();}
     if(iNetReachable.iface.Notifying){iNetReachable.notify();}
