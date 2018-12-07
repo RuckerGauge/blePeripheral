@@ -57,8 +57,8 @@ class blePeripheral extends EventEmitter{
       if (!this[dBus]) {
         throw new Error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory');
       };
-      this.bleDevice = new BLEDevice(DBus.systemBus());
-      this.adapter = new AdapterClass(DBus.systemBus());
+      this.BleDevice = new BLEDevice(DBus.systemBus());
+      this.Adapter = new AdapterClass(DBus.systemBus());
       this.Advertisement = new Advertisement(this[dBus], this[servicePath], this[serverUUID]);
 
       this[dBus].requestName(this[serviceName], 0x4, (err, retCode) => {                               // The 0x4 flag means that we don't want to be queued if the service name we are requesting is already
@@ -96,11 +96,12 @@ class blePeripheral extends EventEmitter{
    * 
    * @param {*} booleanValue 
    */
+  /*
   pairModeOn(booleanValue = false){
     console.log('setting pairable = ' + booleanValue);
     this.adapter.setBooleanProperty('Pairable', booleanValue);
   }
-
+  */
 
 /**
  * Creates a characteristic for a BLE GATT service.  These characteristics are based on the bluez D-Bus GATT API https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt

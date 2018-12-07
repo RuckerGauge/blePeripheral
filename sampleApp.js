@@ -64,7 +64,8 @@ function main(DBus){
   iNetReachable.setValue(Buffer.from([0x01, 0x02, 0xA2]));
 };
 
-
+console.log('display adapter properties:')
+bPrl.Adapter.showAllProperties();
 
 bPrl.on('ConnectionChange', (connected)=>{
   var bleUserName = '';
