@@ -49,7 +49,7 @@ function main(DBus){
     }
 
   });
-  bPrl.
+  
 
   setInterval(()=>{
     if(iNetReachable.iface.Notifying && !bPrl.client.connected){iNetReachable.clearNotify();}
