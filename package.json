@@ -1,0 +1,24 @@
+{
+  "name": "ble-peripheral",
+  "version": "0.1.0",
+  "description": "BLE server based on D-Bus and bluez -v5.50. Suggested platform = Raspberry Pi Zero W.",
+  "main": "blePeripheral.js",
+  "scripts": {
+    "test": "echo \"see sampleApp.js for sample usage and testing\" && exit 1"
+  },
+  "engines": {
+    "node": ">=0.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RuckerGauge/blePeripheral.git"
+  },
+  "author": "John Rucker",
+  "license": "MIT",
+  "bugs": {
+    "url": "http://RuckerGauge.com"
+  },
+  "dependencies": {
+    "dbus-native": "^0.2.5"
+  }
+}
