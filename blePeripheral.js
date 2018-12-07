@@ -71,7 +71,7 @@ class blePeripheral extends EventEmitter{
       if (retCode === 1) {                                                              // Return code 0x1 means we successfully had the name
         console.log(`Successfully requested service name "${this[serviceName]}"!`);
         this._connectionManager();
-        this.pairModeOn(false);
+        this.Adapter.pairModeOn(false);
         console.log('* * * * * * * callback to setup characteristics * * * * * * *')
         callback(this[dBus]);
         console.log('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
