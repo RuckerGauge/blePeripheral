@@ -49,7 +49,7 @@ function main(DBus){
     }
 
   });
-  
+  bPrl.
 
   setInterval(()=>{
     if(iNetReachable.iface.Notifying && !bPrl.client.connected){iNetReachable.clearNotify();}
@@ -63,6 +63,8 @@ function main(DBus){
   cmd.setValue('1=enable pairing, 2=disable pairing.');
   iNetReachable.setValue(Buffer.from([0x01, 0x02, 0xA2]));
 };
+bPrl.
+
 
 bPrl.on('ConnectionChange', (connected)=>{
   var bleUserName = '';
@@ -81,17 +83,6 @@ bPrl.on('ConnectionChange', (connected)=>{
   }
 });
 
-
-bPrl.on('pairKey',(pKey, obj)=>{
-  console.log('AUTHENTICATION * * Bluetooth LE client ' + obj + ' is requesting to pair with server.');
-  console.log('AUTHENTICATION * * It should have the pin code ' + pKey + ', on its display with a Yes No prompt for approval.');
-  bPrl.pairButtonPushed = true;
-  console.log('AUTHENTICATION * * Simulating the pushing of a pair button on the Raspberry Pi hardware for the next two minutes...');
-  setTimeout(()=>{
-    console.log('AUTHENTICATION * * Canceling pair button pushed simulation..');
-    bPrl.pairButtonPushed = false;
-  },120000);
-});
 
 var bigBuffer = Buffer.alloc(512, 'i');
 bigBuffer[0] = 0x00;

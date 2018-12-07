@@ -12,8 +12,17 @@ const GattService =       require("./lib/gattServiceClass.js")
 const bleDevice = new BLEDevice(DBus.systemBus());
 const adapter = new AdapterClass(DBus.systemBus());
 
+const primaryService = Symbol();
+const serviceName = Symbol();
+const serverUUID = Symbol();
+const servicePath = Symbol();
+const dBus = Symbol();
+//const agentIface = Symbol();
+//const client = Symbol();
+
+
 var allCharacteristics = [];
-var client = {
+var Client = {
   devicePath:'',
   connected:false,
   paired:false,
@@ -43,45 +52,45 @@ var client = {
 class blePeripheral extends EventEmitter{
   constructor(ServiceName ='com.netConfig', ServerUUID = '5a0379a8-d692-41d6-b51a-d1730ea6b9d6', callback = function(){}, PrimaryService = true){
       super();
-      this.primaryService = PrimaryService;
-      this.serviceName = ServiceName;
-      this.serverUUID = ServerUUID;
-      this.servicePath = `/${this.serviceName.replace(/\./g, '/')}`;        // Replace . with / (com.netConfig = /com/netConfig).;
-      this.dBus = DBus.systemBus();
-      this.agentIface = {};
-      this.client = client;
+      this[primaryService] = PrimaryService;
+      this[serviceName] = ServiceName;
+      this[serverUUID] = ServerUUID;
+      this[servicePath] = `/${this[serviceName].replace(/\./g, '/')}`;        // Replace . with / (com.netConfig = /com/netConfig).;
+      this[dBus] = DBus.systemBus();
+      //this.agentIface = {};
+      this.client = Client;
       this.logAllDBusMessages = false;
       this.logCharacteristicsIO = false;
 
-      if (!this.dBus) {
+      if (!this[dBus]) {
         throw new Error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory');
       };
 
-      this.dBus.requestName(this.serviceName, 0x4, (err, retCode) => {                               // The 0x4 flag means that we don't want to be queued if the service name we are requesting is already
+      this[dBus].requestName(this[serviceName], 0x4, (err, retCode) => {                               // The 0x4 flag means that we don't want to be queued if the service name we are requesting is already
       // If there was an error, warn user and fail
       if (err) {
         throw new Error(
-          `Could not request service name ${this.serviceName}, the error was: ${err}.`
+          `Could not request service name ${this[serviceName]}, the error was: ${err}.`
         );
       }
       if (retCode === 1) {                                                              // Return code 0x1 means we successfully had the name
-        console.log(`Successfully requested service name "${this.serviceName}"!`);
+        console.log(`Successfully requested service name "${this[serviceName]}"!`);
         this._connectionManager();
         this.pairModeOn(false);
         console.log('* * * * * * * callback to setup characteristics * * * * * * *')
-        callback(this.dBus);
+        callback(this[dBus]);
         console.log('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
         console.log('Setup and initialize GATT service...');
-        var gattService = new GattService(this.serverUUID, this.servicePath, this.dBus);
+        var gattService = new GattService(this[serverUUID], this[servicePath], this[dBus]);
         gattService.createObjManagerIface(allCharacteristics);
         gattService.registerGattService();
-        if(this.primaryService == true){
+        if(this[primaryService] == true){
           this._createAdvertisementIface();
           this.startAdvertising();
         }
       } else {                                                                      
         throw new Error(                                                                //(https://dbus.freedesktop.org/doc/api/html/group__DBusShared.html#ga37a9bc7c6eb11d212bf8d5e5ff3b50f9)
-          `Failed to request service name "${this.serviceName}". Check what return code "${retCode}" means. See https://dbus.freedesktop.org/doc/api/html/group__DBusShared.html#ga37a9bc7c6eb11d212bf8d5e5ff3b50f9`
+          `Failed to request service name "${this[serviceName]}". Check what return code "${retCode}" means. See https://dbus.freedesktop.org/doc/api/html/group__DBusShared.html#ga37a9bc7c6eb11d212bf8d5e5ff3b50f9`
         );
       }
     });
@@ -93,8 +102,8 @@ class blePeripheral extends EventEmitter{
  * See the bluez LE Advertising Manager API https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/advertising-api.txt#n143
  */
   startAdvertising(){
-    var node = this.servicePath + '/advertisement';
-    var service = this.dBus.getService('org.bluez');
+    var node = this[servicePath] + '/advertisement';
+    var service = this[dBus].getService('org.bluez');
     var objectPath = '/org/bluez/hci0'
     var iface = 'org.bluez.LEAdvertisingManager1'
     service.getInterface(objectPath, iface, (err, iface) => {
@@ -121,8 +130,8 @@ class blePeripheral extends EventEmitter{
  * See the bluez LE Advertising Manager API https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/advertising-api.txt#n169
  */
   stopAdvertising(){
-    var node = this.servicePath + '/advertisement';
-    var service = this.dBus.getService('org.bluez');
+    var node = this[servicePath] + '/advertisement';
+    var service = this[dBus].getService('org.bluez');
     var objectPath = '/org/bluez/hci0'
     var iface = 'org.bluez.LEAdvertisingManager1'
     service.getInterface(objectPath, iface, (err, iface) => {
@@ -145,7 +154,7 @@ class blePeripheral extends EventEmitter{
   }
 
   /**
-   * This method will enable and disable pairing on the physical adapter.  By default this is disabled.  To allolw a user to pair / bond with this Peripheral you must call this method with true.  Then when the client tries to access a secure characteristic they will be allowed to pair and bond.
+   * This method will enable and disable pairing on the physical adapter.  By default this is disabled.  To allolw a user to pair / bond with this Peripheral you must call this method with true.  Then when the central tries to access a secure characteristic they will be allowed to pair and bond.
    * This method is usualy called as the result of a user pusing a pair button on the physical device.  Once enabled the device will remain pariable until this method is called agian and passed a boolean false.
    * 
    * @param {*} booleanValue 
@@ -159,7 +168,7 @@ class blePeripheral extends EventEmitter{
 /**
  * Creates a characteristic for a BLE GATT service.  These characteristics are based on the bluez D-Bus GATT API https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt
  * 
- *  emits **.on('ReadValue', (device))** and **.on('WriteValue', (device, arg1)**, that can be consumed to intercept the reading and writting of .Value.  They will be emiited when a BLE client request to read or write a characteristic.
+ *  emits **.on('ReadValue', (device))** and **.on('WriteValue', (device, arg1)**, that can be consumed to intercept the reading and writting of .Value.  They will be emitted when a BLE central request to read or write a characteristic.
  *  
  * * **UUID**: Is the unique UUID number for this characteristic. If you need a number visit https://www.uuidgenerator.net/
  * * **node**: Is the node name for the characteristic (user friendly name)
@@ -170,16 +179,16 @@ class blePeripheral extends EventEmitter{
  * @param {Array} flags
  */
   Characteristic(UUID, node, flags){
-    var x = new Characteristic(this.dBus, this.servicePath, UUID, node, flags, this.logCharacteristicsIO);
+    var x = new Characteristic(this[dBus], this[servicePath], UUID, node, flags, this.logCharacteristicsIO);
     allCharacteristics.push(x);
     return (x);
   }
 
   _connectionManager(){
     console.log('setting up monitoring of org.bluez for events..')    
-    this.dBus.addMatch("type='signal', member='PropertiesChanged'");
-    //this.dBus.addMatch("type='signal', member='InterfacesAdded'");
-    this.dBus.connection.on('message', (arg1)=> { 
+    this[dBus].addMatch("type='signal', member='PropertiesChanged'");
+    //this[dBus].addMatch("type='signal', member='InterfacesAdded'");
+    this[dBus].connection.on('message', (arg1)=> { 
       if(this.logAllDBusMessages){printDbusLogMsg(arg1);};
       var path = '';
       if(arg1.path){path = arg1.path};
@@ -193,13 +202,13 @@ class blePeripheral extends EventEmitter{
                     this.client.connected = true;
                     this.client.devicePath = path;  
                     try{                  
-                      this.client.paired = await bleDevice.getProperty('Paired', client.devicePath);
+                      this.client.paired = await bleDevice.getProperty('Paired', Client.devicePath);
                     } catch (err){
                       console.log(err);
                       this.client.paired = false;
                     }
                     try{                  
-                      this.client.name = await bleDevice.getProperty('Name', client.devicePath);
+                      this.client.name = await bleDevice.getProperty('Name', Client.devicePath);
                     } catch (err){
                       console.log(err);
                       this.client.name = '';
@@ -251,7 +260,7 @@ class blePeripheral extends EventEmitter{
   }
 
   _createAdvertisementIface(){
-    var node = this.servicePath + '/advertisement';
+    var node = this[servicePath] + '/advertisement';
     var ifaceDesc = {
       name: 'org.bluez.LEAdvertisement1',
       methods: {
@@ -269,10 +278,10 @@ class blePeripheral extends EventEmitter{
         console.log('Advertising API has removed advertisement.')
       },
       Type: 'peripheral',
-      ServiceUUIDs:[[this.serverUUID]],
+      ServiceUUIDs:[[this[serverUUID]]],
     };
     console.log('Exporting D-Bus interface for BLE advertising');
-    this.dBus.exportInterface(iface, node, ifaceDesc);
+    this[dBus].exportInterface(iface, node, ifaceDesc);
   }
 };
 
