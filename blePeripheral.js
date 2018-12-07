@@ -1,7 +1,3 @@
-/*
-  To give this class access to the D-Bus system bus you must place 
-  the netConfig.conf file in the /etc/dbus-1/system.d directory
-*/
 const EventEmitter =      require("events");
 const DBus =              require("dbus-native");
 const BLEDevice =         require("./lib/deviceClass.js");
@@ -10,17 +6,11 @@ const Characteristic =    require("./lib/characteristicClass.js");
 const GattService =       require("./lib/gattServiceClass.js");
 const Advertisement =     require("./lib/advertisingClass.js");
 
-//const bleDevice = new BLEDevice(DBus.systemBus());
-//const adapter = new AdapterClass(DBus.systemBus());
-
 const primaryService = Symbol();
 const serviceName = Symbol();
 const serverUUID = Symbol();
 const servicePath = Symbol();
 const dBus = Symbol();
-//const agentIface = Symbol();
-//const client = Symbol();
-
 
 var allCharacteristics = [];
 var Client = {
@@ -91,8 +81,6 @@ class blePeripheral extends EventEmitter{
         gattService.registerGattService();
         if(this[primaryService] == true){
           this.Advertisement.startAdvertising();
-          //this._createAdvertisementIface();
-          //this.startAdvertising();
         }
       } else {                                                                      
         throw new Error(                                                                //(https://dbus.freedesktop.org/doc/api/html/group__DBusShared.html#ga37a9bc7c6eb11d212bf8d5e5ff3b50f9)
@@ -100,63 +88,6 @@ class blePeripheral extends EventEmitter{
         );
       }
     });
-  }
-
-/**
- * Registers an advertisement object to be sent over the LE Advertising channel. 
- * 
- * See the bluez LE Advertising Manager API https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/advertising-api.txt#n143
- */
-  startAdvertising(){
-    var node = this[servicePath] + '/advertisement';
-    var service = this[dBus].getService('org.bluez');
-    var objectPath = '/org/bluez/hci0'
-    var iface = 'org.bluez.LEAdvertisingManager1'
-    service.getInterface(objectPath, iface, (err, iface) => {
-      if(err){
-        console.error('Failed to request interface ' + iface + ' at ' + objectPath);
-        console.error(err);
-        return;
-      }
-		
-      iface.RegisterAdvertisement(node, [], (err, str) => {
-        if (err) {
-          console.error(`Error while calling RegisterAdvertisement: ${err}`);
-        } else if (str) {
-          console.log(`RegisterAdvertisement returned: ${str}`);
-        } else {
-          console.log('Advertising primary service and waiting for Bluetooth LE connections...');
-        }
-      });
-    })
-  }
-
-/**
- * Unregisters an BLE advertisement that has been	previously registered.
- * See the bluez LE Advertising Manager API https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/advertising-api.txt#n169
- */
-  stopAdvertising(){
-    var node = this[servicePath] + '/advertisement';
-    var service = this[dBus].getService('org.bluez');
-    var objectPath = '/org/bluez/hci0'
-    var iface = 'org.bluez.LEAdvertisingManager1'
-    service.getInterface(objectPath, iface, (err, iface) => {
-      if(err){
-        console.error('Failed to request interface ' + iface + ' at ' + objectPath);
-        console.error(err);
-        return;
-      }
-		
-      iface.UnregisterAdvertisement(node, (err, str) => {
-        if (err) {
-          console.error(`Error while calling UnregisterAdvertisement: ${err}`);
-        } else if (str) {
-          console.log(`UnregisterAdvertisement returned: ${str}`);
-        } else {
-          console.log('Stopped advertising primary service and waiting for Bluetooth LE connections...');
-        }
-      });
-    })
   }
 
   /**
@@ -188,7 +119,7 @@ class blePeripheral extends EventEmitter{
     var x = new Characteristic(this[dBus], this[servicePath], UUID, node, flags, this.logCharacteristicsIO);
     allCharacteristics.push(x);
     return (x);
-  }
+  };
 
   _connectionManager(){
     console.log('setting up monitoring of org.bluez for events..')    
@@ -263,32 +194,7 @@ class blePeripheral extends EventEmitter{
         }; 
       };
     });
-  }
-
-  _createAdvertisementIface(){
-    var node = this[servicePath] + '/advertisement';
-    var ifaceDesc = {
-      name: 'org.bluez.LEAdvertisement1',
-      methods: {
-        Release: ['', '', [], []]
-      },
-      properties: {
-        Type: 's',
-        ServiceUUIDs:'as',
-      },
-      signals: {
-      }
-    };
-    var iface = {
-      Release: function(){
-        console.log('Advertising API has removed advertisement.')
-      },
-      Type: 'peripheral',
-      ServiceUUIDs:[[this[serverUUID]]],
-    };
-    console.log('Exporting D-Bus interface for BLE advertising');
-    this[dBus].exportInterface(iface, node, ifaceDesc);
-  }
+  };
 };
 
 function printDbusLogMsg(msg){
