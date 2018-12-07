@@ -65,7 +65,9 @@ function main(DBus){
 };
 
 console.log('display adapter properties:')
-bPrl.Adapter.showAllProperties();
+bPrl.Adapter.logAllProperties();
+
+
 
 bPrl.on('ConnectionChange', (connected)=>{
   var bleUserName = '';
