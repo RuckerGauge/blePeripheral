@@ -7,10 +7,11 @@ const DBus =              require("dbus-native");
 const BLEDevice =         require("./lib/deviceClass.js");
 const AdapterClass =      require("./lib/adapterClass.js");
 const Characteristic =    require("./lib/characteristicClass.js");
-const GattService =       require("./lib/gattServiceClass.js")
+const GattService =       require("./lib/gattServiceClass.js");
+const Advertisement =     require("./lib/advertisingClass.js");
 
-const bleDevice = new BLEDevice(DBus.systemBus());
-const adapter = new AdapterClass(DBus.systemBus());
+//const bleDevice = new BLEDevice(DBus.systemBus());
+//const adapter = new AdapterClass(DBus.systemBus());
 
 const primaryService = Symbol();
 const serviceName = Symbol();
@@ -58,6 +59,7 @@ class blePeripheral extends EventEmitter{
       this[servicePath] = `/${this[serviceName].replace(/\./g, '/')}`;        // Replace . with / (com.netConfig = /com/netConfig).;
       this[dBus] = DBus.systemBus();
       //this.agentIface = {};
+      
       this.client = Client;
       this.logAllDBusMessages = false;
       this.logCharacteristicsIO = false;
@@ -65,6 +67,9 @@ class blePeripheral extends EventEmitter{
       if (!this[dBus]) {
         throw new Error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory');
       };
+      this.bleDevice = new BLEDevice(DBus.systemBus());
+      this.adapter = new AdapterClass(DBus.systemBus());
+      this.Advertisement = new Advertisement(this[dBus], this[servicePath], this[serverUUID]);
 
       this[dBus].requestName(this[serviceName], 0x4, (err, retCode) => {                               // The 0x4 flag means that we don't want to be queued if the service name we are requesting is already
       // If there was an error, warn user and fail
@@ -85,8 +90,9 @@ class blePeripheral extends EventEmitter{
         gattService.createObjManagerIface(allCharacteristics);
         gattService.registerGattService();
         if(this[primaryService] == true){
-          this._createAdvertisementIface();
-          this.startAdvertising();
+          this.Advertisement.startAdvertising();
+          //this._createAdvertisementIface();
+          //this.startAdvertising();
         }
       } else {                                                                      
         throw new Error(                                                                //(https://dbus.freedesktop.org/doc/api/html/group__DBusShared.html#ga37a9bc7c6eb11d212bf8d5e5ff3b50f9)
@@ -161,7 +167,7 @@ class blePeripheral extends EventEmitter{
    */
   pairModeOn(booleanValue = false){
     console.log('setting pairable = ' + booleanValue);
-    adapter.setBooleanProperty('Pairable', booleanValue);
+    this.adapter.setBooleanProperty('Pairable', booleanValue);
   }
 
 
@@ -202,13 +208,13 @@ class blePeripheral extends EventEmitter{
                     this.client.connected = true;
                     this.client.devicePath = path;  
                     try{                  
-                      this.client.paired = await bleDevice.getProperty('Paired', Client.devicePath);
+                      this.client.paired = await this.bleDevice.getProperty('Paired', Client.devicePath);
                     } catch (err){
                       console.log(err);
                       this.client.paired = false;
                     }
                     try{                  
-                      this.client.name = await bleDevice.getProperty('Name', Client.devicePath);
+                      this.client.name = await this.bleDevice.getProperty('Name', Client.devicePath);
                     } catch (err){
                       console.log(err);
                       this.client.name = '';
