@@ -63,7 +63,7 @@ function main(DBus){
   cmd.setValue('1=enable pairing, 2=disable pairing.');
   iNetReachable.setValue(Buffer.from([0x01, 0x02, 0xA2]));
 };
-bPrl.
+
 
 
 bPrl.on('ConnectionChange', (connected)=>{
