@@ -1,6 +1,6 @@
 const EventEmitter =      require("events");
 const DBus =              require("dbus-native");
-const BLEDevice =         require("./lib/deviceClass.js");
+const DeviceClass =         require("./lib/deviceClass.js");
 const AdapterClass =      require("./lib/adapterClass.js");
 const Characteristic =    require("./lib/characteristicClass.js");
 const GattService =       require("./lib/gattServiceClass.js");
@@ -35,10 +35,10 @@ var Client = {
  * * **callback**: The callback is called once the server has been successfully registered on the system D-Bus.  It must configure at least one characteristic using the Characteristic method in this class (see sampleApp.js main() for an example).
  * * **PrimryService**:  Set to true if this server is going to advertise its services (it is the primary service).  Set it to false if another app is already advertising a service. 
  * 
- * @param {string} ServiceName
- * @param {string} ServerUUID
+ * @param {string} ServiceName example: 'com.netConfig'
+ * @param {string} ServerUUID example: '5a0379a8-d692-41d6-b51a-d1730ea6b9d6'
  * @param {object} callback
- * @param {boolean} PrimaryService
+ * @param {boolean} PrimaryService example: true
  */
 class blePeripheral extends EventEmitter{
   constructor(ServiceName ='com.netConfig', ServerUUID = '5a0379a8-d692-41d6-b51a-d1730ea6b9d6', callback = function(){}, PrimaryService = true){
@@ -48,7 +48,6 @@ class blePeripheral extends EventEmitter{
       this[serverUUID] = ServerUUID;
       this[servicePath] = `/${this[serviceName].replace(/\./g, '/')}`;        // Replace . with / (com.netConfig = /com/netConfig).;
       this[dBus] = DBus.systemBus();
-      //this.agentIface = {};
       
       this.client = Client;
       this.logAllDBusMessages = false;
@@ -57,7 +56,8 @@ class blePeripheral extends EventEmitter{
       if (!this[dBus]) {
         throw new Error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory');
       };
-      this.BleDevice = new BLEDevice(DBus.systemBus());
+
+      this.Device = new DeviceClass(DBus.systemBus()); 
       this.Adapter = new AdapterClass(DBus.systemBus());
       this.Advertisement = new Advertisement(this[dBus], this[servicePath], this[serverUUID]);
 
@@ -90,18 +90,6 @@ class blePeripheral extends EventEmitter{
     });
   }
 
-  /**
-   * This method will enable and disable pairing on the physical adapter.  By default this is disabled.  To allolw a user to pair / bond with this Peripheral you must call this method with true.  Then when the central tries to access a secure characteristic they will be allowed to pair and bond.
-   * This method is usualy called as the result of a user pusing a pair button on the physical device.  Once enabled the device will remain pariable until this method is called agian and passed a boolean false.
-   * 
-   * @param {*} booleanValue 
-   */
-  /*
-  pairModeOn(booleanValue = false){
-    console.log('setting pairable = ' + booleanValue);
-    this.adapter.setBooleanProperty('Pairable', booleanValue);
-  }
-  */
 
 /**
  * Creates a characteristic for a BLE GATT service.  These characteristics are based on the bluez D-Bus GATT API https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt
@@ -140,13 +128,13 @@ class blePeripheral extends EventEmitter{
                     this.client.connected = true;
                     this.client.devicePath = path;  
                     try{                  
-                      this.client.paired = await this.bleDevice.getProperty('Paired', Client.devicePath);
+                      this.client.paired = await this.Device.getProperty('Paired', Client.devicePath);
                     } catch (err){
                       console.log(err);
                       this.client.paired = false;
                     }
                     try{                  
-                      this.client.name = await this.bleDevice.getProperty('Name', Client.devicePath);
+                      this.client.name = await this.Device.getProperty('Name', Client.devicePath);
                     } catch (err){
                       console.log(err);
                       this.client.name = '';
