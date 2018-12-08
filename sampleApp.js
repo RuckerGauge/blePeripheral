@@ -34,12 +34,12 @@ function main(DBus){
     switch (cmdNum) {
       case '1':
         console.log('Enable test pairing command received.');
-        bPrl.pairModeOn(true);
+        bPrl.Adapter.pairModeOn(true);
         break;
 
       case '2':
         console.log('Disable test pairing command received.');
-        bPrl.pairModeOn(false);
+        bPrl.Adapter.pairModeOn(false);
       break;
 
       case '3':
