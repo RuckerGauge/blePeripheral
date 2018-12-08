@@ -42,6 +42,15 @@ function main(DBus){
         bPrl.pairModeOn(false);
       break;
 
+      case '3':
+      console.log('Display adapter properties:')
+      bPrl.Adapter.logAllProperties();
+      break;
+
+      case '4':
+      console.log('Connected device properties:')
+      bPrl.Device.logAllProperties(bPrl.client.devicePath);
+      break;
     
       default:
         console.log('no case for ' + cmdNum);
@@ -58,17 +67,11 @@ function main(DBus){
 
   bigData.setValue(bigBuffer);
   myIpAddress.setValue('10.50.121.5');
-  cmd.setValue('1=enable pairing, 2=disable pairing.');
+  cmd.setValue('1=enable pairing, 2=disable pairing. 3=log adapter, 4=log connected device');
   iNetReachable.setValue(Buffer.from([0x01, 0x02, 0xA2]));
 };
 
-console.log('display adapter properties:')
-bPrl.Adapter.logAllProperties();
-
 bPrl.on('ConnectionChange', (connected)=>{
-  console.log('here are the details about the connected device:')
-  bPrl.Device.logAllProperties(bPrl.client.devicePath);
-  
   var bleUserName = '';
   if(bPrl.client.name == ''){
     bleUserName = bPrl.client.devicePath;
