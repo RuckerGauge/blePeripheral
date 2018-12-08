@@ -68,7 +68,7 @@ bPrl.Adapter.logAllProperties();
 bPrl.on('ConnectionChange', (connected)=>{
   console.log('here are the details about the connected device:')
   bPrl.Device.logAllProperties(bPrl.client.devicePath);
-
+  
   var bleUserName = '';
   if(bPrl.client.name == ''){
     bleUserName = bPrl.client.devicePath;

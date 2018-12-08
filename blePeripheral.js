@@ -100,9 +100,9 @@ class blePeripheral extends EventEmitter{
  * * **node**: Is the node name for the characteristic (user friendly name)
  * * **flags**: Is an optional array of strings used to determine the access to this characteristic.  See https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt#n236 for a list of supported flags. Default values are "encrypt-read","encrypt-write"
  * 
- * @param {string} UUID
- * @param {string} node
- * @param {Array} flags
+ * @param {string} UUID '00000001-94f3-4011-be53-6ac36bf22cf1'
+ * @param {string} node 'myVarName'
+ * @param {Array} flags [["encrypt-read", "notify", "encrypt-write"]]
  */
   Characteristic(UUID, node, flags){
     var x = new Characteristic(this[dBus], this[servicePath], UUID, node, flags, this.logCharacteristicsIO);
