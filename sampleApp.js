@@ -58,11 +58,12 @@ function main(DBus){
     }
   });
   
+  /*
   setInterval(()=>{
     if(iNetReachable.iface.Notifying && !bPrl.client.connected){iNetReachable.clearNotify();}
     if(iNetReachable.iface.Notifying){iNetReachable.notify();}
   }, 15000);
-
+*/
   console.log('setting default characteristic values...');
 
   //bigData.setValue(bigBuffer);
