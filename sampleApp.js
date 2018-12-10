@@ -68,8 +68,7 @@ function main(DBus){
 
   bigData.setValue(bigBuffer);
   myIpAddress.setValue('10.50.121.5');
-  //cmd.setValue('1=enable pairing, 2=disable pairing. 3=log adapter, 4=log connected device');
-  cmd.setValue(Buffer.from([0x53]));
+  cmd.setValue('1=enable pairing, 2=disable pairing. 3=log adapter, 4=log connected device');
   iNetReachable.setValue(Buffer.from([0x01, 0x02, 0xA2]));
 };
 
