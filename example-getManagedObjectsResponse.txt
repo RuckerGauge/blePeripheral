@@ -1,0 +1,432 @@
+method call time=1539786026.816274 sender=:1.3 -> destination=:1.14 serial=94 path=/; interface=org.freedesktop.DBus.ObjectManager; member=GetManagedObjects
+method return time=1539786026.831344 sender=:1.14 -> destination=:1.3 serial=10 reply_serial=94
+   array [
+      dict entry(
+         object path "/com/gobbledegook/device"
+         array [
+            dict entry(
+               string "org.bluez.GattService1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "0000180a-0000-1000-8000-00805f9b34fb"
+                  )
+                  dict entry(
+                     string "Primary"
+                     variant                         boolean true
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/device/mfgr_name"
+         array [
+            dict entry(
+               string "org.bluez.GattCharacteristic1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00002a29-0000-1000-8000-00805f9b34fb"
+                  )
+                  dict entry(
+                     string "Service"
+                     variant                         object path "/com/gobbledegook/device"
+                  )
+                  dict entry(
+                     string "Flags"
+                     variant                         array [
+                           string "read"
+                        ]
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/device/model_num"
+         array [
+            dict entry(
+               string "org.bluez.GattCharacteristic1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00002a24-0000-1000-8000-00805f9b34fb"
+                  )
+                  dict entry(
+                     string "Service"
+                     variant                         object path "/com/gobbledegook/device"
+                  )
+                  dict entry(
+                     string "Flags"
+                     variant                         array [
+                           string "read"
+                        ]
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/battery"
+         array [
+            dict entry(
+               string "org.bluez.GattService1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "0000180f-0000-1000-8000-00805f9b34fb"
+                  )
+                  dict entry(
+                     string "Primary"
+                     variant                         boolean true
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/battery/level"
+         array [
+            dict entry(
+               string "org.bluez.GattCharacteristic1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00002a19-0000-1000-8000-00805f9b34fb"
+                  )
+                  dict entry(
+                     string "Service"
+                     variant                         object path "/com/gobbledegook/battery"
+                  )
+                  dict entry(
+                     string "Flags"
+                     variant                         array [
+                           string "read"
+                           string "notify"
+                        ]
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/time"
+         array [
+            dict entry(
+               string "org.bluez.GattService1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00001805-0000-1000-8000-00805f9b34fb"
+                  )
+                  dict entry(
+                     string "Primary"
+                     variant                         boolean true
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/time/current"
+         array [
+            dict entry(
+               string "org.bluez.GattCharacteristic1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00002a2b-0000-1000-8000-00805f9b34fb"
+                  )
+                  dict entry(
+                     string "Service"
+                     variant                         object path "/com/gobbledegook/time"
+                  )
+                  dict entry(
+                     string "Flags"
+                     variant                         array [
+                           string "read"
+                           string "notify"
+                        ]
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/time/local"
+         array [
+            dict entry(
+               string "org.bluez.GattCharacteristic1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00002a0f-0000-1000-8000-00805f9b34fb"
+                  )
+                  dict entry(
+                     string "Service"
+                     variant                         object path "/com/gobbledegook/time"
+                  )
+                  dict entry(
+                     string "Flags"
+                     variant                         array [
+                           string "read"
+                        ]
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/text"
+         array [
+            dict entry(
+               string "org.bluez.GattService1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00000001-1e3c-fad4-74e2-97a033f1bfaa"
+                  )
+                  dict entry(
+                     string "Primary"
+                     variant                         boolean true
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/text/string"
+         array [
+            dict entry(
+               string "org.bluez.GattCharacteristic1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00000002-1e3c-fad4-74e2-97a033f1bfaa"
+                  )
+                  dict entry(
+                     string "Service"
+                     variant                         object path "/com/gobbledegook/text"
+                  )
+                  dict entry(
+                     string "Flags"
+                     variant                         array [
+                           string "read"
+                           string "write"
+                           string "notify"
+                        ]
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/text/string/description"
+         array [
+            dict entry(
+               string "org.bluez.GattDescriptor1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00002901-0000-1000-8000-00805f9b34fb"
+                  )
+                  dict entry(
+                     string "Characteristic"
+                     variant                         object path "/com/gobbledegook/text/string"
+                  )
+                  dict entry(
+                     string "Flags"
+                     variant                         array [
+                           string "read"
+                        ]
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/ascii_time"
+         array [
+            dict entry(
+               string "org.bluez.GattService1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00000001-1e3d-fad4-74e2-97a033f1bfee"
+                  )
+                  dict entry(
+                     string "Primary"
+                     variant                         boolean true
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/ascii_time/string"
+         array [
+            dict entry(
+               string "org.bluez.GattCharacteristic1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00000002-1e3d-fad4-74e2-97a033f1bfee"
+                  )
+                  dict entry(
+                     string "Service"
+                     variant                         object path "/com/gobbledegook/ascii_time"
+                  )
+                  dict entry(
+                     string "Flags"
+                     variant                         array [
+                           string "read"
+                        ]
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/ascii_time/string/description"
+         array [
+            dict entry(
+               string "org.bluez.GattDescriptor1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00002901-0000-1000-8000-00805f9b34fb"
+                  )
+                  dict entry(
+                     string "Characteristic"
+                     variant                         object path "/com/gobbledegook/ascii_time/string"
+                  )
+                  dict entry(
+                     string "Flags"
+                     variant                         array [
+                           string "read"
+                        ]
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/cpu"
+         array [
+            dict entry(
+               string "org.bluez.GattService1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "0000b001-1e3d-fad4-74e2-97a033f1bfee"
+                  )
+                  dict entry(
+                     string "Primary"
+                     variant                         boolean true
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/cpu/count"
+         array [
+            dict entry(
+               string "org.bluez.GattCharacteristic1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "0000b002-1e3d-fad4-74e2-97a033f1bfee"
+                  )
+                  dict entry(
+                     string "Service"
+                     variant                         object path "/com/gobbledegook/cpu"
+                  )
+                  dict entry(
+                     string "Flags"
+                     variant                         array [
+                           string "read"
+                        ]
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/cpu/count/description"
+         array [
+            dict entry(
+               string "org.bluez.GattDescriptor1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00002901-0000-1000-8000-00805f9b34fb"
+                  )
+                  dict entry(
+                     string "Characteristic"
+                     variant                         object path "/com/gobbledegook/cpu/count"
+                  )
+                  dict entry(
+                     string "Flags"
+                     variant                         array [
+                           string "read"
+                        ]
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/cpu/model"
+         array [
+            dict entry(
+               string "org.bluez.GattCharacteristic1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "0000b003-1e3d-fad4-74e2-97a033f1bfee"
+                  )
+                  dict entry(
+                     string "Service"
+                     variant                         object path "/com/gobbledegook/cpu"
+                  )
+                  dict entry(
+                     string "Flags"
+                     variant                         array [
+                           string "read"
+                        ]
+                  )
+               ]
+            )
+         ]
+      )
+      dict entry(
+         object path "/com/gobbledegook/cpu/model/description"
+         array [
+            dict entry(
+               string "org.bluez.GattDescriptor1"
+               array [
+                  dict entry(
+                     string "UUID"
+                     variant                         string "00002901-0000-1000-8000-00805f9b34fb"
+                  )
+                  dict entry(
+                     string "Characteristic"
+                     variant                         object path "/com/gobbledegook/cpu/model"
+                  )
+                  dict entry(
+                     string "Flags"
+                     variant                         array [
+                           string "read"
+                        ]
+                  )
+               ]
+            )
+         ]
+      )
+   ]
+method call time=1539786026.885174 sender=:1.3 -> destination=org.freedesktop.DBus serial=95 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=AddMatch
+   string "type='signal',sender=':1.14',path='/com/gobbledegook/device',interface='org.freedesktop.DBus.Properties',member='PropertiesChanged',arg0='org.bluez.GattService1'"
+method return time=1539786026.891764 sender=org.freedesktop.DBus -> destination=:1.3 serial=77 reply_serial=95
+method call time=1539786026.892496 sender=:1.3 -> destination=org.freedesktop.DBus serial=96 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=AddMatch
