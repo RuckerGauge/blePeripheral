@@ -16,7 +16,7 @@ This class requires blueZ version 5.50 (blueZ is the bluetooth daemon for debian
 on the Raspberry Pi Zero W from a [SSH session](https://www.raspberrypi.org/magpi/ssh-remote-control-raspberry-pi/):
 * Type `git clone https://github.com/RuckerGauge/blePeripheral.git`
 * Type `cd blePeripheral && npm install`
-* Type `sudo cp netConfig.conf /etc/dbus-1/system.d`  This gives our sample app permission to bring up a services on the system D-Bus.
+* Type `sudo cp netConfig.conf /etc/dbus-1/system.d`  This gives our sample app permission to bring up a service on the system D-Bus.
 * Type `sudo node sampleApp` 
 ---
 At this point you should have a Bluetooth LE (BLE) peripheral up and running on your Raspberry Pi Zero W.  The sample app sets up several test characteristics you can connect to for testing.  It also starts advertising as a BLE service so a bluetooth central (your iPhone) can find and connect to it.   The next step is to connect to this peripheral from an IOS device.  
@@ -40,7 +40,7 @@ You can monitor the pairing process by opening another SSH connection to your Ra
 ![pic6](./pics/enter1.PNG)
 * To trigger the pairing process normally a user would push a button on your Raspberry Pi.  But for testing purposes I have setup a special characteristic that you can use to simulate a button push.  That is what the cmd characteristic does.  It has four commands 1=enable pairing, 2=disable pairing. 3=log adapter, 4=log connected device.  We will use 1.
 To Open your peripheral for pairing select the cmd characteristic and convert the encoding from hex to UTF-8.  When you do that you will see that value of the data read is a menu of options **1=enable pairing, 2=disable pairing. 3=log adapter, 4=log connected device**.  We want to enable pairing so tap on the “Write new value” text and type the number 1 on your iPhone’s keyboard and then done. Now your peripheral is accepting pairing request and to start that process you need to access a secure characteristic.  Back up one screen and tap on the bigData characteristic.  A Bluetooth Pairing Request will pop up and you can hit Pair to complete the process.  From now on your phone will be bound to your Raspberry Pi Zero W bluetooth radio.  You will not have to go through this process again.
- 
+
 ![pic7](./pics/pairMsg.PNG)
 --- 
 That’s it your bound to your iPhone and off and running.  However, there is one big bug I’m currently working on.  If you restart your raspberry Pi after bonding with an iPhone it will not be able to communicate whit the phone once the phone’s bluetooth address changes.  To work around this type `sudo systemctl restart bluetooth` after your Pi has booted back up.  Then restart your node app and your iPhone will be able to connect as a bound device.  
