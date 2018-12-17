@@ -23,19 +23,19 @@ At this point you should have a Bluetooth LE (BLE) peripheral up and running on 
 
 # Test with iPhone
 * Install the [LightBlue Explorer]( https://itunes.apple.com/us/app/lightblue-explorer/id557428110?mt=8) app on your iPhone or iPad and open it.
-* The Peripherals Nearby list should have your device as you named it in the main.conf.  If you followed my [bluetooth 5.50 install steps](https://github.com/RuckerGauge/Raspberry-Pi-Zero-W-Bluez-5.50-upgrade-steps) the name will be **rGauge Transmitter**. Tap on that device to open and connect to the Raspberry Pi Zero W peripheral. You should see the following screens:<br>
+* The Peripherals Nearby list should have your device as you named it in the main.conf.  If you followed my [bluetooth 5.50 install steps](https://github.com/RuckerGauge/Raspberry-Pi-Zero-W-Bluez-5.50-upgrade-steps) the name will be **rGauge Transmitter**. Tap on that device to open and connect to the Raspberry Pi Zero W peripheral. You should see the following screens:
+
 ![pic1](./pics/mainLightBlue.PNG)
-![pic7](./pics/pairMsg.PNG)
 ![pic2](./pics/isAuthorized.PNG)
 * You will see five characteristics labeled isAuthorized, cmd, bigData, myIpAddress and iNetReachable.  The first two can be accessed without binding to the Raspberry Pi as they have normal Read and Write flags set.  However, the last three (bigData, myIpAddress, iNetReachable) require that you bind your iPhone before you read their data.  Their characteristics are flagged as encrypt-read and encrypt-write.  So for now do not tap on them we will stay focused on the first two.
 
 * Tap on the isAuthorized characteristic to open and read its value.  You will see a hex value that doesn’t make much sense.  It is hex encoded ASCII characters and to decode it you can tap on the word hex in upper right side of the screen.  Select the UTF-8 String from the list of options and you will see that the value is the word “false”.  This characteristic can be used to tell your IOS app if this device is bound or not with this peripheral.  It will change to “true” when we pair the iPhone to the device. 
-<br>
+
 ![pic3](./pics/isAuthorizedHex.PNG)
 ![pic4](./pics/isAuthorizedUTF.PNG)
 *  A word about pairing with the iPhone.  To trigger the pairing / bonding process your iPhone needs to try and read a secure characteristic.  The iPhone will be denied access to the characteristic and sent an Insufficient Encryption error.  The iPhone in turn will try to pair with the peripheral by sending its capabilities that layout the type of connection it will accept.  This process is taken care of for us by the bluetooth daemon.  Our app doesn’t have to do anything other than tell the bluetooth radio it is allowed to pair.  By default, I have pairing disabled so if you tap on one of these secure characteristics you will not be prompted to pair because it is not allowed. It will act like it is reading the value but nothing is returned.  More on that later…
 You can monitor the pairing process by opening another SSH connection to your Raspberry Pi Zero W and type `suod btmon`.  This is one of the best tools for troubleshooting connection problems.  When an iPhone pairs with your peripheral for the first time it exchanges several encryption keys, and stores them on the Raspberry Pi so it won’t have to do this again.  This is called bonding (it is possible to pair with a device and not bond to it. However, the iPhone requires a device to be bound).  Once you successfully pair with a peripheral your iPhone is also bound to it and ready to encrypt and de-encrypt data as it is transmitted and received over the bluetooth radio.
-<br>  
+
 ![pic5](./pics/cmdUTF.PNG)
 ![pic6](./pics/enter1.PNG)
 ![pic7](./pics/pairMsg.PNG)
