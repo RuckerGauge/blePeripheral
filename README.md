@@ -24,9 +24,7 @@ At this point you should have a Bluetooth LE (BLE) peripheral up and running on 
 # Test with iPhone
 * Install the [LightBlue Explorer]( https://itunes.apple.com/us/app/lightblue-explorer/id557428110?mt=8) app on your iPhone or iPad and open it.
 * The Peripherals Nearby list should have your device as you named it in the main.conf.  If you followed my [bluetooth 5.50 install steps](https://github.com/RuckerGauge/Raspberry-Pi-Zero-W-Bluez-5.50-upgrade-steps) the name will be **rGauge Transmitter**. Tap on that device to open and connect to the Raspberry Pi Zero W peripheral. You should see the following screens:
-
-![pic1](./pics/mainLightBlue.PNG)
-![pic2](./pics/isAuthorized.PNG)
+{: style="text-align:center"}![pic1](./pics/mainLightBlue.PNG)  ![pic2](./pics/isAuthorized.PNG)
 * You will see five characteristics labeled isAuthorized, cmd, bigData, myIpAddress and iNetReachable.  The first two can be accessed without binding to the Raspberry Pi as they have normal Read and Write flags set.  However, the last three (bigData, myIpAddress, iNetReachable) require that you bind your iPhone before you read their data.  Their characteristics are flagged as encrypt-read and encrypt-write.  So for now do not tap on them we will stay focused on the first two.
 
 * Tap on the isAuthorized characteristic to open and read its value.  You will see a hex value that doesn’t make much sense.  It is hex encoded ASCII characters and to decode it you can tap on the word hex in upper right side of the screen.  Select the UTF-8 String from the list of options and you will see that the value is the word “false”.  This characteristic can be used to tell your IOS app if this device is bound or not with this peripheral.  It will change to “true” when we pair the iPhone to the device. 
