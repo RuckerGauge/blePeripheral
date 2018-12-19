@@ -1,6 +1,14 @@
 # blePeripheral
-This is a Node.js class for creating a Bluetooth LE (Low Energy) peripheral based on Bluez 5.50 and its D-Bus based API.  This class supports secure encrypted connections to IOS introduced in Bluetooth 4.2 as LE Secure connections.  Here is a quote from the [Bluetooth blog:]( https://blog.bluetooth.com/bluetooth-pairing-part-4) “LE Secure Connections is an enhanced security feature introduced in Bluetooth v4.2. It uses a Federal Information Processing Standards (FIPS) compliant algorithm called Elliptic Curve Diffie Hellman (ECDH) for key generation.” 
-If you want to securely connect your IOS device to your Raspberry Pi over BLE you must implement this level of security or else Apple will not allow the device to bind.  
+This is a Node.js class for creating a Bluetooth LE (Low Energy) peripheral based on Bluez 5.50 and its D-Bus based API.  This class supports secure encrypted connections to IOS introduced in Bluetooth 4.2 as LE Secure connections. If you want to securely connect your IOS device to your Raspberry Pi with Bluetooth LE you must implement this level of security or IOS will not allow the device to pair and be bound. You can read unencrypted data without pairing but if encryption and a secure pairing process is a requirement for your application then you must implement LE Secure Connections found in Bluetooth 4.2. Here is a quote from Kai Ren in his [Bluetooth blog:]( https://blog.bluetooth.com/bluetooth-pairing-part-4) 
+>Other than LE Legacy pairing, LE Secure Connections is the other option for pairing. LE Secure Connections is an enhanced security feature introduced in Bluetooth v4.2. It uses a Federal Information Processing Standards (FIPS) compliant algorithm called Elliptic Curve Diffie Hellman (ECDH) for key generation. For LE Secure Connections, it support four association models:
+>* Just Works
+>* Numeric Comparison (Only for LE Secure Connections)
+>* Passkey Entry
+>* Out of Band (OOB)
+>
+>Numeric Comparison only exists for LE Secure Connections, not for Legacy pairing. 
+
+
 ## Hardware Requirements
 * Raspberry Pi Zero W
 * iPhone or iPad with [LightBlue Explorer]( https://itunes.apple.com/us/app/lightblue-explorer/id557428110?mt=8) app.
@@ -39,5 +47,5 @@ You can monitor the pairing process by opening another SSH connection to your Ra
 
     ![pic7](./pics/pairMsg.PNG)
 --- 
-That’s it, your bound to your iPhone and off and running.  However, there is one big bug I’m currently working on.  If you restart your raspberry Pi after bonding with an iPhone it will not be able to communicate whit the phone once the phone’s bluetooth address changes.  To work around this type `sudo systemctl restart bluetooth` after your Pi has booted back up.  Then restart your node app and your iPhone will be able to connect as a bound device.  
+That’s it, your bound to your iPhone and off and running.  However, there is one [big bug I’m currently working on](https://github.com/RuckerGauge/blePeripheral/issues/1).  If you restart your raspberry Pi after bonding with an iPhone it will not be able to communicate whit the phone once the phone’s bluetooth address changes.  To work around this type `sudo systemctl restart bluetooth` after your Pi has booted back up.  Then restart your node app and your iPhone will be able to connect as a bound device.  
  
