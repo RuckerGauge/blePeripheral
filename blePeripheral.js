@@ -41,7 +41,7 @@ var Client = {
  * @param {boolean} PrimaryService example: true
  */
 class blePeripheral extends EventEmitter{
-  constructor(ServiceName ='com.netConfig', ServerUUID = '5a0379a8-d692-41d6-b51a-d1730ea6b9d6', callback = function(){}, PrimaryService = true){
+  constructor(ServiceName ='com.netConfig', ServerUUID = '4b1268a8-d692-41d6-b51a-d1730ea6b9d6', callback = function(){}, PrimaryService = true){
       super();
       this[primaryService] = PrimaryService;
       this[serviceName] = ServiceName;
