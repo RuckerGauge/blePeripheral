@@ -79,14 +79,12 @@ class blePeripheral extends EventEmitter{
         var gattService = new GattService(this[serverUUID], this[servicePath], this[dBus]);
         gattService.createObjManagerIface(allCharacteristics);
 
-        console.log('skipping startAdvertisisng()....')
+        //console.log('skipping startAdvertisisng()....')
         
         gattService.registerGattService();
-        /*
         if(this[primaryService] == true){
           this.Advertisement.startAdvertising();
         }
-        */
       } else {                                                                      
         throw new Error(                                                                //(https://dbus.freedesktop.org/doc/api/html/group__DBusShared.html#ga37a9bc7c6eb11d212bf8d5e5ff3b50f9)
           `Failed to request service name "${this[serviceName]}". Check what return code "${retCode}" means. See https://dbus.freedesktop.org/doc/api/html/group__DBusShared.html#ga37a9bc7c6eb11d212bf8d5e5ff3b50f9`
