@@ -1,6 +1,6 @@
 const EventEmitter =      require("events");
 const DBus =              require("dbus-native");
-const DeviceClass =         require("./lib/deviceClass.js");
+const DeviceClass =       require("./lib/deviceClass.js");
 const AdapterClass =      require("./lib/adapterClass.js");
 const Characteristic =    require("./lib/characteristicClass.js");
 const GattService =       require("./lib/gattServiceClass.js");
