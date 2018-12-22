@@ -10,10 +10,10 @@ function main(DBus){
   // bleSrvr.logAllDBusMessages=true;
   console.log('Initialize charcteristics...');
   var isAuthorized =  bPrl.Characteristic('00000001-94f3-4011-be53-6ac36bf22cf1', 'isAuthorized', ["read","write-without-response"]);
-  //var cmd =           bPrl.Characteristic('00000002-94f3-4011-be53-6ac36bf22cf1', 'cmd', [["read","write"]]);
-  //var bigData =       bPrl.Characteristic('00000003-94f3-4011-be53-6ac36bf22cf1', 'bigData');
-  //var myIpAddress =   bPrl.Characteristic('00000004-94f3-4011-be53-6ac36bf22cf1', 'myIpAddress', [["encrypt-read"]]);
-  //var iNetReachable = bPrl.Characteristic('00000006-94f3-4011-be53-6ac36bf22cf1', 'iNetReachable', [["encrypt-read","notify","encrypt-write"]]);
+  var cmd =           bPrl.Characteristic('00000002-94f3-4011-be53-6ac36bf22cf1', 'cmd', ["read","write"]);
+  var bigData =       bPrl.Characteristic('00000003-94f3-4011-be53-6ac36bf22cf1', 'bigData');
+  var myIpAddress =   bPrl.Characteristic('00000004-94f3-4011-be53-6ac36bf22cf1', 'myIpAddress', ["encrypt-read"]);
+  var iNetReachable = bPrl.Characteristic('00000006-94f3-4011-be53-6ac36bf22cf1', 'iNetReachable', ["encrypt-read","notify","encrypt-write"]);
 
   console.log('Registering event handlers...');
 
@@ -27,7 +27,7 @@ function main(DBus){
       isAuthorized.setValue(Buffer.from('false'));
     };
   });
-/*
+
   cmd.on('WriteValue', (device, arg1)=>{
     console.log(device + ' has sent a new cmd = ' + arg1[0]);
     var cmdNum = arg1.toString();
@@ -63,13 +63,13 @@ function main(DBus){
     if(iNetReachable.iface.Notifying && !bPrl.client.connected){iNetReachable.clearNotify();}
     if(iNetReachable.iface.Notifying){iNetReachable.notify();}
   }, 15000);
-*/
+
   console.log('setting default characteristic values...');
 
-  //bigData.setValue(bigBuffer);
-  //myIpAddress.setValue('10.50.121.5');
-  //cmd.setValue('1=enable pairing, 2=disable pairing. 3=log adapter, 4=log connected device');
-  //iNetReachable.setValue(Buffer.from([0x01, 0x02, 0xA2]));
+  bigData.setValue(bigBuffer);
+  myIpAddress.setValue('10.50.121.5');
+  cmd.setValue('1=enable pairing, 2=disable pairing. 3=log adapter, 4=log connected device');
+  iNetReachable.setValue(Buffer.from([0x01, 0x02, 0xA2]));
 };
 
 bPrl.on('ConnectionChange', (connected)=>{

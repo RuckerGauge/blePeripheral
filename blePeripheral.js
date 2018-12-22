@@ -78,9 +78,6 @@ class blePeripheral extends EventEmitter{
         console.log('Setup and initialize GATT service...');
         var gattService = new GattService(this[serverUUID], this[servicePath], this[dBus]);
         gattService.createObjManagerIface(allCharacteristics);
-
-        //console.log('skipping startAdvertisisng()....')
-        
         gattService.registerGattService();
         if(this[primaryService] == true){
           this.Advertisement.startAdvertising();
