@@ -1,4 +1,7 @@
 # blePeripheral
+
+>**Special Note:  I was using an older version of Dbus-Native that was linked to NPM flatmap-stream and is considered a malicious actor (it was steeling bitcoins).  I upgraded my package.json to use the newer version of "dbus-native": "^0.4.0" and that seems to have broken some stuff in my code.  I'm currently working on that issue!**
+
 This is a Node.js class for creating a Bluetooth LE (Low Energy) peripheral based on Bluez 5.50 and its D-Bus based API.  This class supports secure encrypted connections to IOS introduced in Bluetooth 4.2 as LE Secure connections. If you want to securely connect your IOS device (Android should also work) to your Raspberry Pi with Bluetooth LE you must implement this level of security or IOS will not allow the device to pair and be bound. Here is a quote from Kai Ren in his [Bluetooth blog:]( https://blog.bluetooth.com/bluetooth-pairing-part-4) 
 >Other than LE Legacy pairing, LE Secure Connections is the other option for pairing. LE Secure Connections is an enhanced security feature introduced in Bluetooth v4.2. It uses a Federal Information Processing Standards (FIPS) compliant algorithm called Elliptic Curve Diffie Hellman (ECDH) for key generation. For LE Secure Connections, it support four association models:
 >* Just Works
