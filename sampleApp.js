@@ -3,11 +3,15 @@ const blePeripheral =         require("./blePeripheral.js");
 const serviceName = 'com.netConfig';                              // peripheral's DBus service name
 const serviceUUID = '27b5244f-94f3-4011-be53-6ac36bf22cf1'        // UUID to advertise as an Bluetooh LE service
 
+var bigBuffer = Buffer.alloc(512, 'i');
+bigBuffer[0] = 0x00;
+bigBuffer[511] = 0xFF;
+
 console.log('Registering ->' + serviceName + '<- as a D-Bus system service...');
 const bPrl = new blePeripheral(serviceName, serviceUUID, main);
 
 function main(DBus){
-  // bleSrvr.logAllDBusMessages=true;
+  bPrl.logCharacteristicsIO = true;
   console.log('Initialize charcteristics...');
   var isAuthorized =  bPrl.Characteristic('00000001-94f3-4011-be53-6ac36bf22cf1', 'isAuthorized', ["read","write-without-response"]);
   var cmd =           bPrl.Characteristic('00000002-94f3-4011-be53-6ac36bf22cf1', 'cmd', ["read","write"]);
@@ -65,11 +69,13 @@ function main(DBus){
   }, 15000);
 
   console.log('setting default characteristic values...');
-
-  bigData.setValue(bigBuffer);
-  myIpAddress.setValue('10.50.121.5');
-  cmd.setValue('1=enable pairing, 2=disable pairing. 3=log adapter, 4=log connected device');
-  iNetReachable.setValue(Buffer.from([0x01, 0x02, 0xA2]));
+  updateAll();
+  function updateAll(){
+    bigData.setValue(bigBuffer);
+    myIpAddress.setValue('10.50.121.5');
+    cmd.setValue('1=enable pairing, 2=disable pairing. 3=log adapter, 4=log connected device');
+    iNetReachable.setValue(Buffer.from([0x01, 0x02, 0xA2]));
+  };
 };
 
 bPrl.on('ConnectionChange', (connected)=>{
@@ -88,9 +94,3 @@ bPrl.on('ConnectionChange', (connected)=>{
     console.log('<-- ' + bleUserName + ' has disconnected from this server at ' + (new Date()).toLocaleTimeString());
   }
 });
-
-
-var bigBuffer = Buffer.alloc(512, 'i');
-bigBuffer[0] = 0x00;
-bigBuffer[511] = 0xFF;
-
