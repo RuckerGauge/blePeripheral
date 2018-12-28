@@ -63,10 +63,17 @@ function main(DBus){
     }
   });
   
+  cpuTemp.on('ReadValue', (device)=>{
+    console.log(device + ' is reading CPU temperature..');
+    cpuTemp.setValue(getCpuTemp);
+  })
 
   setInterval(()=>{
     if(cpuTemp.iface.Notifying && !bPrl.client.connected){cpuTemp.clearNotify();}
-    if(cpuTemp.iface.Notifying){cpuTemp.notify();}
+    if(cpuTemp.iface.Notifying){
+      cpuTemp.setValue(getCpuTemp);
+      cpuTemp.notify();
+    }
   }, 15000);
 
   console.log('setting default characteristic values...');
@@ -109,5 +116,5 @@ function getCpuTemp(){
   var f = parseInt(cpuTempStr)  * .001;
   f = f * 1.8 + 32; //convert to fahrenheit
   cpuTempStr = f.toFixed(2).toString();
-  return cpuTempStr;
+  return cpuTempStr + '°F';
 }
