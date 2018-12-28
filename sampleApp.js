@@ -1,5 +1,6 @@
 const blePeripheral =   require("./blePeripheral.js");
 const fs =              require('fs');
+const cp =              require('child_process');
 
 const serviceName = 'com.netConfig';                              // peripheral's DBus service name
 const serviceUUID = '27b5244f-94f3-4011-be53-6ac36bf22cf1'        // UUID to advertise as an Bluetooh LE service
@@ -65,7 +66,6 @@ function main(DBus){
   
   cpuTemp.on('ReadValue', (device)=>{
     console.log(device + ' is reading CPU temperature..');
-    
     cpuTemp.setValue(getCpuTemp());
   })
 
@@ -81,7 +81,7 @@ function main(DBus){
   updateAll();
   function updateAll(){
     bigData.setValue(bigBuffer);
-    myIpAddress.setValue('10.50.121.5');
+    myIpAddress.setValue(getIP());
     cmd.setValue('1=enable pairing, 2=disable pairing. 3=log adapter, 4=log connected device');
     cpuTemp.setValue(getCpuTemp());
   };
@@ -128,3 +128,29 @@ function getCpuTemp(){
     return cpuTempStr + '°F';
   };
 };
+
+/**
+ * Returns local IP address of Raspberry Pi as a string.
+ */
+function getIP(){                      
+  var ipAdd = ''
+  try{
+    // get ip address (may be more than one)
+    var rsp = cp.execSync('/bin/hostname -I');
+    var str = rsp.toString();    
+    var y = str.split('\n');
+    ipAdd = y[0].trim();    
+
+  }
+  catch(err){
+    console.log('error reading IP Address');
+    console.log(err);
+    err = true
+  }   
+
+  if(err == true){
+    return 'not supported on this hardware';
+  } else {
+    return ipAdd;
+  };
+}
