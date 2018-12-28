@@ -134,7 +134,6 @@ function getCpuTemp(){
  */
 function getIP(){                      
   var ipAdd = ''
-  var err = false;
   try{
     // get ip address (may be more than one)
     var rsp = cp.execSync('/in/hostname -I');
@@ -145,12 +144,9 @@ function getIP(){
   }
   catch(err){
     console.log('error reading IP Address');
-    err = true
-  }   
-
-  if(err == true){
     return "not supported on this hardware";
-  } else {
-    return ipAdd;
   };
+
+  return ipAdd;
+
 }
