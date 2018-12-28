@@ -104,17 +104,27 @@ bPrl.on('ConnectionChange', (connected)=>{
   }
 });
 
+/**
+ * Reads the CPU temperature on Raspberry Pi. 
+ * Returns temperature in fahrenheit as a string.
+ */
 function getCpuTemp(){
   cpuTempStr = '';
+  var err = false;
   try{
     cpuTempStr = fs.readFileSync('/sys/class/thermal/thermal_zone0/temp');
+    var f = parseInt(cpuTempStr)  * .001;
+    f = f * 1.8 + 32; 
+    cpuTempStr = f.toFixed(2).toString();  
   }
   catch(err){
     console.log('error reading CPU Temperature ' + err);
-    cpuTempStr = '';
+    err = true;
   }
-  var f = parseInt(cpuTempStr)  * .001;
-  f = f * 1.8 + 32; //convert to fahrenheit
-  cpuTempStr = f.toFixed(2).toString();
-  return cpuTempStr + '°F';
-}
+
+  if(err == true){
+    return 'not supported on this hardware';
+  } else {
+    return cpuTempStr + '°F';
+  };
+};
