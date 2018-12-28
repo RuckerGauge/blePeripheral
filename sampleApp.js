@@ -113,11 +113,8 @@ function getCpuTemp(){
     console.log('error reading CPU Temperature ' + err);
     cpuTempStr = '';
   }
-  console.log('cpuTempStr = ' + cpuTempStr);
   var f = parseInt(cpuTempStr)  * .001;
   f = f * 1.8 + 32; //convert to fahrenheit
-  console.log('f = ' + f);
   cpuTempStr = f.toFixed(2).toString();
-  console.log('cpuTemp in f rounded = ' + cpuTempStr);
   return cpuTempStr + '°F';
 }
