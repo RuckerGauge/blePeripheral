@@ -118,7 +118,7 @@ function getCpuTemp(){
     cpuTempStr = f.toFixed(2).toString();  
   }
   catch(err){
-    console.log('error reading CPU Temperature ' + err);
+    console.log('error reading CPU Temperature ');
     err = true;
   }
 
@@ -145,12 +145,11 @@ function getIP(){
   }
   catch(err){
     console.log('error reading IP Address');
-    console.log(err);
     err = true
   }   
 
   if(err == true){
-    return 'not supported on this hardware';
+    return "not supported on this hardware";
   } else {
     return ipAdd;
   };
