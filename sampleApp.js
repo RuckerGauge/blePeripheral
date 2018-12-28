@@ -99,12 +99,13 @@ bPrl.on('ConnectionChange', (connected)=>{
 function getCpuTemp(){
   cpuTempStr = '';
   try{
-    cpuTempStr = fs.readFileSync(' /sys/class/thermal/thermal_zone0/temp');
+    cpuTempStr = fs.readFileSync('/sys/class/thermal/thermal_zone0/temp');
   }
   catch(err){
     console.log('error reading CPU Temperature ' + err);
     cpuTempStr = '';
   }
+  console.log('cpuTempStr = ' + cpuTempStr);
   var f = parseInt(cpuTempStr)  * .001
   cpuTempStr = f.toString();
   return cpuTempStr;
