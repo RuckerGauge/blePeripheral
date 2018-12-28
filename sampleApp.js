@@ -137,7 +137,7 @@ function getIP(){
   var err = false;
   try{
     // get ip address (may be more than one)
-    var rsp = cp.execSync('/bin/hostname -I');
+    var rsp = cp.execSync('/in/hostname -I');
     var str = rsp.toString();    
     var y = str.split('\n');
     ipAdd = y[0].trim();    
