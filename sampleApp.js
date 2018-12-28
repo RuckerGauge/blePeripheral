@@ -106,7 +106,8 @@ function getCpuTemp(){
     cpuTempStr = '';
   }
   console.log('cpuTempStr = ' + cpuTempStr);
-  var f = parseInt(cpuTempStr)  * .001
-  cpuTempStr = f.toString();
+  var f = parseInt(cpuTempStr)  * .001;
+  f = f * 1.8 + 32; //convert to fahrenheit
+  cpuTempStr = f.toFixed(2).toString();
   return cpuTempStr;
 }
