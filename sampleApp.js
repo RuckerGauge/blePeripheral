@@ -134,6 +134,7 @@ function getCpuTemp(){
  */
 function getIP(){                      
   var ipAdd = ''
+  var err = false;
   try{
     // get ip address (may be more than one)
     var rsp = cp.execSync('/bin/hostname -I');
