@@ -1,9 +1,9 @@
 const blePeripheral =   require("./blePeripheral.js");
-const fs =              require('fs');
-const cp =              require('child_process');
+const fs =              require('fs');                        // Used to read CPU temperature in /sys/class/thermal/thermal_zone0/temp file.
+const cp =              require('child_process');             // Used to spawn /bin/hostname -I to get IP Address.
 
-const serviceName = 'com.netConfig';                              // peripheral's DBus service name
-const serviceUUID = '27b5244f-94f3-4011-be53-6ac36bf22cf1'        // UUID to advertise as an Bluetooh LE service
+const serviceName = 'com.netConfig';                          // peripheral's DBus service name
+const serviceUUID = '27b5244f-94f3-4011-be53-6ac36bf22cf1'    // UUID to advertise as an Bluetooh LE service
 
 var bigBuffer = Buffer.alloc(512, 'i');
 bigBuffer[0] = 0x00;
@@ -110,7 +110,6 @@ bPrl.on('ConnectionChange', (connected)=>{
  */
 function getCpuTemp(){
   cpuTempStr = '';
-  var err = false;
   try{
     cpuTempStr = fs.readFileSync('/sys/class/thermal/thermal_zone0/temp');
     var f = parseInt(cpuTempStr)  * .001;
@@ -119,14 +118,10 @@ function getCpuTemp(){
   }
   catch(err){
     console.log('error reading CPU Temperature ');
-    err = true;
-  }
-
-  if(err == true){
     return 'not supported on this hardware';
-  } else {
-    return cpuTempStr + '°F';
   };
+
+  return cpuTempStr + '°F';
 };
 
 /**
@@ -148,5 +143,4 @@ function getIP(){
   };
 
   return ipAdd;
-
 }
