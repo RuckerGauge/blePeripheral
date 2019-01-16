@@ -60,6 +60,7 @@ class blePeripheral extends EventEmitter{
       this.Device = new DeviceClass(DBus.systemBus()); 
       this.Adapter = new AdapterClass(DBus.systemBus());
       this.Advertisement = new Advertisement(this[dBus], this[servicePath], this[serverUUID]);
+      this.gattService = new GattService(this[serverUUID], this[servicePath], this[dBus]);
 
       this[dBus].requestName(this[serviceName], 0x4, (err, retCode) => {                               // The 0x4 flag means that we don't want to be queued if the service name we are requesting is already
       // If there was an error, warn user and fail
@@ -76,9 +77,11 @@ class blePeripheral extends EventEmitter{
         callback(this[dBus]);
         console.log('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
         console.log('Setup and initialize GATT service...');
-        var gattService = new GattService(this[serverUUID], this[servicePath], this[dBus]);
-        gattService.createObjManagerIface(allCharacteristics);
-        gattService.registerGattService();
+        //var gattService = new GattService(this[serverUUID], this[servicePath], this[dBus]);
+        //gattService.createObjManagerIface(allCharacteristics);
+        //gattService.registerGattService();
+        this.gattService.createObjManagerIface(allCharacteristics);
+        this.gattService.registerGattService();
         if(this[primaryService] == true){
           this.Advertisement.startAdvertising();
         }

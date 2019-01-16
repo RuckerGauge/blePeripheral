@@ -101,6 +101,8 @@ bPrl.on('ConnectionChange', (connected)=>{
     }
   } else {
     console.log('<-- ' + bleUserName + ' has disconnected from this server at ' + (new Date()).toLocaleTimeString());
+    bPrl.gattService.unRegisterGattService();
+    bPrl.gattService.registerGattService();
   }
 });
 
