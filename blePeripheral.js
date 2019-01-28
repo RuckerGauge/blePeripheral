@@ -77,9 +77,6 @@ class blePeripheral extends EventEmitter{
         callback(this[dBus]);
         console.log('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
         console.log('Setup and initialize GATT service...');
-        //var gattService = new GattService(this[serverUUID], this[servicePath], this[dBus]);
-        //gattService.createObjManagerIface(allCharacteristics);
-        //gattService.registerGattService();
         this.gattService.createObjManagerIface(allCharacteristics);
         this.gattService.registerGattService();
         if(this[primaryService] == true){
@@ -93,6 +90,19 @@ class blePeripheral extends EventEmitter{
     });
   }
 
+  /**
+   * Clears all notificaitons and restarts Gatt Service.
+   * 
+   * Note: this has no affect on advertisement packet.
+   */
+  restartGattService(){
+    console.log('Clearing all notifications...');
+    this.gattService.clearAllNotifications(allCharacteristics);
+    console.log('Unregistering Gatt Service...');
+    this.gattService.unRegisterGattService();
+    console.log('Reregistering Gatt Service...');
+    this.gattService.registerGattService();
+  }
 
 /**
  * Creates a characteristic for a BLE GATT service.  These characteristics are based on the bluez D-Bus GATT API https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt
