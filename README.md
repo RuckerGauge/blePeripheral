@@ -24,8 +24,8 @@ This class requires blueZ version 5.50 (blueZ is the bluetooth daemon for debian
 on the Raspberry Pi Zero W from a [SSH session](https://www.raspberrypi.org/magpi/ssh-remote-control-raspberry-pi/):
 * Type `git clone https://github.com/RuckerGauge/blePeripheral.git`
 * Type `cd blePeripheral && npm install`
-* Type `sudo cp netConfig.conf /etc/dbus-1/system.d`  This gives our sample app permission to bring up a service on the system D-Bus.
-* Type `sudo node sampleApp` 
+* Type `sudo cp sampleApp.conf /etc/dbus-1/system.d`  This gives our sample app permission to bring up a service on the system D-Bus.
+* Type `node sampleApp` 
 ---
 At this point you should have a Bluetooth LE (BLE) peripheral up and running on your Raspberry Pi Zero W.  The sample app sets up several test characteristics you can connect to for testing.  It also starts advertising as a BLE service so a bluetooth central (your iPhone) can find and connect to it.   The next step is to connect to this peripheral from an IOS device.  
 
