@@ -104,6 +104,16 @@ class blePeripheral extends EventEmitter{
     this.gattService.registerGattService();
   }
 
+  /** 
+   * Checks all characteristics and returns true if any have iface.Notifying = true
+   * If they are then it is recommended to restart Gatt Service on disconnect
+   * 
+   * @return {boolean} true if any characteristic is notifying. 
+   */
+  areAnyCharacteristicsNotifying(){
+    return this.gattService.isAnyoneNotifying(allCharacteristics);
+  }
+
 /**
  * Creates a characteristic for a BLE GATT service.  These characteristics are based on the bluez D-Bus GATT API https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt
  * 

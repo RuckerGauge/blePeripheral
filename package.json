@@ -19,6 +19,6 @@
     "url": "http://RuckerGauge.com"
   },
   "dependencies": {
-    "dbus-native": "^0.4.0"
+    "dbus-native": "^0.4.1"
   }
 }
