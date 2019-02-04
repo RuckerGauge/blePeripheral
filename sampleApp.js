@@ -104,8 +104,9 @@ bPrl.on('ConnectionChange', (connected)=>{
     if(bPrl.areAnyCharacteristicsNotifying() == true){
       console.log('Restarting gatt services to cleanup left over notifications...')
       bPrl.restartGattService();
-    }
-    
+    } else {
+      console.log('aparently no one is notifying???');
+    };
   };
 });
 

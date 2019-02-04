@@ -112,8 +112,14 @@ class blePeripheral extends EventEmitter{
    */
   areAnyCharacteristicsNotifying(){
     console.log('calling isAnyoneNotifying')
-    return this.gattService.isAnyoneNotifying(allCharacteristics);
-  }
+    if (this.gattService.isAnyoneNotifying(allCharacteristics) == true){
+      console.log('a service was notifying');
+      return true;
+    } else {
+      console.log('No services notifying');
+      return false;
+    };
+  };
 
 /**
  * Creates a characteristic for a BLE GATT service.  These characteristics are based on the bluez D-Bus GATT API https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt
