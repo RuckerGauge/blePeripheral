@@ -111,14 +111,7 @@ class blePeripheral extends EventEmitter{
    * @return {boolean} true if any characteristic is notifying. 
    */
   areAnyCharacteristicsNotifying(){
-    console.log('calling isAnyoneNotifying')
-    if (this.gattService.isAnyoneNotifying(allCharacteristics) == true){
-      console.log('a service was notifying');
-      return true;
-    } else {
-      console.log('No services notifying');
-      return false;
-    };
+    return this.gattService.isAnyoneNotifying(allCharacteristics);
   };
 
 /**
