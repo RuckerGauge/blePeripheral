@@ -1,6 +1,6 @@
 {
   "name": "ble-peripheral",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Creates a BLE peripheral based on D-Bus and bluez -v5.50. Suggested platform = Raspberry Pi Zero W.",
   "main": "blePeripheral.js",
   "scripts": {
@@ -19,6 +19,6 @@
     "url": "http://RuckerGauge.com"
   },
   "dependencies": {
-    "dbus-native": "^0.4.1"
+    "dbus-native": "^0.4.0"
   }
 }
