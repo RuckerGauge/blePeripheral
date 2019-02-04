@@ -70,7 +70,6 @@ function main(DBus){
   })
 
   setInterval(()=>{
-    if(cpuTemp.iface.Notifying && !bPrl.client.connected){cpuTemp.clearNotify();}
     if(cpuTemp.iface.Notifying){
       cpuTemp.setValue(getCpuTemp());
       cpuTemp.notify();
@@ -101,7 +100,7 @@ bPrl.on('ConnectionChange', (connected)=>{
     }
   } else {
     console.log('<-- ' + bleUserName + ' has disconnected from this server at ' + (new Date()).toLocaleTimeString());
-
+    
     if(bPrl.areAnyCharacteristicsNotifying() == true){
       console.log('Restarting gatt services to cleanup left over notifications...')
       bPrl.restartGattService();
