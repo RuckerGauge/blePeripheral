@@ -16,6 +16,9 @@ This is a Node.js class for creating a Bluetooth LE (Low Energy) peripheral base
 This class was developed based on the Raspberry Pi Zero W’s built in bluetooth radio.  Other Raspberry Pi models may work but only the Pi Zero W has been tested.  
 To properly test this class, you will need an IOS device with the BLE development tool [LightBlue Explorer]( https://itunes.apple.com/us/app/lightblue-explorer/id557428110?mt=8).  I have tested it with an iPhone 7 and iPad pro.  It should also work with an Android device I just haven't tested it.  There is a [LightBlue install](https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer&hl=en_US) on the Google Play store.  If someone can give this a try and document the results I will be happy to include a link to their site.  
 ## Software Requirements
+### Update for Raspbian Buster 10/11/2019 
+This class requires blueZ version 5.50 now included in Raspbian Buster.  If you are using Buster you no longer need to update bluetooth on the Pi as outlined below.  However, I suggest you still look through the old Raspbian Stretch upgrade process for input on how to setup the Raspbian Buster on your Pi.
+### Older Raspbian Stretch
 This class requires blueZ version 5.50 (blueZ is the bluetooth daemon for debian linux) on top of Raspbian Stretch Lite.  The bluetooth version included in Raspbian Stretch Lite (blueZ 5.43) is old and does not support Bluetooth 4.2 secure connections to an IOS device.  To setup the software for Raspberry Pi Zero W follow the instructions here [Raspberry Pi Zero W Bluez V5.50 upgrades steps.](https://github.com/RuckerGauge/Raspberry-Pi-Zero-W-Bluez-5.50-upgrade-steps)<br>
  
  If you don't care about securely bonding to an IOS device, you can run this class on the generic Raspbian Stretch Lite install.  To do this you have to enable the -e experimental flag on the ExecStart line in /lib/systemd/system/bluetooth.service.  This class uses the advertising-API over D-Bus and that is only available in BlueZ 5.43 if running in experimental mode.  This is not the case in BlueZ 5.50 as the Advertising-API is fully supported.  
@@ -49,3 +52,6 @@ You can monitor the pairing process by opening another SSH connection to your Ra
 --- 
 That’s it, your bound to your iPhone and off and running.  However, there is one [big bug I’m currently working on](https://github.com/RuckerGauge/blePeripheral/issues/1).  If you restart your raspberry Pi after bonding with an iPhone it will not be able to communicate whit the phone once the phone’s bluetooth address changes.  To work around this type `sudo systemctl restart bluetooth` after your Pi has booted back up.  Then restart your node app and your iPhone will be able to connect as a bound device.  
  
+
+ ## See this class in action
+ The Raspberry Pi used in the GDT at https://WallGauge.com is based on this library.  Scroll to the bottom of the page to see a video of how the pairing works with an iPhone.
