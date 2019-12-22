@@ -11,6 +11,7 @@
     "node": ">=0.10"
   },
   "repository": {
+    "type": "git",
     "url": "git+https://github.com/RuckerGauge/blePeripheral.git"
   },
   "author": "John Rucker",
