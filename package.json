@@ -1,5 +1,5 @@
 {
-  "name": "ble-peripheral",
+  "name": "@ruckergauge/ble-peripheral",
   "version": "1.0.2",
   "description": "Creates a BLE peripheral based on D-Bus and bluez -v5.50. Suggested platform = Raspberry Pi Zero W.",
   "main": "blePeripheral.js",
