@@ -1,8 +1,9 @@
 {
-  "name": "ble-peripheral",
+  "name": "@ruckergauge/bleperipheral",
   "version": "1.0.2",
   "description": "Creates a BLE peripheral based on D-Bus and bluez -v5.50. Suggested platform = Raspberry Pi Zero W.",
   "main": "blePeripheral.js",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "scripts": {
     "test": "echo \"see sampleApp.js for sample usage and testing\" && exit 1"
   },
@@ -10,7 +11,6 @@
     "node": ">=0.10"
   },
   "repository": {
-    "type": "git",
     "url": "git+https://github.com/RuckerGauge/blePeripheral.git"
   },
   "author": "John Rucker",
