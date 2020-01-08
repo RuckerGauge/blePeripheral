@@ -164,6 +164,7 @@ class blePeripheral extends EventEmitter{
                     }
                   } else if (val2[1][1].toString() == 'false'){
                     this.client.connected = false;
+                    this.client.devicePath = path;
                     this.client.paired = false;
                   }
                   this.emit('ConnectionChange', this.client.connected, Client.devicePath);
@@ -197,6 +198,7 @@ class blePeripheral extends EventEmitter{
                   } else {
                     this.client.paired = false;
                   }
+                  this.client.devicePath = path;
                   console.log(path + ' paired now = ' + this.client.paired + ', firing ConnectionChange event.');
                   this.emit('ConnectionChange', this.client.connected, Client.devicePath);
                 }
