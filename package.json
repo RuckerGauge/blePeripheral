@@ -1,6 +1,6 @@
 {
   "name": "ble-peripheral",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Creates a BLE peripheral based on D-Bus and bluez -v5.50. Suggested platform = Raspberry Pi Zero W.",
   "main": "blePeripheral.js",
   "publishConfig": { "registry": "https://npm.pkg.github.com/" },

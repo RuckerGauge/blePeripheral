@@ -27,7 +27,7 @@ var Client = {
  * 
  * This class controles the pairing property of the BT adapter.  By default pairing is disabled and can be enabled by calling the pairModeOn(true) method.  The pairing / bonding process is triggered when a user tries to access a secure characteristic. 
  * 
- * emits **.on('ConnectionChange', (connected))** when a new Bluetooth LE client connects of disconnects. Only detects bonded devices.
+ * emits **.on('ConnectionChange', (connected))** when a new Bluetooth LE client connects or disconnects. Only detects bonded devices.
  * emits **.on('pairKey',(pKey, obj)** called with the pair key when a client tries to pair with server.  Set this.pairButtonPushed = true to allow user to pari with device.
  * 
  * * **ServiceName**: Is the service name for the GATT server.  A GATT Server is a collection of Characteristics.  This Service Name will be hosted on the D-Bus system bus and must be referenced in a .conf file in the /etc/dbus-1/system.d directory (see the netConfig.conf for an example)
@@ -166,7 +166,7 @@ class blePeripheral extends EventEmitter{
                     this.client.connected = false;
                     this.client.paired = false;
                   }
-                  this.emit('ConnectionChange', this.client.connected);
+                  this.emit('ConnectionChange', this.client.connected, Client.devicePath);
                   if(this.listenerCount('ConnectionChange') == 0){
                     console.log('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
                     console.log('\tdevicePath : ' + this.client.devicePath);
@@ -180,7 +180,7 @@ class blePeripheral extends EventEmitter{
                   if(this.client.connected == false){                     //Bluez doesnt always change the property for connected.  This is an attempt to cath a connection when a name change happens as the user has to be connected to change the name
                     this.client.connected = true;
                     this.client.devicePath = path;
-                    this.emit('ConnectionChange', this.client.connected);
+                    this.emit('ConnectionChange', this.client.connected, Client.devicePath);
                     if(this.listenerCount('ConnectionChange') == 0){
                       console.log('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
                       console.log('\tdevicePath : ' + this.client.devicePath);
@@ -198,7 +198,7 @@ class blePeripheral extends EventEmitter{
                     this.client.paired = false;
                   }
                   console.log(path + ' paired now = ' + this.client.paired + ', firing ConnectionChange event.');
-                  this.emit('ConnectionChange', this.client.connected);
+                  this.emit('ConnectionChange', this.client.connected, Client.devicePath);
                 }
               });
             };
