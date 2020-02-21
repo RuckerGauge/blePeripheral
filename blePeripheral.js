@@ -73,10 +73,10 @@ class blePeripheral extends EventEmitter{
         console.debug(`Successfully requested service name "${this[serviceName]}"!`);
         this._connectionManager();
         this.Adapter.pairModeOn(false);
-        console.debug('* * * * * * * callback to setup characteristics * * * * * * *')
+        console.debug('blePdripheral.js -> * * * * * * * callback to setup characteristics * * * * * * *')
         callback(this[dBus]);
-        console.debug('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
-        console.debug('Setup and initialize GATT service...');
+        console.debug('blePdripheral.js -> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
+        console.debug('blePdripheral.js -> Setup and initialize GATT service...');
         this.gattService.createObjManagerIface(allCharacteristics);
         this.gattService.registerGattService();
         if(this[primaryService] == true){
@@ -96,11 +96,11 @@ class blePeripheral extends EventEmitter{
    * Note: this has no affect on advertisement packet.
    */
   restartGattService(){
-    console.debug('Clearing all notifications...');
+    console.debug('blePdripheral.js -> Clearing all notifications...');
     this.gattService.clearAllNotifications(allCharacteristics);
-    console.debug('Unregistering Gatt Service...');
+    console.debug('blePdripheral.js -> Unregistering Gatt Service...');
     this.gattService.unRegisterGattService();
-    console.debug('Reregistering Gatt Service...');
+    console.debug('blePdripheral.js -> Reregistering Gatt Service...');
     this.gattService.registerGattService();
   }
 
@@ -134,7 +134,7 @@ class blePeripheral extends EventEmitter{
   };
 
   _connectionManager(){
-    console.debug('setting up monitoring of org.bluez for events..')    
+    console.debug('blePdripheral.js -> setting up monitoring of org.bluez for events..')    
     this[dBus].addMatch("type='signal', member='PropertiesChanged'");
     //this[dBus].addMatch("type='signal', member='InterfacesAdded'");
     this[dBus].connection.on('message', (arg1)=> { 
@@ -169,11 +169,11 @@ class blePeripheral extends EventEmitter{
                   }
                   this.emit('ConnectionChange', this.client.connected, Client.devicePath);
                   if(this.listenerCount('ConnectionChange') == 0){
-                    console.debug('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
-                    console.debug('\tdevicePath : ' + this.client.devicePath);
-                    console.debug('\t      name : ' + this.client.name);
-                    console.debug('\t connected : ' + this.client.connected);
-                    console.debug('\t    paired : ' + this.client.paired);
+                    console.debug('blePdripheral.js -> Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
+                    console.debug('blePdripheral.js -> \tdevicePath : ' + this.client.devicePath);
+                    console.debug('blePdripheral.js -> \t      name : ' + this.client.name);
+                    console.debug('blePdripheral.js -> \t connected : ' + this.client.connected);
+                    console.debug('blePdripheral.js -> \t    paired : ' + this.client.paired);
                   }
                 } else if(val2[0].toString() == 'Name'){
                   this.client.name = val2[1][1].toString();
@@ -183,11 +183,11 @@ class blePeripheral extends EventEmitter{
                     this.client.devicePath = path;
                     this.emit('ConnectionChange', this.client.connected, Client.devicePath);
                     if(this.listenerCount('ConnectionChange') == 0){
-                      console.debug('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
-                      console.debug('\tdevicePath : ' + this.client.devicePath);
-                      console.debug('\t      name : ' + this.client.name);
-                      console.debug('\t connected : ' + this.client.connected);
-                      console.debug('\t    paired : ' + this.client.paired);
+                      console.debug('blePdripheral.js -> Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
+                      console.debug('blePdripheral.js -> \tdevicePath : ' + this.client.devicePath);
+                      console.debug('blePdripheral.js -> \t      name : ' + this.client.name);
+                      console.debug('blePdripheral.js -> \t connected : ' + this.client.connected);
+                      console.debug('blePdripheral.js -> \t    paired : ' + this.client.paired);
                     }
                   }
 
