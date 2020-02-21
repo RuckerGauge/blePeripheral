@@ -6,6 +6,8 @@ const Characteristic =    require("./lib/characteristicClass.js");
 const GattService =       require("./lib/gattServiceClass.js");
 const Advertisement =     require("./lib/advertisingClass.js");
 
+overrideLogging();
+
 const primaryService = Symbol();
 const serviceName = Symbol();
 const serverUUID = Symbol();
@@ -70,13 +72,13 @@ class blePeripheral extends EventEmitter{
         );
       }
       if (retCode === 1) {                                                              // Return code 0x1 means we successfully had the name
-        console.log(`Successfully requested service name "${this[serviceName]}"!`);
+        console.debug(`Successfully requested service name "${this[serviceName]}"!`);
         this._connectionManager();
         this.Adapter.pairModeOn(false);
-        console.log('* * * * * * * callback to setup characteristics * * * * * * *')
+        console.debug('* * * * * * * callback to setup characteristics * * * * * * *')
         callback(this[dBus]);
-        console.log('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
-        console.log('Setup and initialize GATT service...');
+        console.debug('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
+        console.debug('Setup and initialize GATT service...');
         this.gattService.createObjManagerIface(allCharacteristics);
         this.gattService.registerGattService();
         if(this[primaryService] == true){
@@ -96,11 +98,11 @@ class blePeripheral extends EventEmitter{
    * Note: this has no affect on advertisement packet.
    */
   restartGattService(){
-    console.log('Clearing all notifications...');
+    console.debug('Clearing all notifications...');
     this.gattService.clearAllNotifications(allCharacteristics);
-    console.log('Unregistering Gatt Service...');
+    console.debug('Unregistering Gatt Service...');
     this.gattService.unRegisterGattService();
-    console.log('Reregistering Gatt Service...');
+    console.debug('Reregistering Gatt Service...');
     this.gattService.registerGattService();
   }
 
@@ -134,7 +136,7 @@ class blePeripheral extends EventEmitter{
   };
 
   _connectionManager(){
-    console.log('setting up monitoring of org.bluez for events..')    
+    console.debug('setting up monitoring of org.bluez for events..')    
     this[dBus].addMatch("type='signal', member='PropertiesChanged'");
     //this[dBus].addMatch("type='signal', member='InterfacesAdded'");
     this[dBus].connection.on('message', (arg1)=> { 
@@ -153,13 +155,13 @@ class blePeripheral extends EventEmitter{
                     try{                  
                       this.client.paired = await this.Device.getProperty('Paired', Client.devicePath);
                     } catch (err){
-                      console.log(err);
+                      console.error('blePeripheral', err);
                       this.client.paired = false;
                     }
                     try{                  
                       this.client.name = await this.Device.getProperty('Name', Client.devicePath);
                     } catch (err){
-                      console.log(err);
+                      console.error('blePeripheral', err);
                       this.client.name = '';
                     }
                   } else if (val2[1][1].toString() == 'false'){
@@ -169,25 +171,25 @@ class blePeripheral extends EventEmitter{
                   }
                   this.emit('ConnectionChange', this.client.connected, Client.devicePath);
                   if(this.listenerCount('ConnectionChange') == 0){
-                    console.log('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
-                    console.log('\tdevicePath : ' + this.client.devicePath);
-                    console.log('\t      name : ' + this.client.name);
-                    console.log('\t connected : ' + this.client.connected);
-                    console.log('\t    paired : ' + this.client.paired);
+                    console.debug('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
+                    console.debug('\tdevicePath : ' + this.client.devicePath);
+                    console.debug('\t      name : ' + this.client.name);
+                    console.debug('\t connected : ' + this.client.connected);
+                    console.debug('\t    paired : ' + this.client.paired);
                   }
                 } else if(val2[0].toString() == 'Name'){
                   this.client.name = val2[1][1].toString();
-                  console.log(path + ' name now = ' + this.client.name);
+                  console.debug(path + ' name now = ' + this.client.name);
                   if(this.client.connected == false){                     //Bluez doesnt always change the property for connected.  This is an attempt to cath a connection when a name change happens as the user has to be connected to change the name
                     this.client.connected = true;
                     this.client.devicePath = path;
                     this.emit('ConnectionChange', this.client.connected, Client.devicePath);
                     if(this.listenerCount('ConnectionChange') == 0){
-                      console.log('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
-                      console.log('\tdevicePath : ' + this.client.devicePath);
-                      console.log('\t      name : ' + this.client.name);
-                      console.log('\t connected : ' + this.client.connected);
-                      console.log('\t    paired : ' + this.client.paired);
+                      console.debug('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
+                      console.debug('\tdevicePath : ' + this.client.devicePath);
+                      console.debug('\t      name : ' + this.client.name);
+                      console.debug('\t connected : ' + this.client.connected);
+                      console.debug('\t    paired : ' + this.client.paired);
                     }
                   }
 
@@ -199,7 +201,7 @@ class blePeripheral extends EventEmitter{
                     this.client.paired = false;
                   }
                   this.client.devicePath = path;
-                  console.log(path + ' paired now = ' + this.client.paired + ', firing ConnectionChange event.');
+                  console.debug(path + ' paired now = ' + this.client.paired + ', firing ConnectionChange event.');
                   this.emit('ConnectionChange', this.client.connected, Client.devicePath);
                 }
               });
@@ -216,5 +218,18 @@ function printDbusLogMsg(msg){
   console.dir(msg, {depth: null});
   console.log("- - - - - - - - - - - - - - - - - - - - - - - - -");
 }
+
+/** Overrides console.error, console.warn, and console.debug
+ * By placing <#> in front of the log text it will allow us to filter them with systemd
+ * For example to just see errors and warnings use journalctl with the -p4 option
+ */
+function overrideLogging(){
+  const orignalConErr = console.error;
+  const orignalConWarn = console.warn;
+  const orignalConDebug = console.debug;
+  console.error = ((data = '', arg = '')=>{orignalConErr('<3>'+data, arg)});
+  console.warn = ((data = '', arg = '')=>{orignalConWarn('<4>'+data, arg)});
+  console.debug = ((data = '', arg = '')=>{orignalConDebug('<7>'+data, arg)});
+};
 
 module.exports = blePeripheral;
