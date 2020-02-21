@@ -6,7 +6,7 @@ const Characteristic =    require("./lib/characteristicClass.js");
 const GattService =       require("./lib/gattServiceClass.js");
 const Advertisement =     require("./lib/advertisingClass.js");
 
-overrideLogging();
+// overrideLogging();
 
 const primaryService = Symbol();
 const serviceName = Symbol();
@@ -222,14 +222,16 @@ function printDbusLogMsg(msg){
 /** Overrides console.error, console.warn, and console.debug
  * By placing <#> in front of the log text it will allow us to filter them with systemd
  * For example to just see errors and warnings use journalctl with the -p4 option
+ * 
+ * @param {*} prefix Optional string to place infront of text
  */
-function overrideLogging(){
+function overrideLogging(prefix = ''){
   const orignalConErr = console.error;
   const orignalConWarn = console.warn;
   const orignalConDebug = console.debug;
-  console.error = ((data = '', arg = '')=>{orignalConErr('<3>'+data, arg)});
-  console.warn = ((data = '', arg = '')=>{orignalConWarn('<4>'+data, arg)});
-  console.debug = ((data = '', arg = '')=>{orignalConDebug('<7>'+data, arg)});
+  console.error = ((data = '', arg = '')=>{orignalConErr('<3>'+prefix+data, arg)});
+  console.warn = ((data = '', arg = '')=>{orignalConWarn('<4>'+prefix+data, arg)});
+  console.debug = ((data = '', arg = '')=>{orignalConDebug('<7>'+prefix+data, arg)});
 };
 
 module.exports = blePeripheral;
