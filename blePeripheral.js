@@ -163,7 +163,7 @@ class blePeripheral extends EventEmitter{
         if(strData.trim().startsWith('/org/bluez/hci0/dev_')){
           logit('->' + strData.trim() + '<- ');
           let nodeId = strData.trim().split(':', 1)[0];
-          let devPars = strData.trim().split('org.bluez.Device1')[1].trim('{')[1].trim('}')[0]
+          let devPars = strData.trim().split('org.bluez.Device1')[1].trim('{')[1]
           console.log(nodeId + ' ' + devPars);
         };
         
