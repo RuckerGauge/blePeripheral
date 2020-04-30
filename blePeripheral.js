@@ -57,12 +57,12 @@ class blePeripheral extends EventEmitter{
     this.logCharacteristicsIO = false;
 
     try{
-      this.#dbusService = Dbus.registerService('system', this.serviceName)
+      this._dbusService = Dbus.registerService('system', this.serviceName)
     } catch (err) {
       console.error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory', err);
       throw new Error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory');
     }
-
+    
     // //To Do the next 4 class need to be rewirtten. 
     // this.Device = new DeviceClass(DBusOld.systemBus());   // this is a dbus client.  I dont think it needs to be passed the system buss
     // this.Adapter = new AdapterClass(DBusOld.systemBus()); // this is a dbus client.  I dont think it needs to be passed the system buss
