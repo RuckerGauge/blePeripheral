@@ -1,16 +1,16 @@
 const EventEmitter =      require("events");
-const DBus =              require("dbus-native");
+const cp =                require('child_process');
+const DBusOld =           require("dbus-native");
+const Dbus =              require("dbus");
 const DeviceClass =       require("./lib/deviceClass.js");
 const AdapterClass =      require("./lib/adapterClass.js");
 const Characteristic =    require("./lib/characteristicClass.js");
 const GattService =       require("./lib/gattServiceClass.js");
 const Advertisement =     require("./lib/advertisingClass.js");
 
-const primaryService = Symbol();
-const serviceName = Symbol();
-const serverUUID = Symbol();
-const servicePath = Symbol();
-const dBus = Symbol();
+const logPrefix = 'blePeripheral.js | ';
+
+const dbusOld = Symbol();
 
 var allCharacteristics = [];
 var Client = {
@@ -41,53 +41,65 @@ var Client = {
  * @param {boolean} PrimaryService example: true
  */
 class blePeripheral extends EventEmitter{
+  //Private field declarations:
+  #dbusService;
+  
   constructor(ServiceName ='com.netConfig', ServerUUID = '4b1268a8-d692-41d6-b51a-d1730ea6b9d6', callback = function(){}, PrimaryService = true){
-      super();
-      this[primaryService] = PrimaryService;
-      this[serviceName] = ServiceName;
-      this[serverUUID] = ServerUUID;
-      this[servicePath] = `/${this[serviceName].replace(/\./g, '/')}`;        // Replace . with / (com.netConfig = /com/netConfig).;
-      this[dBus] = DBus.systemBus();
-      
-      this.client = Client;
-      this.logAllDBusMessages = false;
-      this.logCharacteristicsIO = false;
+    super();
+    this.primaryService = PrimaryService;
+    this.serviceName = ServiceName;
+    this.serverUUID = ServerUUID;
+    this.servicePath = `/${this.serviceName.replace(/\./g, '/')}`;        // Replace . with / (com.netConfig = /com/netConfig).;
+    this[dbusOld] = DBusOld.systemBus();
+    
+    this.client = Client;
+    this.logAllDBusMessages = false;
+    this.logCharacteristicsIO = false;
 
-      if (!this[dBus]) {
-        throw new Error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory');
-      };
+    try{
+      this.#dbusService = Dbus.registerService('system', this.serviceName)
+    } catch (err) {
+      console.error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory', err);
+      throw new Error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory');
+    }
 
-      this.Device = new DeviceClass(DBus.systemBus()); 
-      this.Adapter = new AdapterClass(DBus.systemBus());
-      this.Advertisement = new Advertisement(this[dBus], this[servicePath], this[serverUUID]);
-      this.gattService = new GattService(this[serverUUID], this[servicePath], this[dBus]);
+    // //To Do the next 4 class need to be rewirtten. 
+    // this.Device = new DeviceClass(DBusOld.systemBus());   // this is a dbus client.  I dont think it needs to be passed the system buss
+    // this.Adapter = new AdapterClass(DBusOld.systemBus()); // this is a dbus client.  I dont think it needs to be passed the system buss
+    // this.Advertisement = new Advertisement(this[dbusOld], this.servicePath, this.serverUUID);   //I think we need to pass this#dbusService to this class
+    // this.gattService = new GattService(this.serverUUID, this.servicePath, this[dbusOld]);       //I think we need to pass this#dbusService to this class
+    
+    logit(`Successfully requested service name "${this.serviceName}"!`);
+    this._connectionManager();
 
-      this[dBus].requestName(this[serviceName], 0x4, (err, retCode) => {                               // The 0x4 flag means that we don't want to be queued if the service name we are requesting is already
-      // If there was an error, warn user and fail
-      if (err) {
-        throw new Error(
-          `Could not request service name ${this[serviceName]}, the error was: ${err}.`
-        );
-      }
-      if (retCode === 1) {                                                              // Return code 0x1 means we successfully had the name
-        console.debug(`Successfully requested service name "${this[serviceName]}"!`);
-        this._connectionManager();
-        this.Adapter.pairModeOn(false);
-        console.debug('blePdripheral.js -> * * * * * * * callback to setup characteristics * * * * * * *')
-        callback(this[dBus]);
-        console.debug('blePdripheral.js -> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
-        console.debug('blePdripheral.js -> Setup and initialize GATT service...');
-        this.gattService.createObjManagerIface(allCharacteristics);
-        this.gattService.registerGattService();
-        if(this[primaryService] == true){
-          this.Advertisement.startAdvertising();
-        }
-      } else {                                                                      
-        throw new Error(                                                                //(https://dbus.freedesktop.org/doc/api/html/group__DBusShared.html#ga37a9bc7c6eb11d212bf8d5e5ff3b50f9)
-          `Failed to request service name "${this[serviceName]}". Check what return code "${retCode}" means. See https://dbus.freedesktop.org/doc/api/html/group__DBusShared.html#ga37a9bc7c6eb11d212bf8d5e5ff3b50f9`
-        );
-      }
-    });
+    // this[dbusOld].requestName(this.serviceName, 0x4, (err, retCode) => {                               // The 0x4 flag means that we don't want to be queued if the service name we are requesting is already
+    //   // If there was an error, warn user and fail
+    //   if (err) {
+    //     throw new Error(
+    //       `Could not request service name ${this.serviceName}, the error was: ${err}.`
+    //     );
+    //   }
+
+
+    //   if (retCode === 1) {                                                              // Return code 0x1 means we successfully had the name
+    //     console.debug(`Successfully requested service name "${this.serviceName}"!`);
+    //     this._connectionManager();
+    //     this.Adapter.pairModeOn(false);
+    //     console.debug('blePdripheral.js -> * * * * * * * callback to setup characteristics * * * * * * *')
+    //     callback(this[dbusOld]);
+    //     console.debug('blePdripheral.js -> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
+    //     console.debug('blePdripheral.js -> Setup and initialize GATT service...');
+    //     this.gattService.createObjManagerIface(allCharacteristics);
+    //     this.gattService.registerGattService();
+    //     if(this.primaryService == true){
+    //       this.Advertisement.startAdvertising();
+    //     }
+    //   } else {                                                                      
+    //     throw new Error(                                                                //(https://dbus.freedesktop.org/doc/api/html/group__DBusShared.html#ga37a9bc7c6eb11d212bf8d5e5ff3b50f9)
+    //       `Failed to request service name "${this.serviceName}". Check what return code "${retCode}" means. See https://dbus.freedesktop.org/doc/api/html/group__DBusShared.html#ga37a9bc7c6eb11d212bf8d5e5ff3b50f9`
+    //     );
+    //   }
+    // });
   }
 
   /**
@@ -128,16 +140,37 @@ class blePeripheral extends EventEmitter{
  * @param {Array} flags [["encrypt-read", "notify", "encrypt-write"]]
  */
   Characteristic(UUID, node, flags){
-    var x = new Characteristic(this[dBus], this[servicePath], UUID, node, flags, this.logCharacteristicsIO);
+    var x = new Characteristic(this[dbusOld], this.servicePath, UUID, node, flags, this.logCharacteristicsIO);
     allCharacteristics.push(x);
     return (x);
   };
 
+//   function spawnCommand(command = '/bin/journalctl', args = ['-f', '-urgMan'], log = (val)=>{console.log('--> '+val+' <--')}){
+//     spawnedCmd = cp.spawn(command, args);
+//     spawnedCmd.stdout.on('data', ((data)=>{
+//         notifyChunck(data, log);
+//     }));
+//     spawnedCmd.stderr.on('data', ((data)=>{
+//         log('Err->' + data);
+//     }));
+// };
+
   _connectionManager(){
+    logit('setting up monitoring of org.bluez for events..');
+    let spawnedCmd = cp.spawn('/usr/bin/gdbus', ['--system', '--dest', 'org.bluez'])
+    spawnedCmd.stdout.on('data', ((data)=>{
+        logit(' ->' + data + '<- ');
+    }));
+    spawnedCmd.stderr.on('data', ((data)=>{
+        logit('Err->' + data);
+    }));
+  };
+
+  _connectionManager_old(){
     console.debug('blePdripheral.js -> setting up monitoring of org.bluez for events..')    
-    this[dBus].addMatch("type='signal', member='PropertiesChanged'");
+    this[dbusOld].addMatch("type='signal', member='PropertiesChanged'");
     //this[dBus].addMatch("type='signal', member='InterfacesAdded'");
-    this[dBus].connection.on('message', (arg1)=> { 
+    this[dbusOld].connection.on('message', (arg1)=> { 
       if(this.logAllDBusMessages){printDbusLogMsg(arg1);};
       var path = '';
       if(arg1.path){path = arg1.path};
@@ -209,6 +242,8 @@ class blePeripheral extends EventEmitter{
       };
     });
   };
+
+
 };
 
 function printDbusLogMsg(msg){
@@ -216,5 +251,10 @@ function printDbusLogMsg(msg){
   console.dir(msg, {depth: null});
   console.log("- - - - - - - - - - - - - - - - - - - - - - - - -");
 }
+
+
+function logit(txt = ''){
+  console.debug(logPrefix + txt)
+};
 
 module.exports = blePeripheral;
