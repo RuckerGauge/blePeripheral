@@ -42,7 +42,7 @@ var Client = {
  */
 class blePeripheral extends EventEmitter{
   //Private field declarations:
-  #dbusService;
+  // #dbusService requires version 12 of node.  We are stuck on version 10
   
   constructor(ServiceName ='com.netConfig', ServerUUID = '4b1268a8-d692-41d6-b51a-d1730ea6b9d6', callback = function(){}, PrimaryService = true){
     super();
