@@ -157,7 +157,7 @@ class blePeripheral extends EventEmitter{
 
   _connectionManager(){
     logit('setting up monitoring of org.bluez for events..');
-    let spawnedCmd = cp.spawn('/usr/bin/gdbus', ['system', 'dest', 'org.bluez'])
+    let spawnedCmd = cp.spawn('/usr/bin/gdbus', ['monitor', '--system', '--dest', 'org.bluez'])
     spawnedCmd.stdout.on('data', ((data)=>{
         logit(' ->' + data + '<- ');
     }));
