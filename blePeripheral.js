@@ -184,7 +184,7 @@ class blePeripheral extends EventEmitter{
 
     this.Device.getProperty('Paired', nodeId);
     this.Device.getProperty('Name', nodeId);
-    this.Device.getProperty('Connected', nodeId);
+    this.Device.getProperty('Conected', nodeId);
 
     
 
