@@ -178,6 +178,7 @@ class blePeripheral extends EventEmitter{
   _emitConnectionChange(nodeId = '/org/bluez/hci0/dev_B4_F6_1C_53_EF_B3'){
 
     this.Device.logAllProperties(nodeId);
+    this.Device.getProperty('Paired', nodeId);
 
     // this.emit('ConnectionChange', this.client.connected, Client.devicePath);
     // if(this.listenerCount('ConnectionChange') == 0){
