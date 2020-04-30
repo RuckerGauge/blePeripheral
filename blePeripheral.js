@@ -166,7 +166,10 @@ class blePeripheral extends EventEmitter{
           let devPars = strData.trim().split('org.bluez.Device1')[1].split('{')[1].split('}')[0]
           logit(nodeId + ' ' + devPars);
           this.client.devicePath = nodeId;
-          this._emitConnectionChange(nodeId);
+          if(devPars.includes("'Connected': <true>")){
+            this._emitConnectionChange(nodeId);
+          };
+          
         };
         
     }));
