@@ -187,10 +187,6 @@ class blePeripheral extends EventEmitter{
     //   name:""
     // }
 
-    this.Device.getPropertySync('Paired', nodeId);
-    this.Device.getPropertySync('Namde', nodeId);
-    this.Device.getPropertySync('Connected', nodeId);
-
     let promises = [];
     promises.push(this.Device.getProperty('Paired', nodeId));
     promises.push(this.Device.getProperty('Name', nodeId));
