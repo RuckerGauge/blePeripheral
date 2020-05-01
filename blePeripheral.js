@@ -54,7 +54,7 @@ class blePeripheral extends EventEmitter{
     // this[dbusOld] = DBusOld.systemBus();
     
     this.client = Client;
-    this.logAllDBusMessages = false;
+    this.logAllDBusMessages = true;
     this.logCharacteristicsIO = false;
 
     try{
@@ -161,6 +161,7 @@ class blePeripheral extends EventEmitter{
     let spawnedCmd = cp.spawn('/usr/bin/gdbus', ['monitor', '--system', '--dest', 'org.bluez'])
     spawnedCmd.stdout.on('data', ((data)=>{
       var strData = String(data);
+      if(this.logAllDBusMessages){logit(strData)};
       if(strData.trim().startsWith('/org/bluez/hci0/dev_')){
         let nodeId = strData.trim().split(':', 1)[0];
         let devPars = strData.trim().split('org.bluez.Device1')[1].split('{')[1].split('}')[0]
@@ -181,7 +182,7 @@ class blePeripheral extends EventEmitter{
             logit('\t addressType : ' + this.client.addressType);
           };
         };
-      }; 
+      };
     }));
     spawnedCmd.stderr.on('data', ((data)=>{
         logit('Err->' + data);
