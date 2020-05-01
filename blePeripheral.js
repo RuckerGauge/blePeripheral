@@ -164,7 +164,7 @@ class blePeripheral extends EventEmitter{
       if(strData.trim().startsWith('/org/bluez/hci0/dev_')){
         let nodeId = strData.trim().split(':', 1)[0];
         let devPars = strData.trim().split('org.bluez.Device1')[1].split('{')[1].split('}')[0]
-        logit(nodeId + ' ' + devPars);
+        // logit(nodeId + ' ' + devPars);
         if(devPars.includes("'ServicesResolved': <true>")  || devPars.includes("'AddressType':")){
           this._emitConnectionChange(nodeId);
         }else if(devPars.includes("'ServicesResolved': <false>")){
@@ -189,6 +189,7 @@ class blePeripheral extends EventEmitter{
   };
 
   _emitConnectionChange(nodeId = '/org/bluez/hci0/dev_B4_F6_1C_53_EF_B3'){
+    this.Device.setBooleanProperty('Trusted', true, nodeId);
     let promises = [];
     //DO NOT CHANGE THE ORDER OF THE FOLLOWING THREE CALLS!
     promises.push(this.Device.getProperty('Paired', nodeId));
@@ -219,93 +220,7 @@ class blePeripheral extends EventEmitter{
       conaole.error('Error resolving all promises. ', err);
     });
   };
-
-  _connectionManager_old(){
-    console.debug('blePdripheral.js -> setting up monitoring of org.bluez for events..')    
-    this[dbusOld].addMatch("type='signal', member='PropertiesChanged'");
-    //this[dBus].addMatch("type='signal', member='InterfacesAdded'");
-    this[dbusOld].connection.on('message', (arg1)=> { 
-      if(this.logAllDBusMessages){printDbusLogMsg(arg1);};
-      var path = '';
-      if(arg1.path){path = arg1.path};
-        if(path.search('/org/bluez/hci0/dev_') == 0){    
-          if(Array.isArray(arg1.body)){
-            arg1.body.forEach((val)=>{          
-            if(Array.isArray(val)){
-              val.forEach(async (val2)=>{
-                if(val2[0].toString() == 'Connected'){
-                  if(val2[1][1].toString() == 'true'){
-                    this.client.connected = true;
-                    this.client.devicePath = path;  
-                    try{                  
-                      this.client.paired = await this.Device.getProperty('Paired', Client.devicePath);
-                    } catch (err){
-                      console.error('blePeripheral', err);
-                      this.client.paired = false;
-                    }
-                    try{                  
-                      this.client.name = await this.Device.getProperty('Name', Client.devicePath);
-                    } catch (err){
-                      console.error('blePeripheral', err);
-                      this.client.name = '';
-                    }
-                  } else if (val2[1][1].toString() == 'false'){
-                    this.client.connected = false;
-                    this.client.devicePath = path;
-                    this.client.paired = false;
-                  }
-                  this.emit('ConnectionChange', this.client.connected, Client.devicePath);
-                  if(this.listenerCount('ConnectionChange') == 0){
-                    console.debug('blePdripheral.js -> Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
-                    console.debug('blePdripheral.js -> \tdevicePath : ' + this.client.devicePath);
-                    console.debug('blePdripheral.js -> \t      name : ' + this.client.name);
-                    console.debug('blePdripheral.js -> \t connected : ' + this.client.connected);
-                    console.debug('blePdripheral.js -> \t    paired : ' + this.client.paired);
-                  }
-                } else if(val2[0].toString() == 'Name'){
-                  this.client.name = val2[1][1].toString();
-                  console.debug(path + ' name now = ' + this.client.name);
-                  if(this.client.connected == false){                     //Bluez doesnt always change the property for connected.  This is an attempt to cath a connection when a name change happens as the user has to be connected to change the name
-                    this.client.connected = true;
-                    this.client.devicePath = path;
-                    this.emit('ConnectionChange', this.client.connected, Client.devicePath);
-                    if(this.listenerCount('ConnectionChange') == 0){
-                      console.debug('blePdripheral.js -> Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
-                      console.debug('blePdripheral.js -> \tdevicePath : ' + this.client.devicePath);
-                      console.debug('blePdripheral.js -> \t      name : ' + this.client.name);
-                      console.debug('blePdripheral.js -> \t connected : ' + this.client.connected);
-                      console.debug('blePdripheral.js -> \t    paired : ' + this.client.paired);
-                    }
-                  }
-
-                } else if(val2[0].toString() == 'Paired'){
-                  var x = val2[1][1].toString();
-                  if(x == 'true'){
-                    this.client.paired = true;
-                  } else {
-                    this.client.paired = false;
-                  }
-                  this.client.devicePath = path;
-                  console.debug(path + ' paired now = ' + this.client.paired + ', firing ConnectionChange event.');
-                  this.emit('ConnectionChange', this.client.connected, Client.devicePath);
-                }
-              });
-            };
-          });
-        }; 
-      };
-    });
-  };
-
-
 };
-
-function printDbusLogMsg(msg){
-  console.log("\n- - - - D-Bus Monitoring message follows - - - -"); 
-  console.dir(msg, {depth: null});
-  console.log("- - - - - - - - - - - - - - - - - - - - - - - - -");
-}
-
 
 function logit(txt = ''){
   console.debug(logPrefix + txt)
