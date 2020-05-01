@@ -166,8 +166,10 @@ class blePeripheral extends EventEmitter{
           let devPars = strData.trim().split('org.bluez.Device1')[1].split('{')[1].split('}')[0]
           logit(nodeId + ' ' + devPars);
           this.client.devicePath = nodeId;
-          if(devPars.includes("'ServicesResolved':")){
+          if(devPars.includes("'ServicesResolved': <true>")){
             this._emitConnectionChange(nodeId);
+          }else if(devPars.includes("'ServicesResolved': <false>")){
+            console.log('fire an event and remove this guy...');
           };
         };
         
