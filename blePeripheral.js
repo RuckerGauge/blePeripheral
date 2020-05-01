@@ -180,13 +180,29 @@ class blePeripheral extends EventEmitter{
 
   _emitConnectionChange(nodeId = '/org/bluez/hci0/dev_B4_F6_1C_53_EF_B3'){
 
-    // this.Device.logAllProperties(nodeId);
+    // var Client = {
+    //   devicePath:'',
+    //   connected:false,
+    //   paired:false,
+    //   name:""
+    // }
 
     this.Device.getPropertySync('Paired', nodeId);
     this.Device.getPropertySync('Name', nodeId);
     this.Device.getPropertySync('Connected', nodeId);
 
-    
+    let promises = [];
+    promises.push(this.Device.getProperty('Paired', nodeId));
+    promises.push(this.Device.getProperty('Name', nodeId));
+    promises.push(this.Device.getProperty('Connected', nodeId));
+
+    Promise.all(promises)
+    .then((rslt)=>{
+      logit('promise resloved with ' + rslt);
+    })
+    .catch((err)=>{
+      logit('Error resolving all promises ' + err);
+    });
 
     // this.emit('ConnectionChange', this.client.connected, Client.devicePath);
     // if(this.listenerCount('ConnectionChange') == 0){
