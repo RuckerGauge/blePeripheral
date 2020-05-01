@@ -174,11 +174,11 @@ class blePeripheral extends EventEmitter{
             this.client.connected = false;
             this.emit('ConnectionChange', this.client.connected, this.client.devicePath);
             if(this.listenerCount('ConnectionChange') == 0){
-              console.debug('blePdripheral.js -> Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
-              console.debug('blePdripheral.js -> \tdevicePath : ' + this.client.devicePath);
-              console.debug('blePdripheral.js -> \t      name : ' + this.client.name);
-              console.debug('blePdripheral.js -> \t connected : ' + this.client.connected);
-              console.debug('blePdripheral.js -> \t    paired : ' + this.client.paired);
+              logit('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
+              logit('\tdevicePath : ' + this.client.devicePath);
+              logit('\t      name : ' + this.client.name);
+              logit('\t connected : ' + this.client.connected);
+              logit('\t    paired : ' + this.client.paired);
             };
           };
         };
@@ -205,11 +205,11 @@ class blePeripheral extends EventEmitter{
         this.client.connected = rslt[2]
         this.emit('ConnectionChange', this.client.connected, this.client.devicePath);
         if(this.listenerCount('ConnectionChange') == 0){
-          console.debug('blePdripheral.js -> Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
-          console.debug('blePdripheral.js -> \tdevicePath : ' + this.client.devicePath);
-          console.debug('blePdripheral.js -> \t      name : ' + this.client.name);
-          console.debug('blePdripheral.js -> \t connected : ' + this.client.connected);
-          console.debug('blePdripheral.js -> \t    paired : ' + this.client.paired);
+          logit('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
+          logit('\tdevicePath : ' + this.client.devicePath);
+          logit('\t      name : ' + this.client.name);
+          logit('\t connected : ' + this.client.connected);
+          logit('\t    paired : ' + this.client.paired);
         };
       } else {
         console.error('Error blePeripheral.js _emitConnectionChange promise resloved was not an array.  Result was ' + rslt);
