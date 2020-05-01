@@ -53,7 +53,7 @@ class blePeripheral extends EventEmitter{
     // this[dbusOld] = DBusOld.systemBus();
     
     this.client = Client;
-    this.logAllDBusMessages = true;
+    this.logAllDBusMessages = false;
     this.logCharacteristicsIO = false;
 
     try{
