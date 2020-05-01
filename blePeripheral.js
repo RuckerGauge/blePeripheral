@@ -17,8 +17,7 @@ var Client = {
   devicePath:'',
   connected:false,
   paired:false,
-  name:"",
-  addressType:""
+  name:""
 }
 
 /**
@@ -179,7 +178,6 @@ class blePeripheral extends EventEmitter{
             logit('\t      name : ' + this.client.name);
             logit('\t connected : ' + this.client.connected);
             logit('\t    paired : ' + this.client.paired);
-            logit('\t addressType : ' + this.client.addressType);
           };
         };
       };
@@ -195,7 +193,6 @@ class blePeripheral extends EventEmitter{
     promises.push(this.Device.getProperty('Paired', nodeId));
     promises.push(this.Device.getProperty('Name', nodeId));
     promises.push(this.Device.getProperty('Connected', nodeId));
-    promises.push(this.Device.getProperty('AddressType', nodeId));
     //DO NOT CHANGE THE ORDER OF THE ABOVE THREE CALLS!
     Promise.all(promises)
     .then((rslt)=>{
@@ -204,7 +201,6 @@ class blePeripheral extends EventEmitter{
         this.client.paired = rslt[0];
         this.client.name = rslt[1];
         this.client.connected = rslt[2]
-        this.client.addressType = rslt[3]
         this.emit('ConnectionChange', this.client.connected, this.client.devicePath);
         if(this.listenerCount('ConnectionChange') == 0){
           logit('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
@@ -212,7 +208,6 @@ class blePeripheral extends EventEmitter{
           logit('\t        name : ' + this.client.name);
           logit('\t   connected : ' + this.client.connected);
           logit('\t      paired : ' + this.client.paired);
-          logit('\t addressType : ' + this.client.addressType);
         };
       } else {
         console.error('Error blePeripheral.js _emitConnectionChange promise resloved was not an array.  Result was ' + rslt);
