@@ -166,10 +166,9 @@ class blePeripheral extends EventEmitter{
           let devPars = strData.trim().split('org.bluez.Device1')[1].split('{')[1].split('}')[0]
           logit(nodeId + ' ' + devPars);
           this.client.devicePath = nodeId;
-          if(devPars.includes("'ServicesResolved': <true>") || devPars.includes("'Connected': <true>") ){
+          if(devPars.includes("'ServicesResolved': <true>")){
             this._emitConnectionChange(nodeId);
           };
-          
         };
         
     }));
@@ -187,18 +186,18 @@ class blePeripheral extends EventEmitter{
     //   name:""
     // }
 
-    let promises = [];
-    promises.push(this.Device.getProperty('Paired', nodeId));
-    promises.push(this.Device.getProperty('Name', nodeId));
-    promises.push(this.Device.getProperty('Connected', nodeId));
+    // let promises = [];
+    // promises.push(this.Device.getProperty('Paired', nodeId));
+    // promises.push(this.Device.getProperty('Name', nodeId));
+    // promises.push(this.Device.getProperty('Connected', nodeId));
 
-    Promise.all(promises)
-    .then((rslt)=>{
-      logit('promise resloved with ' + rslt);
-    })
-    .catch((err)=>{
-      logit('Error resolving all promises ' + err);
-    });
+    // Promise.all(promises)
+    // .then((rslt)=>{
+    //   logit('promise resloved with ' + rslt);
+    // })
+    // .catch((err)=>{
+    //   logit('Error resolving all promises ' + err);
+    // });
 
     this.Device.logAllProperties(nodeId);
 
