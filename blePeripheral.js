@@ -53,7 +53,7 @@ class blePeripheral extends EventEmitter{
     // this[dbusOld] = DBusOld.systemBus();
     
     this.client = Client;
-    this.logAllDBusMessages = false;
+    this.logAllDBusMessages = true;
     this.logCharacteristicsIO = false;
 
     try{
@@ -189,7 +189,7 @@ class blePeripheral extends EventEmitter{
   };
 
   _emitConnectionChange(nodeId = '/org/bluez/hci0/dev_B4_F6_1C_53_EF_B3'){
-    this.Device.setBooleanProperty('Trusted', true, nodeId);
+    // this.Device.setBooleanProperty('Trusted', true, nodeId);
     let promises = [];
     //DO NOT CHANGE THE ORDER OF THE FOLLOWING THREE CALLS!
     promises.push(this.Device.getProperty('Paired', nodeId));
