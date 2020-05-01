@@ -160,31 +160,28 @@ class blePeripheral extends EventEmitter{
     logit('setting up monitoring of org.bluez for events..');
     let spawnedCmd = cp.spawn('/usr/bin/gdbus', ['monitor', '--system', '--dest', 'org.bluez'])
     spawnedCmd.stdout.on('data', ((data)=>{
-        var strData = String(data);
-        if(strData.trim().startsWith('/org/bluez/hci0/dev_')){
-          // logit('->' + strData.trim() + '<- ');
-          let nodeId = strData.trim().split(':', 1)[0];
-          let devPars = strData.trim().split('org.bluez.Device1')[1].split('{')[1].split('}')[0]
-          logit(nodeId + ' ' + devPars);
-          // this.client.devicePath = nodeId;
-          if(devPars.includes("'ServicesResolved': <true>")  || devPars.includes("'AddressType':")){
-            this._emitConnectionChange(nodeId);
-          }else if(devPars.includes("'ServicesResolved': <false>")){
-            this.client.devicePath = nodeId;
-            this.client.paired = false;
-            this.client.connected = false;
-            this.emit('ConnectionChange', this.client.connected, this.client.devicePath);
-            if(this.listenerCount('ConnectionChange') == 0){
-              logit('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
-              logit('\tdevicePath : ' + this.client.devicePath);
-              logit('\t      name : ' + this.client.name);
-              logit('\t connected : ' + this.client.connected);
-              logit('\t    paired : ' + this.client.paired);
-              logit('\t addressType : ' + this.client.addressType);
-            };
+      var strData = String(data);
+      if(strData.trim().startsWith('/org/bluez/hci0/dev_')){
+        let nodeId = strData.trim().split(':', 1)[0];
+        let devPars = strData.trim().split('org.bluez.Device1')[1].split('{')[1].split('}')[0]
+        logit(nodeId + ' ' + devPars);
+        if(devPars.includes("'ServicesResolved': <true>")  || devPars.includes("'AddressType':")){
+          this._emitConnectionChange(nodeId);
+        }else if(devPars.includes("'ServicesResolved': <false>")){
+          this.client.devicePath = nodeId;
+          this.client.paired = false;
+          this.client.connected = false;
+          this.emit('ConnectionChange', this.client.connected, this.client.devicePath);
+          if(this.listenerCount('ConnectionChange') == 0){
+            logit('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
+            logit('\tdevicePath : ' + this.client.devicePath);
+            logit('\t      name : ' + this.client.name);
+            logit('\t connected : ' + this.client.connected);
+            logit('\t    paired : ' + this.client.paired);
+            logit('\t addressType : ' + this.client.addressType);
           };
         };
-        
+      }; 
     }));
     spawnedCmd.stderr.on('data', ((data)=>{
         logit('Err->' + data);
