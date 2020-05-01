@@ -188,20 +188,20 @@ class blePeripheral extends EventEmitter{
     //   name:""
     // }
 
-    // let promises = [];
-    // promises.push(this.Device.getProperty('Paired', nodeId));
-    // promises.push(this.Device.getProperty('Name', nodeId));
-    // promises.push(this.Device.getProperty('Connected', nodeId));
+    let promises = [];
+    promises.push(this.Device.getProperty('Paired', nodeId));
+    promises.push(this.Device.getProperty('Name', nodeId));
+    promises.push(this.Device.getProperty('Connected', nodeId));
 
-    // Promise.all(promises)
-    // .then((rslt)=>{
-    //   logit('promise resloved with ' + rslt);
-    // })
-    // .catch((err)=>{
-    //   logit('Error resolving all promises ' + err);
-    // });
+    Promise.all(promises)
+    .then((rslt)=>{
+      logit('promise resloved with ' + rslt);
+    })
+    .catch((err)=>{
+      logit('Error resolving all promises ' + err);
+    });
 
-    this.Device.logAllProperties(nodeId);
+    // this.Device.logAllProperties(nodeId);
 
     // this.emit('ConnectionChange', this.client.connected, Client.devicePath);
     // if(this.listenerCount('ConnectionChange') == 0){
