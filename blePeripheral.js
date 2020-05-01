@@ -190,19 +190,12 @@ class blePeripheral extends EventEmitter{
   };
 
   _emitConnectionChange(nodeId = '/org/bluez/hci0/dev_B4_F6_1C_53_EF_B3'){
-
-    // var Client = {
-    //   devicePath:'',
-    //   connected:false,
-    //   paired:false,
-    //   name:""
-    // }
-
     let promises = [];
+    //DO NOT CHANGE THE ORDER OF THE FOLLOWING THREE CALLS!
     promises.push(this.Device.getProperty('Paired', nodeId));
     promises.push(this.Device.getProperty('Name', nodeId));
     promises.push(this.Device.getProperty('Connected', nodeId));
-
+    //DO NOT CHANGE THE ORDER OF THE ABOVE THREE CALLS!
     Promise.all(promises)
     .then((rslt)=>{
       if(Array.isArray(rslt)){
@@ -210,7 +203,6 @@ class blePeripheral extends EventEmitter{
         this.client.paired = rslt[0];
         this.client.name = rslt[1];
         this.client.connected = rslt[2]
-
         this.emit('ConnectionChange', this.client.connected, this.client.devicePath);
         if(this.listenerCount('ConnectionChange') == 0){
           console.debug('blePdripheral.js -> Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
@@ -219,25 +211,14 @@ class blePeripheral extends EventEmitter{
           console.debug('blePdripheral.js -> \t connected : ' + this.client.connected);
           console.debug('blePdripheral.js -> \t    paired : ' + this.client.paired);
         };
-
-
-      }
-      logit('promise resloved with ' + rslt);
+      } else {
+        console.error('Error blePeripheral.js _emitConnectionChange promise resloved was not an array.  Result was ' + rslt);
+      };
     })
     .catch((err)=>{
-      logit('Error resolving all promises ' + err);
+      logit('Error resolving one or all promises in _emitConnectionChange');
+      conaole.error('Error resolving all promises. ', err);
     });
-
-
-
-    // this.emit('ConnectionChange', this.client.connected, Client.devicePath);
-    // if(this.listenerCount('ConnectionChange') == 0){
-    //   console.debug('blePdripheral.js -> Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
-    //   console.debug('blePdripheral.js -> \tdevicePath : ' + this.client.devicePath);
-    //   console.debug('blePdripheral.js -> \t      name : ' + this.client.name);
-    //   console.debug('blePdripheral.js -> \t connected : ' + this.client.connected);
-    //   console.debug('blePdripheral.js -> \t    paired : ' + this.client.paired);
-    // };
   };
 
   _connectionManager_old(){
