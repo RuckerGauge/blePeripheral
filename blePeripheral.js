@@ -171,6 +171,7 @@ class blePeripheral extends EventEmitter{
           this.client.devicePath = nodeId;
           this.client.paired = false;
           this.client.connected = false;
+          this.client.name = '';
           this.emit('ConnectionChange', this.client.connected, this.client.devicePath);
           if(this.listenerCount('ConnectionChange') == 0){
             logit('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
