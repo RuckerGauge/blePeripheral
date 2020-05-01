@@ -165,11 +165,21 @@ class blePeripheral extends EventEmitter{
           let nodeId = strData.trim().split(':', 1)[0];
           let devPars = strData.trim().split('org.bluez.Device1')[1].split('{')[1].split('}')[0]
           logit(nodeId + ' ' + devPars);
-          this.client.devicePath = nodeId;
+          // this.client.devicePath = nodeId;
           if(devPars.includes("'ServicesResolved': <true>")){
             this._emitConnectionChange(nodeId);
           }else if(devPars.includes("'ServicesResolved': <false>")){
-            console.log('fire an event and remove this guy...');
+            this.client.devicePath = nodeId;
+            this.client.paired = false;
+            this.client.connected = false;
+            this.emit('ConnectionChange', this.client.connected, this.client.devicePath);
+            if(this.listenerCount('ConnectionChange') == 0){
+              console.debug('blePdripheral.js -> Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
+              console.debug('blePdripheral.js -> \tdevicePath : ' + this.client.devicePath);
+              console.debug('blePdripheral.js -> \t      name : ' + this.client.name);
+              console.debug('blePdripheral.js -> \t connected : ' + this.client.connected);
+              console.debug('blePdripheral.js -> \t    paired : ' + this.client.paired);
+            };
           };
         };
         
@@ -195,13 +205,30 @@ class blePeripheral extends EventEmitter{
 
     Promise.all(promises)
     .then((rslt)=>{
+      if(Array.isArray(rslt)){
+        this.client.devicePath = nodeId;
+        this.client.paired = rslt[0];
+        this.client.name = rslt[1];
+        this.client.connected = rslt[2]
+
+        this.emit('ConnectionChange', this.client.connected, this.client.devicePath);
+        if(this.listenerCount('ConnectionChange') == 0){
+          console.debug('blePdripheral.js -> Conneciton Event, time = ' + (new Date()).toLocaleTimeString());
+          console.debug('blePdripheral.js -> \tdevicePath : ' + this.client.devicePath);
+          console.debug('blePdripheral.js -> \t      name : ' + this.client.name);
+          console.debug('blePdripheral.js -> \t connected : ' + this.client.connected);
+          console.debug('blePdripheral.js -> \t    paired : ' + this.client.paired);
+        };
+
+
+      }
       logit('promise resloved with ' + rslt);
     })
     .catch((err)=>{
       logit('Error resolving all promises ' + err);
     });
 
-    // this.Device.logAllProperties(nodeId);
+
 
     // this.emit('ConnectionChange', this.client.connected, Client.devicePath);
     // if(this.listenerCount('ConnectionChange') == 0){
