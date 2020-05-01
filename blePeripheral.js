@@ -188,7 +188,7 @@ class blePeripheral extends EventEmitter{
     // }
 
     this.Device.getPropertySync('Paired', nodeId);
-    this.Device.getPropertySync('Name', nodeId);
+    this.Device.getPropertySync('Namde', nodeId);
     this.Device.getPropertySync('Connected', nodeId);
 
     let promises = [];
@@ -203,6 +203,8 @@ class blePeripheral extends EventEmitter{
     .catch((err)=>{
       logit('Error resolving all promises ' + err);
     });
+
+    this.Device.logAllProperties(nodeId);
 
     // this.emit('ConnectionChange', this.client.connected, Client.devicePath);
     // if(this.listenerCount('ConnectionChange') == 0){
