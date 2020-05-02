@@ -65,6 +65,7 @@ class blePeripheral extends EventEmitter{
 
     // //To Do the next 4 class need to be rewirtten. 
     this.Device = new DeviceClass(); 
+    this.Adapter = new AdapterClass();
     // this.Adapter = new AdapterClass(DBusOld.systemBus()); // this is a dbus client.  I dont think it needs to be passed the system buss
     // this.Advertisement = new Advertisement(this[dbusOld], this.servicePath, this.serverUUID);   //I think we need to pass this#dbusService to this class
     // this.gattService = new GattService(this.serverUUID, this.servicePath, this[dbusOld]);       //I think we need to pass this#dbusService to this class
@@ -189,6 +190,8 @@ class blePeripheral extends EventEmitter{
   };
 
   _emitConnectionChange(nodeId = '/org/bluez/hci0/dev_B4_F6_1C_53_EF_B3'){
+    logit('Testing Devic class..');
+    this.Device.logAllProperties();
     logit('Setting Trusted to true');
     let tRslt = this.Device.setBooleanProperty('Trusted', true, nodeId);
     logit('result = ' + tRslt);
