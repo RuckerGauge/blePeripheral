@@ -190,8 +190,11 @@ class blePeripheral extends EventEmitter{
   };
 
   _emitConnectionChange(nodeId = '/org/bluez/hci0/dev_B4_F6_1C_53_EF_B3'){
-    logit('Testing Devic class..');
+    logit('Testing Device class..');
     this.Device.logAllProperties();
+    let syncRslt = this.Device.getPropertySync('Name', nodeId);
+    logit('result of sync call = ' + syncRslt);
+
     logit('Setting Trusted to true');
     let tRslt = this.Device.setBooleanProperty('Trusted', true, nodeId);
     logit('result = ' + tRslt);
