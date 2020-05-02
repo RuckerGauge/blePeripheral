@@ -189,8 +189,10 @@ class blePeripheral extends EventEmitter{
   };
 
   _emitConnectionChange(nodeId = '/org/bluez/hci0/dev_B4_F6_1C_53_EF_B3'){
-    this.Device.setBooleanProperty('Trusted', true, nodeId);
-    
+    logit('Setting Trusted to true');
+    let tRslt = this.Device.setBooleanProperty('Trusted', true, nodeId);
+    logit('result = ' + tRslt);
+
     let promises = [];
     //DO NOT CHANGE THE ORDER OF THE FOLLOWING THREE CALLS!
     promises.push(this.Device.getProperty('Paired', nodeId));
