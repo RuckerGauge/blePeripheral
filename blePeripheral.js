@@ -75,7 +75,7 @@ class blePeripheral extends EventEmitter{
     this.Adapter.pairModeOn(false);
 
     this.Adapter.logAllProperties();
-    this.Adapter.getProperty('name')
+    this.Adapter.getProperty('Name')
     .then((rslt)=>{
       logit('The BLE adapter name = ' + rslt);
     })
@@ -212,7 +212,7 @@ class blePeripheral extends EventEmitter{
     let promises = [];
     //DO NOT CHANGE THE ORDER OF THE FOLLOWING THREE CALLS!
     promises.push(this.Device.getProperty('Paired', nodeId));
-    promises.push(this.Device.getProperty('name', nodeId));
+    promises.push(this.Device.getProperty('Name', nodeId));
     promises.push(this.Device.getProperty('Connected', nodeId));
     //DO NOT CHANGE THE ORDER OF THE ABOVE THREE CALLS!
     Promise.all(promises)
