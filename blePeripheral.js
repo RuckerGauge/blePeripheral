@@ -41,22 +41,15 @@ var Client = {
  * @param {boolean} PrimaryService example: true
  */
 class blePeripheral extends EventEmitter{
-  //Private field declarations:
-  // #dbusService requires version 12 of node.  We are stuck on version 10
-  
   constructor(ServiceName ='com.netConfig', ServerUUID = '4b1268a8-d692-41d6-b51a-d1730ea6b9d6', callback = function(){}, PrimaryService = true){
     super();
     this.primaryService = PrimaryService;
     this.serviceName = ServiceName;
     this.serverUUID = ServerUUID;
     this.servicePath = `/${this.serviceName.replace(/\./g, '/')}`;        // Replace . with / (com.netConfig = /com/netConfig).;
-    // this[dbusOld] = DBusOld.systemBus();
-    // callback();
     this.client = Client;
     this.logAllDBusMessages = true;
     this.logCharacteristicsIO = false;
-    // this._dbusService = Dbus.registerService('system', this.serviceName);
-    
     try{
       this._dbusService = Dbus.registerService('system', this.serviceName)
     } catch (err) {
@@ -74,10 +67,7 @@ class blePeripheral extends EventEmitter{
     this._connectionManager();
     this.Adapter.pairModeOn(false);
     logit('* * * * * * * callback to setup characteristics * * * * * * *')
-    // callback();
-    setTimeout(()=>{
-      callback();
-    },5000)
+    callback();
     logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
     logit('Setup and initialize GATT service...');
 
@@ -110,7 +100,7 @@ class blePeripheral extends EventEmitter{
     //     );
     //   }
     // });
-  }
+  };
 
   /**
    * Clears all notificaitons and restarts Gatt Service.
@@ -124,7 +114,7 @@ class blePeripheral extends EventEmitter{
     this.gattService.unRegisterGattService();
     console.debug('blePdripheral.js -> Reregistering Gatt Service...');
     this.gattService.registerGattService();
-  }
+  };
 
   /** 
    * Checks all characteristics and returns true if any have iface.Notifying = true
