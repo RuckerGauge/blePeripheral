@@ -75,7 +75,7 @@ class blePeripheral extends EventEmitter{
     this.Adapter.pairModeOn(false);
 
     this.Adapter.logAllProperties();
-    this.Adapter.getProperty('Name')
+    this.Adapter.getProperty('name')
     .then((rslt)=>{
       logit('The BLE adapter name = ' + rslt);
     })
