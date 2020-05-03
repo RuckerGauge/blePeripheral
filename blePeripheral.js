@@ -73,8 +73,15 @@ class blePeripheral extends EventEmitter{
     logit(`Successfully requested service name "${this.serviceName}"!`);
     this._connectionManager();
     this.Adapter.pairModeOn(false);
-    
+
     this.Adapter.logAllProperties();
+    this.Adapter.getProperty('Name')
+    .then((rslt)=>{
+      logit('The BLE adapter name = ' + rslt);
+    })
+    .catch((err)=>{
+      logit('caught error here ' +err);
+    });
 
     // this[dbusOld].requestName(this.serviceName, 0x4, (err, retCode) => {                               // The 0x4 flag means that we don't want to be queued if the service name we are requesting is already
     //   // If there was an error, warn user and fail
