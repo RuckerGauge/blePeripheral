@@ -55,6 +55,7 @@ class blePeripheral extends EventEmitter{
     this.client = Client;
     this.logAllDBusMessages = true;
     this.logCharacteristicsIO = false;
+    // this._dbusService = Dbus.registerService('system', this.serviceName);
 
     try{
       this._dbusService = Dbus.registerService('system', this.serviceName)
@@ -66,22 +67,17 @@ class blePeripheral extends EventEmitter{
     // //To Do the next 4 class need to be rewirtten. 
     this.Device = new DeviceClass(); 
     this.Adapter = new AdapterClass();
-    // this.Adapter = new AdapterClass(DBusOld.systemBus()); // this is a dbus client.  I dont think it needs to be passed the system buss
     // this.Advertisement = new Advertisement(this[dbusOld], this.servicePath, this.serverUUID);   //I think we need to pass this#dbusService to this class
     // this.gattService = new GattService(this.serverUUID, this.servicePath, this[dbusOld]);       //I think we need to pass this#dbusService to this class
     
     logit(`Successfully requested service name "${this.serviceName}"!`);
     this._connectionManager();
     this.Adapter.pairModeOn(false);
+    logit('* * * * * * * callback to setup characteristics * * * * * * *')
+    callback();
+    logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
+    logit('Setup and initialize GATT service...');
 
-    this.Adapter.logAllProperties();
-    this.Adapter.getProperty('Name')
-    .then((rslt)=>{
-      logit('The BLE adapter name = ' + rslt);
-    })
-    .catch((err)=>{
-      logit('caught error here ' +err);
-    });
 
     // this[dbusOld].requestName(this.serviceName, 0x4, (err, retCode) => {                               // The 0x4 flag means that we don't want to be queued if the service name we are requesting is already
     //   // If there was an error, warn user and fail
@@ -151,7 +147,7 @@ class blePeripheral extends EventEmitter{
  * @param {Array} flags [["encrypt-read", "notify", "encrypt-write"]]
  */
   Characteristic(UUID, node, flags){
-    var x = new Characteristic(this[dbusOld], this.servicePath, UUID, node, flags, this.logCharacteristicsIO);
+    var x = new Characteristic(this._dbusService, this.servicePath, UUID, node, flags, this.logCharacteristicsIO);
     allCharacteristics.push(x);
     return (x);
   };
@@ -200,15 +196,6 @@ class blePeripheral extends EventEmitter{
   };
 
   _emitConnectionChange(nodeId = '/org/bluez/hci0/dev_B4_F6_1C_53_EF_B3'){
-    logit('Testing Device class..');
-    this.Device.logAllProperties(nodeId);
-    let syncRslt = this.Device.getPropertySync('Trusted', nodeId);
-    logit('result of sync call = ' + syncRslt);
-
-    logit('Setting Trusted to true');
-    let tRslt = this.Device.setBooleanProperty('Trusted', true, nodeId);
-    logit('result = ' + tRslt);
-
     let promises = [];
     //DO NOT CHANGE THE ORDER OF THE FOLLOWING THREE CALLS!
     promises.push(this.Device.getProperty('Paired', nodeId));
@@ -242,7 +229,7 @@ class blePeripheral extends EventEmitter{
 };
 
 function logit(txt = ''){
-  console.debug(logPrefix + txt)
+  console.debug(logPrefix + txt);
 };
 
 module.exports = blePeripheral;
