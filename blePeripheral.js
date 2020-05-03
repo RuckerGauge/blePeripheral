@@ -51,7 +51,7 @@ class blePeripheral extends EventEmitter{
     this.serverUUID = ServerUUID;
     this.servicePath = `/${this.serviceName.replace(/\./g, '/')}`;        // Replace . with / (com.netConfig = /com/netConfig).;
     // this[dbusOld] = DBusOld.systemBus();
-    callback();
+    // callback();
     this.client = Client;
     this.logAllDBusMessages = true;
     this.logCharacteristicsIO = false;
@@ -75,6 +75,9 @@ class blePeripheral extends EventEmitter{
     this.Adapter.pairModeOn(false);
     logit('* * * * * * * callback to setup characteristics * * * * * * *')
     // callback();
+    setTimeout(()=>{
+      callback();
+    },5000)
     logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
     logit('Setup and initialize GATT service...');
 
