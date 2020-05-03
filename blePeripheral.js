@@ -206,7 +206,7 @@ class blePeripheral extends EventEmitter{
     logit('result of sync call = ' + syncRslt);
 
     logit('Setting Trusted to true');
-    let tRslt = this.Device.setBooleanProperty('trusted', true, nodeId);
+    let tRslt = this.Device.setBooleanProperty('Trusted', true, nodeId);
     logit('result = ' + tRslt);
 
     let promises = [];
