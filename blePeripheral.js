@@ -56,7 +56,7 @@ class blePeripheral extends EventEmitter{
     this.logAllDBusMessages = true;
     this.logCharacteristicsIO = false;
     // this._dbusService = Dbus.registerService('system', this.serviceName);
-
+    callback();
     try{
       this._dbusService = Dbus.registerService('system', this.serviceName)
     } catch (err) {
@@ -74,7 +74,7 @@ class blePeripheral extends EventEmitter{
     this._connectionManager();
     this.Adapter.pairModeOn(false);
     logit('* * * * * * * callback to setup characteristics * * * * * * *')
-    callback();
+    // callback();
     logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
     logit('Setup and initialize GATT service...');
 
