@@ -50,14 +50,13 @@ class blePeripheral extends EventEmitter{
     this.serviceName = ServiceName;
     this.serverUUID = ServerUUID;
     this.servicePath = `/${this.serviceName.replace(/\./g, '/')}`;        // Replace . with / (com.netConfig = /com/netConfig).;
-    this[dbusOld] = DBusOld.systemBus();
-    
+    // this[dbusOld] = DBusOld.systemBus();
+    callback();
     this.client = Client;
     this.logAllDBusMessages = true;
     this.logCharacteristicsIO = false;
     // this._dbusService = Dbus.registerService('system', this.serviceName);
-    console.dir(this, {depth:null});
-    callback(this[dbusOld]);
+    
     try{
       this._dbusService = Dbus.registerService('system', this.serviceName)
     } catch (err) {
