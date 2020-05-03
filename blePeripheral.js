@@ -236,7 +236,7 @@ class blePeripheral extends EventEmitter{
     })
     .catch((err)=>{
       logit('Error resolving one or all promises in _emitConnectionChange');
-      conaole.error('Error resolving all promises. ', err);
+      console.error('Error resolving all promises. ', err);
     });
   };
 };
