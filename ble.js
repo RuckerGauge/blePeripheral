@@ -11,6 +11,7 @@ class blePeripheral{
         this.logCharacteristicsIO = false;
         console.log('calling call back now');
         cback();
+        return
     };
 
     pp(){
