@@ -1,6 +1,6 @@
 const EventEmitter =      require("events");
 const cp =                require('child_process');
-const DBusOld =           require("dbus-native");
+// const DBusOld =           require("dbus-native");
 const Dbus =              require("dbus");
 const DeviceClass =       require("./lib/deviceClass.js");
 const AdapterClass =      require("./lib/adapterClass.js");
@@ -10,7 +10,7 @@ const Advertisement =     require("./lib/advertisingClass.js");
 
 const logPrefix = 'blePeripheral.js | ';
 
-const dbusOld = Symbol();
+// const dbusOld = Symbol();
 
 var allCharacteristics = [];
 var Client = {
