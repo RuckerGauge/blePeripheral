@@ -16,7 +16,7 @@ class blePeripheral{
     pp(){
         console.log('okay get over it');
         console.log('COJTs = ' + this.logCharacteristicsIO);
-    }
-}
+    };
+};
 
 module.exports = blePeripheral;
