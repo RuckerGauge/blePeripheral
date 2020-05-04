@@ -9,8 +9,8 @@ class blePeripheral extends EventEmitter{
         super()
         this.logAllDBusMessages = false;
         this.logCharacteristicsIO = false;
-        console.log('calling all back now');
-        callback();
+        console.log('calling call back now');
+        callback;
     };
 
     pp(){
