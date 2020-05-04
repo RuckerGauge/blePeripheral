@@ -67,7 +67,8 @@ class blePeripheral extends EventEmitter{
     this._connectionManager();
     this.Adapter.pairModeOn(false);
     logit('* * * * * * * callback to setup characteristics * * * * * * *')
-    callback();
+    // callback();
+    process.nextTick(callback)
     logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
     logit('Setup and initialize GATT service...');
 
