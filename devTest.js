@@ -8,11 +8,13 @@ const serviceUUID = '27b5244f-94f3-4011-be53-6ac36bf22cf1'    // UUID to adverti
 const bPrl = new blePeripheral(main);
     
 function main (){
-    bPrl.logCharacteristicsIO = true;
-    console.log('Initialize charcteristics...');
+    console.log('Main call back is starting now..');
+    this.bPrl.logCharacteristicsIO = true;
+    console.log('logCharacteristicsIO enabled = ' + this.bPrl.logCharacteristicsIO);
+
 
     //console.dir(this, {depth:null});
 
-    var isAuthorized =  bp.Characteristic('00000001-94f3-4011-be53-6ac36bf22cf1', 'isAuthorized', ["read","write-without-response"]);
+    //var isAuthorized =  bp.Characteristic('00000001-94f3-4011-be53-6ac36bf22cf1', 'isAuthorized', ["read","write-without-response"]);
 
 };
