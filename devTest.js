@@ -9,8 +9,8 @@ const bPrl = new blePeripheral(main);
     
 function main (){
     console.log('Main call back is starting now..');
-    this.bPrl.logCharacteristicsIO = true;
-    console.log('logCharacteristicsIO enabled = ' + this.bPrl.logCharacteristicsIO);
+    bPrl.logCharacteristicsIO = true;
+    console.log('logCharacteristicsIO enabled = ' + bPrl.logCharacteristicsIO);
 
 
     //console.dir(this, {depth:null});
