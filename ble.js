@@ -10,7 +10,7 @@ class blePeripheral{
         this.logAllDBusMessages = false;
         this.logCharacteristicsIO = false;
         console.log('calling call back now');
-        cback();
+        cback.bind(this)
     };
 
     pp(){
