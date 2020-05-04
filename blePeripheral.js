@@ -126,34 +126,34 @@ class blePeripheral extends EventEmitter{
     return this.gattService.isAnyoneNotifying(allCharacteristics);
   };
 
-/**
- * Creates a characteristic for a BLE GATT service.  These characteristics are based on the bluez D-Bus GATT API https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt
- * 
- *  emits **.on('ReadValue', (device))** and **.on('WriteValue', (device, arg1)**, that can be consumed to intercept the reading and writting of .Value.  They will be emitted when a BLE central request to read or write a characteristic.
- *  
- * * **UUID**: Is the unique UUID number for this characteristic. If you need a number visit https://www.uuidgenerator.net/
- * * **node**: Is the node name for the characteristic (user friendly name)
- * * **flags**: Is an optional array of strings used to determine the access to this characteristic.  See https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt#n236 for a list of supported flags. Default values are "encrypt-read","encrypt-write"
- * 
- * @param {string} UUID '00000001-94f3-4011-be53-6ac36bf22cf1'
- * @param {string} node 'myVarName'
- * @param {Array} flags [["encrypt-read", "notify", "encrypt-write"]]
- */
+  /**
+   * Creates a characteristic for a BLE GATT service.  These characteristics are based on the bluez D-Bus GATT API https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt
+   * 
+   *  emits **.on('ReadValue', (device))** and **.on('WriteValue', (device, arg1)**, that can be consumed to intercept the reading and writting of .Value.  They will be emitted when a BLE central request to read or write a characteristic.
+   *  
+   * * **UUID**: Is the unique UUID number for this characteristic. If you need a number visit https://www.uuidgenerator.net/
+   * * **node**: Is the node name for the characteristic (user friendly name)
+   * * **flags**: Is an optional array of strings used to determine the access to this characteristic.  See https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt#n236 for a list of supported flags. Default values are "encrypt-read","encrypt-write"
+   * 
+   * @param {string} UUID '00000001-94f3-4011-be53-6ac36bf22cf1'
+   * @param {string} node 'myVarName'
+   * @param {Array} flags [["encrypt-read", "notify", "encrypt-write"]]
+   */
   Characteristic(UUID, node, flags){
     var x = new Characteristic(this._dbusService, this.servicePath, UUID, node, flags, this.logCharacteristicsIO);
     allCharacteristics.push(x);
     return (x);
   };
 
-//   function spawnCommand(command = '/bin/journalctl', args = ['-f', '-urgMan'], log = (val)=>{console.log('--> '+val+' <--')}){
-//     spawnedCmd = cp.spawn(command, args);
-//     spawnedCmd.stdout.on('data', ((data)=>{
-//         notifyChunck(data, log);
-//     }));
-//     spawnedCmd.stderr.on('data', ((data)=>{
-//         log('Err->' + data);
-//     }));
-// };
+  //   function spawnCommand(command = '/bin/journalctl', args = ['-f', '-urgMan'], log = (val)=>{console.log('--> '+val+' <--')}){
+  //     spawnedCmd = cp.spawn(command, args);
+  //     spawnedCmd.stdout.on('data', ((data)=>{
+  //         notifyChunck(data, log);
+  //     }));
+  //     spawnedCmd.stderr.on('data', ((data)=>{
+  //         log('Err->' + data);
+  //     }));
+  // };
 
   _connectionManager(){
     logit('setting up monitoring of org.bluez for events..');
