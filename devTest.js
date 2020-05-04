@@ -5,9 +5,9 @@ const serviceName = 'com.sampleApp';                          // peripheral's DB
 const serviceUUID = '27b5244f-94f3-4011-be53-6ac36bf22cf1'    // UUID to advertise as an Bluetooh LE service
 
 
-var bPrl = new blePeripheral(main);
+const bPrl = new blePeripheral(main);
     
-function main (){
+function main(){
     console.log('Main call back is starting now..');
     bPrl.logCharacteristicsIO = true;
     console.log('logCharacteristicsIO enabled = ' + bPrl.logCharacteristicsIO);
