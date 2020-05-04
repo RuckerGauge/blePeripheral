@@ -9,8 +9,17 @@ class blePeripheral{
         // super()
         this.logAllDBusMessages = false;
         this.logCharacteristicsIO = false;
+        this.callbackMainFunc = cback
         console.log('calling call back now');
-        cback()
+        // console.log(this)
+
+        this.callbackMainFunc();
+    
+
+        // setTimeout(()=>{
+        //     cback();
+        // },1000);
+        
     };
 
     pp(){
