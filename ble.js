@@ -5,12 +5,12 @@ class blePeripheral extends EventEmitter{
     /**
      * This is a test class to understand why my call back is not working.
      */
-    constructor(callback){
+    constructor(cback){
         super()
         this.logAllDBusMessages = false;
         this.logCharacteristicsIO = false;
         console.log('calling call back now');
-        callback;
+        cback();
     };
 
     pp(){
