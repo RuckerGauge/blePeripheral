@@ -19,4 +19,4 @@ class blePeripheral{
     }
 }
 
-module.exports = blePeripheral;
+export default blePeripheral;
