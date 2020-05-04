@@ -1,12 +1,12 @@
 const EventEmitter =      require("events");
 
 
-class blePeripheral extends EventEmitter{
+class blePeripheral{
     /**
      * This is a test class to understand why my call back is not working.
      */
     constructor(cback){
-        super()
+        // super()
         this.logAllDBusMessages = false;
         this.logCharacteristicsIO = false;
         console.log('calling call back now');
