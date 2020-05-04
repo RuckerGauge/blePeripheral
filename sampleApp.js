@@ -70,7 +70,7 @@ function main(DBus){
   })
 
   setInterval(()=>{
-    if(cpuTemp.iface.Notifying){
+    if(cpuTemp.ifProperties.Notifying){
       cpuTemp.setValue(getCpuTemp());
       cpuTemp.notify();
     }
