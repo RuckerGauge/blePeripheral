@@ -66,11 +66,19 @@ class blePeripheral extends EventEmitter{
     logit(`Successfully requested service name "${this.serviceName}"!`);
     this._connectionManager();
     this.Adapter.pairModeOn(false);
-    logit('* * * * * * * callback to setup characteristics * * * * * * *')
+    
     // callback();
-    process.nextTick(callback)
-    logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
-    logit('Setup and initialize GATT service...');
+    process.nextTick(()=>{
+      logit('* * * * * * * callback to setup characteristics * * * * * * *')
+      callback
+      logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
+      logit('Setup and initialize GATT service...');
+      // this.gattService.createObjManagerIface(allCharacteristics);
+      // this.gattService.registerGattService();
+      // if(this.primaryService == true){this.Advertisement.startAdvertising()};
+    });
+      
+    
 
 
     // this[dbusOld].requestName(this.serviceName, 0x4, (err, retCode) => {                               // The 0x4 flag means that we don't want to be queued if the service name we are requesting is already
