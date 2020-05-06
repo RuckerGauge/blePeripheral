@@ -60,8 +60,9 @@ class blePeripheral extends EventEmitter{
     // //To Do the next 4 class need to be rewirtten. 
     this.Device = new DeviceClass(); 
     this.Adapter = new AdapterClass();
+    this.gattService = new GattService(this.serverUUID, this.servicePath, this[dbusOld]);       
     // this.Advertisement = new Advertisement(this[dbusOld], this.servicePath, this.serverUUID);   //I think we need to pass this#dbusService to this class
-    // this.gattService = new GattService(this.serverUUID, this.servicePath, this[dbusOld]);       //I think we need to pass this#dbusService to this class
+    
     
     logit(`Successfully requested service name "${this.serviceName}"!`);
     this._connectionManager();
@@ -73,7 +74,7 @@ class blePeripheral extends EventEmitter{
       callback()
       logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
       logit('Setup and initialize GATT service...');
-      // this.gattService.createObjManagerIface(allCharacteristics);
+      this.gattService.createObjManagerIface(allCharacteristics);
       // this.gattService.registerGattService();
       // if(this.primaryService == true){this.Advertisement.startAdvertising()};
     });
