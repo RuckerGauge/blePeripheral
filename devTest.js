@@ -11,6 +11,7 @@ function main(){
     console.log('logCharacteristicsIO enabled = ' + bPrl.logCharacteristicsIO);
 
     var isAuthorized =  bPrl.Characteristic('00000001-94f3-4011-be53-6ac36bf22cf1', 'isAuthorized', ["read","write-without-response"]);
+    var cmd =           bPrl.Characteristic('00000002-94f3-4011-be53-6ac36bf22cf1', 'cmd', ["read","write"]);
 
 };
 
