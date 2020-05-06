@@ -57,15 +57,14 @@ class blePeripheral extends EventEmitter{
       console.error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory', err);
       throw new Error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory');
     }
-
+    logit(`Successfully requested service name "${this.serviceName}"!`);
+    
     // //To Do the next 4 class need to be rewirtten. 
     this.Device = new DeviceClass(); 
     this.Adapter = new AdapterClass();
     this.gattService = new GattService(this._rootDBusObj, this.servicePath, this.serverUUID);       
     // this.Advertisement = new Advertisement(this[dbusOld], this.servicePath, this.serverUUID);   //I think we need to pass this#dbusService to this class
     
-    
-    logit(`Successfully requested service name "${this.serviceName}"!`);
     this._connectionManager();
     this.Adapter.pairModeOn(false);
     
@@ -75,7 +74,7 @@ class blePeripheral extends EventEmitter{
       callback()
       logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
       logit('Setup and initialize GATT service...');
-      // this.gattService.createObjManagerIface(allCharacteristics);
+      this.gattService.createObjManagerIface(allCharacteristics);
       // this.gattService.registerGattService();
       // if(this.primaryService == true){this.Advertisement.startAdvertising()};
     });
