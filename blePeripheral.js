@@ -51,7 +51,7 @@ class blePeripheral extends EventEmitter{
     this.logAllDBusMessages = true;
     this.logCharacteristicsIO = false;
     this.TSregisterGattService()
-    return
+    
     try{
       this._dbusService = Dbus.registerService('system', this.serviceName);
       this._rootDBusObj = this._dbusService.createObject(this.servicePath);
