@@ -63,7 +63,7 @@ class blePeripheral extends EventEmitter{
     this.Device = new DeviceClass(); 
     this.Adapter = new AdapterClass();
     this.gattService = new GattService(this._rootDBusObj, this.servicePath, this.serverUUID);       
-    // this.Advertisement = new Advertisement(this[dbusOld], this.servicePath, this.serverUUID);   //I think we need to pass this#dbusService to this class
+    this.Advertisement = new Advertisement(this[dbusOld], this.servicePath, this.serverUUID);   //I think we need to pass this#dbusService to this class
     
     this._connectionManager();
     this.Adapter.pairModeOn(false);
