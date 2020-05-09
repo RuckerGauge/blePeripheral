@@ -60,8 +60,8 @@ class blePeripheral extends EventEmitter{
     logit(`Successfully requested service name "${this.serviceName}"!`);
     
     // //To Do the next 4 class need to be rewirtten. 
-    this.Device = new DeviceClass(); 
-    this.Adapter = new AdapterClass();
+    // this.Device = new DeviceClass(); 
+    // this.Adapter = new AdapterClass();
     this.gattService = new GattService(this._rootDBusObj, this.servicePath, this.serverUUID);       
     // this.Advertisement = new Advertisement(this[dbusOld], this.servicePath, this.serverUUID);   //I think we need to pass this#dbusService to this class
     
