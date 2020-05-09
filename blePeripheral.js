@@ -50,11 +50,10 @@ class blePeripheral extends EventEmitter{
     this.client = Client;
     this.logAllDBusMessages = true;
     this.logCharacteristicsIO = false;
-    this.TSregisterGattService()
     
     try{
+      this._dBusClient = Dbus.getBus('system');
       this._dbusService = Dbus.registerService('system', this.serviceName);
-      this._rootDBusObj = this._dbusService.createObject(this.servicePath);
     } catch (err) {
       console.error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory', err);
       throw new Error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory');
@@ -62,22 +61,21 @@ class blePeripheral extends EventEmitter{
     logit(`Successfully requested service name "${this.serviceName}"!`);
     
     // //To Do the next 4 class need to be rewirtten. 
-    // this.Device = new DeviceClass(); 
-    // this.Adapter = new AdapterClass();
-    this.gattService = new GattService(this._rootDBusObj, this.servicePath, this.serverUUID);       
+    this.Device = new DeviceClass(); 
+    this.Adapter = new AdapterClass();
+    this.gattService = new GattService(this._dBusClient, this._dbusService, this.servicePath, this.serverUUID);       
     // this.Advertisement = new Advertisement(this[dbusOld], this.servicePath, this.serverUUID);   //I think we need to pass this#dbusService to this class
     
-    // this._connectionManager();
-    // this.Adapter.pairModeOn(false);
-    
-    // callback();
+    this._connectionManager();
+    this.Adapter.pairModeOn(false);
+
     process.nextTick(()=>{
       logit('* * * * * * * callback to setup characteristics * * * * * * *')
       callback()
       logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
       logit('Setup and initialize GATT service...');
       this.gattService.createObjManagerIface(allCharacteristics);
-      this.gattService.registerGattService();
+      // this.gattService.registerGattService();
       // if(this.primaryService == true){this.Advertisement.startAdvertising()};
     });
       
@@ -112,31 +110,6 @@ class blePeripheral extends EventEmitter{
     //     );
     //   }
     // });
-  };
-
-  TSregisterGattService(){
-    logit('calling RegisterApplication on org.bluez...')
-    // let rsltBuffer = cp.execSync('/usr/bin/gdbus call --system --dest org.bluez --object-path /org/bluez/hci0 --method org.bluez.GattManager1.RegisterApplication "/com/sampleApp" "{\'string\':<\'\'>}"');
-    // logit('result = ' + rsltBuffer);
-
-
-    var bus = Dbus.getBus('system');
-
-    bus.getInterface('org.bluez', '/org/bluez/hci0', 'org.bluez.GattManager1',(err, iface)=>{
-      if(err){
-        logit("Error with interface to 'org.bluez', '/org/bluez/hci0', 'org.bluez.GattManager1'");
-        console.error('Failed to request interface ', err)
-      } else {
-        iface.RegisterApplication('/com/sampleApp', [], (err, result)=>{
-          if(err){
-            logit('Error registerGattService, RegisterApplication method.')
-            console.error('Error registerGattService, RegisterApplication method.', err);
-          } else {
-            logit('RegisterApplication called.  Result = ' + result);
-          };
-        })
-      };
-    })
   };
 
   /**
