@@ -50,6 +50,8 @@ class blePeripheral extends EventEmitter{
     this.client = Client;
     this.logAllDBusMessages = true;
     this.logCharacteristicsIO = false;
+    this.TSregisterGattService()
+    return
     try{
       this._dbusService = Dbus.registerService('system', this.serviceName);
       this._rootDBusObj = this._dbusService.createObject(this.servicePath);
@@ -110,6 +112,31 @@ class blePeripheral extends EventEmitter{
     //     );
     //   }
     // });
+  };
+
+  TSregisterGattService(){
+    logit('calling RegisterApplication on org.bluez...')
+    // let rsltBuffer = cp.execSync('/usr/bin/gdbus call --system --dest org.bluez --object-path /org/bluez/hci0 --method org.bluez.GattManager1.RegisterApplication "/com/sampleApp" "{\'string\':<\'\'>}"');
+    // logit('result = ' + rsltBuffer);
+
+
+    var bus = Dbus.getBus('system');
+
+    bus.getInterface('org.bluez', '/org/bluez/hci0', 'org.bluez.GattManager1',(err, iface)=>{
+      if(err){
+        logit("Error with interface to 'org.bluez', '/org/bluez/hci0', 'org.bluez.GattManager1'");
+        console.error('Failed to request interface ', err)
+      } else {
+        iface.RegisterApplication('/com/sampleApp', [], (err, result)=>{
+          if(err){
+            logit('Error registerGattService, RegisterApplication method.')
+            console.error('Error registerGattService, RegisterApplication method.', err);
+          } else {
+            logit('RegisterApplication called.  Result = ' + result);
+          };
+        })
+      };
+    })
   };
 
   /**
