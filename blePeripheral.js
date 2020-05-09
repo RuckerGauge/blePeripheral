@@ -75,11 +75,7 @@ class blePeripheral extends EventEmitter{
       logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
       logit('Setup and initialize GATT service...');
       this.gattService.createObjManagerIface(allCharacteristics);
-      setTimeout(()=>{
-        logit('bang')
-        this.gattService.registerGattService();
-      },5000);
-      
+      // this.gattService.registerGattService();
       // if(this.primaryService == true){this.Advertisement.startAdvertising()};
     });
       
