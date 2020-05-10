@@ -16,4 +16,7 @@ function main(){
 };
 
 
-
+// "dependencies": {
+//     "dbus-native": "^0.4.0",
+//     "dbus": "git+https://github.com/RuckerGauge/node-dbus.git#addSupportForObjectPath"
+//   }
