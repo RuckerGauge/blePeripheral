@@ -48,7 +48,7 @@ class blePeripheral extends EventEmitter{
     this.serverUUID = ServerUUID;
     this.servicePath = `/${this.serviceName.replace(/\./g, '/')}`;        // Replace . with / (com.netConfig = /com/netConfig).;
     this.client = Client;
-    this.logAllDBusMessages = true;
+    this.logAllDBusMessages = false;
     this.logCharacteristicsIO = false;
     
     try{
