@@ -1,6 +1,6 @@
 {
   "name": "ble-peripheral",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Creates a BLE peripheral based on D-Bus and bluez -v5.50. Suggested platform = Raspberry Pi Zero W.",
   "main": "blePeripheral.js",
   "publishConfig": { "registry": "https://npm.pkg.github.com/" },
@@ -20,7 +20,6 @@
     "url": "https://github.com/RuckerGauge/blePeripheral/issues"
   },
   "dependencies": {
-    "dbus-native": "^0.4.0",
     "dbus": "git+https://github.com/RuckerGauge/node-dbus.git#JR_addSupportForObjectPath"
   }
 }

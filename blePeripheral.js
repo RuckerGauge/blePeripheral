@@ -1,6 +1,5 @@
 const EventEmitter =      require("events");
 const cp =                require('child_process');
-// const DBusOld =           require("dbus-native");
 const Dbus =              require("dbus");
 const DeviceClass =       require("./lib/deviceClass.js");
 const AdapterClass =      require("./lib/adapterClass.js");
@@ -63,8 +62,8 @@ class blePeripheral extends EventEmitter{
     // //To Do the next 4 class need to be rewirtten. 
     this.Device = new DeviceClass(); 
     this.Adapter = new AdapterClass();
-    this.gattService = new GattService(this._dBusClient, this._dbusService, this.servicePath, this.serverUUID);       
-    // this.Advertisement = new Advertisement(this[dbusOld], this.servicePath, this.serverUUID);   //I think we need to pass this#dbusService to this class
+    this.gattService = new GattService(this._dBusClient, this._dbusService, this.servicePath, this.serverUUID);   
+    this.Advertisement = new Advertisement(this._dBusClient, this._dbusService, this.servicePath, this.serverUUID)    
     
     this._connectionManager();
     this.Adapter.pairModeOn(false);
@@ -76,7 +75,7 @@ class blePeripheral extends EventEmitter{
       logit('Setup and initialize GATT service...');
       this.gattService.createObjManagerIface(allCharacteristics);
       this.gattService.registerGattService();
-      // if(this.primaryService == true){this.Advertisement.startAdvertising()};
+      if(this.primaryService == true){this.Advertisement.startAdvertising()};
     });
       
     
