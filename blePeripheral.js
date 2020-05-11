@@ -64,7 +64,7 @@ class blePeripheral extends EventEmitter{
     this.Device = new DeviceClass(); 
     this.Adapter = new AdapterClass();
     this.gattService = new GattService(this._dBusClient, this._rootNodeObj, this.servicePath, this.serverUUID);   
-    // this.Advertisement = new Advertisement(this._dBusClient, this._dbusService, this.servicePath, this.serverUUID)    
+    this.Advertisement = new Advertisement(this._dBusClient, this._rootNodeObj, this.servicePath, this.serverUUID)    
     
     this._connectionManager();
     this.Adapter.pairModeOn(false);
@@ -76,7 +76,7 @@ class blePeripheral extends EventEmitter{
       logit('Setup and initialize GATT service...');
       this.gattService.createObjManagerIface(allCharacteristics);
       this.gattService.registerGattService();
-      // if(this.primaryService == true){this.Advertisement.startAdvertising()};
+      if(this.primaryService == true){this.Advertisement.startAdvertising()};
     });
       
     
