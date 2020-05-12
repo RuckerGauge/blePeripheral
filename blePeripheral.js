@@ -1,6 +1,6 @@
 const EventEmitter =      require("events");
 const cp =                require('child_process');
-const Dbus =              require("dbus");
+const DBus =              require("dbus");
 const DeviceClass =       require("./lib/deviceClass.js");
 const AdapterClass =      require("./lib/adapterClass.js");
 const Characteristic =    require("./lib/characteristicClass.js");
@@ -51,19 +51,14 @@ class blePeripheral extends EventEmitter{
     this.logCharacteristicsIO = false;
     
     this._dbusClient = {};
-    // this._dbusService = {};
-    // this._rootNodeObj = {};
-    // try{
-      logit('Constructing dbus interface...')
-      // this._dBusClient = Dbus.getBus('system');      
-      logit('service = ' + this.serviceName);
-      this._dbusService = Dbus.registerService('system', this.serviceName);
-      logit('servicePath = ' + this.servicePath);
-      this._rootNodeObj = this._dbusService.createObject(this.servicePath);
-    // } catch (err) {
-    //   console.error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory', err);
-    //   throw new Error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory');
-    // }
+
+    logit('Constructing dbus interface...')
+    // this._dBusClient = Dbus.getBus('system');      
+    logit('service = ' + this.serviceName);
+    this._dbusService = DBus.registerService('system', this.serviceName);
+    logit('servicePath = ' + this.servicePath);
+    this._rootNodeObj = this._dbusService.createObject(this.servicePath);
+
     logit(`Successfully requested service name "${this.serviceName}"!`);
     
     // //To Do the next 4 class need to be rewirtten. 
