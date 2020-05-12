@@ -27,7 +27,7 @@ var obj = service.createObject('/com/sampleApp');
 
 // Create interface
 
-var iface1 = obj.createInterface('com.sampleApp.org.bluez.GattService1');
+var iface1 = obj.createInterface('org.bluez.GattService1');
 
 iface1.addProperty('Primary', {
 	type: {type: 'b'},
