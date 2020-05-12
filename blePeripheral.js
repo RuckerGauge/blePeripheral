@@ -64,6 +64,7 @@ class blePeripheral extends EventEmitter{
 
 
     logit(`Successfully requested service name "${this.serviceName}"!`);
+    console.dir(this._rootNodeObj, {depth:null});
     
     // //To Do the next 4 class need to be rewirtten. 
     // this.Device = new DeviceClass(); 
@@ -81,7 +82,7 @@ class blePeripheral extends EventEmitter{
       logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
       logit('Setup and initialize GATT service...');
       this.gattService.createObjManagerIface(allCharacteristics);
-      this.gattService.registerGattService();
+      // this.gattService.registerGattService();
       // if(this.primaryService == true){this.Advertisement.startAdvertising()};
     });
       
