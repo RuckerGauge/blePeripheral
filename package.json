@@ -20,6 +20,6 @@
     "url": "https://github.com/RuckerGauge/blePeripheral/issues"
   },
   "dependencies": {
-    "dbus": "git+https://github.com/RuckerGauge/node-dbus.git#JR_addSupportForObjectPath"
+    "dbus": "^1.0.7"
   }
 }
