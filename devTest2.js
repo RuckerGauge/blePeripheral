@@ -23,7 +23,7 @@
 const DBus =              require("dbus");
 
 var service = DBus.registerService('system', 'com.sampleApp');
-var obj = service.createObject('/nodejs/dbus/ExampleService');
+var obj = service.createObject('/com/sampleApp');
 
 // Create interface
 
