@@ -54,11 +54,11 @@ class blePeripheral extends EventEmitter{
 
     logit('Constructing dbus interface...')
     logit('getting client interface...');
-    this._dBusClient = DBus.getBus('system');   
-    console.dir(this._dBusClient, {depth:null});
+    // this._dBusClient = DBus.getBus('system');   
+    
     
     logit('service = ' + this.serviceName);
-    this._dbusService = this._dBusClient.DBus.registerService('system', this.serviceName);
+    this._dbusService = DBus.registerService('system', this.serviceName);
     logit('servicePath = ' + this.servicePath);
     this._rootNodeObj = this._dbusService.createObject(this.servicePath);
 
@@ -82,7 +82,7 @@ class blePeripheral extends EventEmitter{
       logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
       logit('Setup and initialize GATT service...');
       this.gattService.createObjManagerIface(allCharacteristics);
-      // this.gattService.registerGattService();
+      this.gattService.registerGattService();
       // if(this.primaryService == true){this.Advertisement.startAdvertising()};
     });
       
