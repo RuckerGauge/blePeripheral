@@ -181,7 +181,7 @@ getter: (callback)=>{
 iface1.update();
 
 // Emit signal per one second
-setInterval(function() {
-	counter++;
-	iface1.emit('pump', counter);
-}, 1000);
+// setInterval(function() {
+// 	counter++;
+// 	iface1.emit('pump', counter);
+// }, 1000);
