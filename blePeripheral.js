@@ -50,10 +50,15 @@ class blePeripheral extends EventEmitter{
     this.logAllDBusMessages = false;
     this.logCharacteristicsIO = false;
     
+    this._dbusClient = {};
+    this._dbusService = {};
+    this._rootNodeObj = {};
     try{
-      // this._dBusClient = Dbus.getBus('system');
-      this._dbusClient - {}
+      logit('Constructing dbus interface...')
+      // this._dBusClient = Dbus.getBus('system');      
+      logit('service = ' + this.serviceName);
       this._dbusService = Dbus.registerService('system', this.serviceName);
+      logit('servicePath = ' + this.servicePath);
       this._rootNodeObj = this._dbusService.createObject(this.servicePath);
     } catch (err) {
       console.error('Could not connect to the DBus system bus.  Check .conf file in the /etc/dbus-1/system.d directory', err);
