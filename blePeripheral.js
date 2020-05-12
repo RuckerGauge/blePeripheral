@@ -58,7 +58,7 @@ class blePeripheral extends EventEmitter{
     console.dir(this._dBusClient, {depth:null});
     
     logit('service = ' + this.serviceName);
-    this._dbusService = DBus.registerService('system', this.serviceName);
+    this._dbusService = this._dBusClient.DBus.registerService('system', this.serviceName);
     logit('servicePath = ' + this.servicePath);
     this._rootNodeObj = this._dbusService.createObject(this.servicePath);
 
