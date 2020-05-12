@@ -27,7 +27,7 @@ var obj = service.createObject('/nodejs/dbus/ExampleService');
 
 // Create interface
 
-var iface1 = obj.createInterface('nodejs.dbus.ExampleService.Interface1');
+var iface1 = obj.createInterface('com.sampleApp.org.bluez.GattService1');
 
 iface1.addMethod('Dummy', {}, function(callback) {
 	setTimeout(function() {
