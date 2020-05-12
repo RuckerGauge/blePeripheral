@@ -60,14 +60,14 @@ class blePeripheral extends EventEmitter{
     logit(`Successfully requested service name "${this.serviceName}"!`);
     
     // //To Do the next 4 class need to be rewirtten. 
-    // this.Device = new DeviceClass(); 
-    // this.Adapter = new AdapterClass();
+    this.Device = new DeviceClass(); 
+    this.Adapter = new AdapterClass();
     this.gattService = new GattService(this._dBusClient, this._rootNodeObj, this.servicePath, this.serverUUID);   
 
     // this.Advertisement = new Advertisement(this._dBusClient, this._rootNodeObj, this.servicePath, this.serverUUID)    
     
-    // this._connectionManager();
-    // this.Adapter.pairModeOn(false);
+    this._connectionManager();
+    this.Adapter.pairModeOn(false);
 
     process.nextTick(()=>{
       logit('* * * * * * * callback to setup characteristics * * * * * * *')
