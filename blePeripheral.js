@@ -70,15 +70,15 @@ class blePeripheral extends EventEmitter{
     // this._connectionManager();
     // this.Adapter.pairModeOn(false);
 
-    process.nextTick(()=>{
-      logit('* * * * * * * callback to setup characteristics * * * * * * *')
-      // callback()
-      logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
-      logit('Setup and initialize GATT service...');
-      // this.gattService.createObjManagerIface(allCharacteristics);
-      // this.gattService.registerGattService();
-      // if(this.primaryService == true){this.Advertisement.startAdvertising()};
-    });
+    // process.nextTick(()=>{
+    //   logit('* * * * * * * callback to setup characteristics * * * * * * *')
+    //   // callback()
+    //   logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
+    //   logit('Setup and initialize GATT service...');
+    //   // this.gattService.createObjManagerIface(allCharacteristics);
+    //   // this.gattService.registerGattService();
+    //   // if(this.primaryService == true){this.Advertisement.startAdvertising()};
+    // });
       
     
 
