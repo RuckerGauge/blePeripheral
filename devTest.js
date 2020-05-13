@@ -14,6 +14,27 @@ function main(){
     var isAuthorized =  bPrl.Characteristic('00000001-94f3-4011-be53-6ac36bf22cf1', 'isAuthorized', ["read","write-without-response"]);
     var cmd =           bPrl.Characteristic('00000002-94f3-4011-be53-6ac36bf22cf1', 'cmd', ["read","write"]);
     var cpuTemp =       bPrl.Characteristic('00000006-94f3-4011-be53-6ac36bf22cf1', 'cpuTemp', ["encrypt-read","notify"]);    
+
+    var temp = 1;
+    setInterval(()=>{
+        if(cpuTemp.iface.Notifying){
+            cpuTemp.notify(temp.toString());
+            temp++;
+        }
+    },10000);
+
+    cmd.setValue('Enter a command number:');
+
+    isAuthorized.on('ReadValue', (device)=>{
+        console.log(bPrl.client.name + ', ' + device + ' has connected and checking if it is authorized');
+        if(bPrl.client.paired == true){
+          console.log('\tpaired = true');
+          isAuthorized.setValue(Buffer.from('true'));
+        } else {
+          console.log('\tpaired = false');
+          isAuthorized.setValue(Buffer.from('false'));
+        };
+    });
 };
 
 
