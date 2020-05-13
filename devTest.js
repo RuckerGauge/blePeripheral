@@ -18,7 +18,7 @@ function main(){
     var temp = 1;
     setInterval(()=>{
         if(cpuTemp.iface.Notifying){
-            cpuTemp.notify(temp.toString());
+            cpuTemp.notify('the number is ' + temp);
             temp++;
 
             if(temp > 10){
