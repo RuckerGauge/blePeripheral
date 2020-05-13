@@ -62,3 +62,7 @@ That’s it, your bound to your iPhone and off and running.  However, there is o
  * dbus-send --system --dest=com.sampleApp --print-reply /com/sampleApp/cmd org.bluez.GattCharacteristic1.ReadValue array:string:[[device,x/y/z],[offset,0]]
  * dbus-send --system --dest=com.sampleApp --print-reply=literal /com/sampleApp/cmd org.bluez.GattCharacteristic1.WriteValue string:"tips" array:string:[[device,x/y/z],[offset,0]]
  * dbus-send --system --dest=com.sampleApp --print-reply /com/sampleApp org.freedesktop.DBus.ObjectManager.GetManagedObjects
+ * gdbus call --system --dest org.bluez --object-path /org/bluez/hci0 --method org.bluez.GattManager1.RegisterApplication "/com/sampleApp" "{'string':<''>}"
+ * gdbus call --system --dest org.bluez --object-path /org/bluez/hci0 --method org.bluez.GattManager1.RegisterApplication "/com/sampleApp" "{}"
+ * gdbus call --system --dest com.sampleApp --object-path /com/sampleApp --method org.freedesktop.DBus.ObjectManager.GetManagedObjects
+ * cp.execSync('/usr/bin/gdbus call --system --dest org.bluez --object-path /org/bluez/hci0 --method org.bluez.GattManager1.RegisterApplication "/com/sampleApp" "{\'string\':<\'\'>}"')

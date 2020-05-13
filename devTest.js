@@ -42,6 +42,11 @@ function main(){
     });
 };
 
+setTimeout(()=>{
+    console.log('Restarting...')
+    bPrl.restartGattService();
+},60000)
+
 
 
 
