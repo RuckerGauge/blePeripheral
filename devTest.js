@@ -20,6 +20,10 @@ function main(){
         if(cpuTemp.iface.Notifying){
             cpuTemp.notify(temp.toString());
             temp++;
+
+            if(temp > 10){
+                cpuTemp.clearNotify();
+            }
         }
     },10000);
 
