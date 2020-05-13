@@ -55,3 +55,10 @@ That’s it, your bound to your iPhone and off and running.  However, there is o
 
  ## See this class in action
  The Raspberry Pi used in the GDT at https://WallGauge.com is based on this library.  Scroll to the bottom of the page to see a video of how the pairing works with an iPhone.
+
+ ## Tools
+ * gdbus introspect --system --dest com.sampleApp --object-path / --recurse  To see this dBus interface
+ * gdbus call --system --dest com.sampleApp --object-path /com/sampleApp --method org.bluez.GattCharacteristic1.ReadValue
+ * dbus-send --system --dest=com.sampleApp --print-reply /com/sampleApp/cmd org.bluez.GattCharacteristic1.ReadValue array:string:[[device,x/y/z],[offset,0]]
+ * dbus-send --system --dest=com.sampleApp --print-reply=literal /com/sampleApp/cmd org.bluez.GattCharacteristic1.WriteValue string:"tips" array:string:[[device,x/y/z],[offset,0]]
+ * dbus-send --system --dest=com.sampleApp --print-reply /com/sampleApp org.freedesktop.DBus.ObjectManager.GetManagedObjects
