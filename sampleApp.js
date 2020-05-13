@@ -36,7 +36,7 @@ function main(DBus){
 
   cmd.on('WriteValue', (device, arg1)=>{
     console.log(device + ' has sent a new cmd = ' + arg1[0]);
-    var cmdNum = arg1.toString();
+    var cmdNum = String.fromCharCode(arg1);
     switch (cmdNum) {
       case '1':
         console.log('Enable test pairing command received.');
