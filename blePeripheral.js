@@ -19,27 +19,27 @@ var Client = {
   name:""
 }
 
-/**
- * This class creates a Bluetooth LE Peripheral as a D-Bus system service according to the bluez API.  For more information see the gatt-api.txt, agent-api.txt, advertising-api.txt and device-api.txt on the bluez.git found here: https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc
- * 
- * This class creates a LEAdvertisement packet with the serverUUID.  This advertisement packet will be visible to clients and will allow them to find the server and connect.  Once a connection is established the advertisement will stop until the client disconnects.   
- * 
- * This class controles the pairing property of the BT adapter.  By default pairing is disabled and can be enabled by calling the pairModeOn(true) method.  The pairing / bonding process is triggered when a user tries to access a secure characteristic. 
- * 
- * emits **.on('ConnectionChange', (connected))** when a new Bluetooth LE client connects or disconnects. Only detects bonded devices.
- * emits **.on('pairKey',(pKey, obj)** called with the pair key when a client tries to pair with server.  Set this.pairButtonPushed = true to allow user to pari with device.
- * 
- * * **ServiceName**: Is the service name for the GATT server.  A GATT Server is a collection of Characteristics.  This Service Name will be hosted on the D-Bus system bus and must be referenced in a .conf file in the /etc/dbus-1/system.d directory (see the netConfig.conf for an example)
- * * **ServerUUID**: This is the UUID for the Bluetooth LE server.  If you need a number visit https://www.uuidgenerator.net/.  
- * * **callback**: The callback is called once the server has been successfully registered on the system D-Bus.  It must configure at least one characteristic using the Characteristic method in this class (see sampleApp.js main() for an example).
- * * **PrimryService**:  Set to true if this server is going to advertise its services (it is the primary service).  Set it to false if another app is already advertising a service. 
- * 
- * @param {string} ServiceName example: 'com.netConfig'
- * @param {string} ServerUUID example: '5a0379a8-d692-41d6-b51a-d1730ea6b9d6'
- * @param {object} callback
- * @param {boolean} PrimaryService example: true
- */
 class blePeripheral extends EventEmitter{
+  /**
+   * This class creates a Bluetooth LE Peripheral as a D-Bus system service according to the bluez API.  For more information see the gatt-api.txt, agent-api.txt, advertising-api.txt and device-api.txt on the bluez.git web site found here: https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc
+   * 
+   * This class creates a LEAdvertisement packet with the serverUUID.  This advertisement packet will be visible to clients and will allow them to find the server and connect.   
+   * 
+   * This class controles the pairing property of the BT adapter.  By default pairing is disabled and can be enabled by calling the pairModeOn(true) method.  The pairing / bonding process is triggered when a user tries to access a secure characteristic. 
+   * 
+   * emits **.on('ConnectionChange', (connected))** when a new Bluetooth LE client connects or disconnects. Only detects bonded devices.
+   * emits **.on('pairKey',(pKey, obj)** called with the pair key when a client tries to pair with server.  Set this.pairButtonPushed = true to allow user to pair with device.
+   * 
+   * * **ServiceName**: Is the service name for the GATT server.  A GATT Server is a collection of Characteristics.  This Service Name will be hosted on the D-Bus system bus and must be referenced in a .conf file in the /etc/dbus-1/system.d directory (see the netConfig.conf for an example)
+   * * **ServerUUID**: This is the UUID for the Bluetooth LE server.  If you need a number visit https://www.uuidgenerator.net/.  
+   * * **callback**: The callback is called once the server has been successfully registered on the system D-Bus.  The callback must configure at least one characteristic using the Characteristic method in this class (see sampleApp.js main() for an example).
+   * * **PrimryService**:  Set to true if this server is going to advertise its services (it is the primary service).  Set it to false if another app is already advertising a service. 
+   * 
+   * @param {string} ServiceName 
+   * @param {string} ServerUUID 
+   * @param {object} callback 
+   * @param {boolean} PrimaryService 
+   */
   constructor(ServiceName ='com.netConfig', ServerUUID = '4b1268a8-d692-41d6-b51a-d1730ea6b9d6', callback = function(){}, PrimaryService = true){
     super();
     this.primaryService = PrimaryService;
@@ -50,8 +50,6 @@ class blePeripheral extends EventEmitter{
     this.logAllDBusMessages = false;
     this.logCharacteristicsIO = false;
     
-
-
     logit('Constructing dbus interface...') 
     this._dbusService = DBus.registerService('system', this.serviceName);
     this._rootNodeObj = this._dbusService.createObject(this.servicePath);
@@ -59,11 +57,9 @@ class blePeripheral extends EventEmitter{
 
     logit(`Successfully requested service name "${this.serviceName}"!`);
     
-    // //To Do the next 4 class need to be rewirtten. 
     this.Device = new DeviceClass(); 
     this.Adapter = new AdapterClass();
     this.gattService = new GattService(this._dBusClient, this._rootNodeObj, this.servicePath, this.serverUUID);   
-    // this.Advertisement = new Advertisement(this._dBusClient, this._rootNodeObj, this.servicePath, this.serverUUID);    
     this.Advertisement = new Advertisement(this._dBusClient, this._rootNodeObj, this.servicePath, this.serverUUID); 
 
     this._connectionManager();
@@ -78,38 +74,6 @@ class blePeripheral extends EventEmitter{
       this.gattService.registerGattService();
       if(this.primaryService == true){this.Advertisement.startAdvertising()};
     });
-      
-    
-
-
-    // this[dbusOld].requestName(this.serviceName, 0x4, (err, retCode) => {                               // The 0x4 flag means that we don't want to be queued if the service name we are requesting is already
-    //   // If there was an error, warn user and fail
-    //   if (err) {
-    //     throw new Error(
-    //       `Could not request service name ${this.serviceName}, the error was: ${err}.`
-    //     );
-    //   }
-
-
-    //   if (retCode === 1) {                                                              // Return code 0x1 means we successfully had the name
-    //     console.debug(`Successfully requested service name "${this.serviceName}"!`);
-    //     this._connectionManager();
-    //     this.Adapter.pairModeOn(false);
-    //     console.debug('blePdripheral.js -> * * * * * * * callback to setup characteristics * * * * * * *')
-    //     callback(this[dbusOld]);
-    //     console.debug('blePdripheral.js -> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
-    //     console.debug('blePdripheral.js -> Setup and initialize GATT service...');
-    //     this.gattService.createObjManagerIface(allCharacteristics);
-    //     this.gattService.registerGattService();
-    //     if(this.primaryService == true){
-    //       this.Advertisement.startAdvertising();
-    //     }
-    //   } else {                                                                      
-    //     throw new Error(                                                                //(https://dbus.freedesktop.org/doc/api/html/group__DBusShared.html#ga37a9bc7c6eb11d212bf8d5e5ff3b50f9)
-    //       `Failed to request service name "${this.serviceName}". Check what return code "${retCode}" means. See https://dbus.freedesktop.org/doc/api/html/group__DBusShared.html#ga37a9bc7c6eb11d212bf8d5e5ff3b50f9`
-    //     );
-    //   }
-    // });
   };
 
   /**
@@ -118,11 +82,11 @@ class blePeripheral extends EventEmitter{
    * Note: this has no affect on advertisement packet.
    */
   restartGattService(){
-    console.debug('blePdripheral.js -> Clearing all notifications...');
+    logit('Clearing all notifications...');
     this.gattService.clearAllNotifications(allCharacteristics);
-    console.debug('blePdripheral.js -> Unregistering Gatt Service...');
+    logit('Unregistering Gatt Service...');
     this.gattService.unRegisterGattService();
-    console.debug('blePdripheral.js -> Reregistering Gatt Service...');
+    logit('Reregistering Gatt Service...');
     this.gattService.registerGattService();
   };
 
@@ -154,16 +118,6 @@ class blePeripheral extends EventEmitter{
     allCharacteristics.push(x);
     return (x);
   };
-
-  //   function spawnCommand(command = '/bin/journalctl', args = ['-f', '-urgMan'], log = (val)=>{console.log('--> '+val+' <--')}){
-  //     spawnedCmd = cp.spawn(command, args);
-  //     spawnedCmd.stdout.on('data', ((data)=>{
-  //         notifyChunck(data, log);
-  //     }));
-  //     spawnedCmd.stderr.on('data', ((data)=>{
-  //         log('Err->' + data);
-  //     }));
-  // };
 
   _connectionManager(){
     logit('setting up monitoring of org.bluez for events..');
