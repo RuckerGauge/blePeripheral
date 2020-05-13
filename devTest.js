@@ -20,11 +20,12 @@ function main(){
         if(cpuTemp.iface.Notifying){
             cpuTemp.notify('the number is ' + temp);
             temp++;
-
             if(temp > 10){
                 cpuTemp.clearNotify();
             }
-        }
+        } else {
+            temp = 1;
+        };
     },10000);
 
     cmd.setValue('Enter a command number:');
