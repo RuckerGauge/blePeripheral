@@ -35,8 +35,8 @@ function main(DBus){
   });
 
   cmd.on('WriteValue', (device, arg1)=>{
-    console.log(device + ' has sent a new cmd = ' + arg1[0]);
     var cmdNum = String.fromCharCode(arg1);
+    console.log(device + ' has sent a new cmd = ' + cmdNum);
     switch (cmdNum) {
       case '1':
         console.log('Enable test pairing command received.');
@@ -49,30 +49,36 @@ function main(DBus){
       break;
 
       case '3':
-      console.log('Display adapter properties:')
-      bPrl.Adapter.logAllProperties()
-      .then(rsltObj =>{
-        cmd.notify(JSON.stringify(rsltObj));
-      })
-      .catch(err=>{
-        console.error('Error calling Display adapter properties', err);
-      });
+        console.log('Display adapter properties:')
+        bPrl.Adapter.logAllProperties()
+        .then(rsltObj =>{
+          cmd.notify(JSON.stringify(rsltObj));
+        })
+        .catch(err=>{
+          console.error('Error calling Display adapter properties', err);
+        });
       break;
 
       case '4':
-      console.log('Connected device properties:')
-      bPrl.Device.logAllProperties(bPrl.client.devicePath)
-      .then(rsltObj =>{
-        cmd.notify(JSON.stringify(rsltObj));
-      })
-      .catch(err=>{
-        console.error('Error calling Connected device properties', err);
-      });
+        console.log('Connected device properties:')
+        bPrl.Device.logAllProperties(bPrl.client.devicePath)
+        .then(rsltObj =>{
+          cmd.notify(JSON.stringify(rsltObj));
+        })
+        .catch(err=>{
+          console.error('Error calling Connected device properties', err);
+        });
       break;
 
       case '5':
-      console.log('Testing setting trusted to true');
-      bPrl.Device.setBooleanProperty('Trusted', true);
+        console.log('Testing setting trusted to true');
+        bPrl.Device.setBooleanProperty('Trusted', true);
+      break;
+
+      case '6':
+        console.log('Testing setting trusted to false');
+        bPrl.Device.setBooleanProperty('Trusted', false);
+      break;
     
       default:
         console.log('no case for ' + cmdNum);
