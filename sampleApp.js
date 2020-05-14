@@ -77,7 +77,7 @@ function main(DBus){
 
       case '6':
         console.log('Testing setting trusted to false');
-        bPrl.Device.setBooleanProperty('rusted', false);
+        bPrl.Device.setBooleanProperty('Trusted', 'false');
       break;
     
       default:
