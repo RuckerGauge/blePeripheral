@@ -97,7 +97,11 @@ bPrl.on('ConnectionChange', (connected)=>{
     console.log('--> ' + bleUserName + ' has connected to this server at ' + (new Date()).toLocaleTimeString());
     if(bPrl.client.paired == false){
       console.log('--> ' + 'CAUTION: This BLE device is not authenticated.');
-    }
+    } else if(bPrl.client.paired == true){
+      console.log('--> This device is paired and can read and write encrypted characteristics.')
+    } else {
+      console.warn("--> this device's paired state is not an expected value: " + bPrl.client.paired);
+    };
   } else {
     console.log('<-- ' + bleUserName + ' has disconnected from this server at ' + (new Date()).toLocaleTimeString());
     
