@@ -79,3 +79,6 @@ That’s it, your bound to your iPhone and off and running.  However, there is o
  Looks like we can change the interval with the RegisgerAdvertisement command https://chromium.googlesource.com/chromiumos/third_party/bluez/+/chromeos-5.39/test/example-advertising-intervals and https://github.com/krichter722/bluez/blob/master/test/example-advertisement 
  trying to find the parameter to pass here are some notes
     https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/mgmt-api.txt#n2570
+    looks like there is a patch for bluez Bluez PATCH v1 0/6] Add support of setting advertiing intervals https://www.spinics.net/lists/linux-bluetooth/msg84105.html
+
+Okay looks like we need to wait unitl this is implemented https://lkml.org/lkml/2020/3/30/1024 for the pi OS. 
