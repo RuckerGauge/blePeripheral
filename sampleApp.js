@@ -52,7 +52,7 @@ function main(DBus){
       console.log('Display adapter properties:')
       bPrl.Adapter.logAllProperties()
       .then(rsltObj =>{
-        cmd.notify(JSON.stringify(rsltObj))
+        cmd.notify(JSON.stringify(rsltObj));
       })
       .catch(err=>{
         console.error('Error calling Display adapter properties', err);
@@ -63,7 +63,7 @@ function main(DBus){
       console.log('Connected device properties:')
       bPrl.Device.logAllProperties(bPrl.client.devicePath)
       .then(rsltObj =>{
-        console.log('we Got it.')
+        cmd.notify(JSON.stringify(rsltObj));
       })
       .catch(err=>{
         console.error('Error calling Connected device properties', err);
