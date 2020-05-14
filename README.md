@@ -66,3 +66,16 @@ That’s it, your bound to your iPhone and off and running.  However, there is o
  * gdbus call --system --dest org.bluez --object-path /org/bluez/hci0 --method org.bluez.GattManager1.RegisterApplication "/com/sampleApp" "{}"
  * gdbus call --system --dest com.sampleApp --object-path /com/sampleApp --method org.freedesktop.DBus.ObjectManager.GetManagedObjects
  * cp.execSync('/usr/bin/gdbus call --system --dest org.bluez --object-path /org/bluez/hci0 --method org.bluez.GattManager1.RegisterApplication "/com/sampleApp" "{\'string\':<\'\'>}"')
+
+ notes on BLE advertisement frequency 
+ hcitool command https://stackoverflow.com/questions/21124993/is-there-a-way-to-increase-ble-advertisement-frequency-in-bluez
+ https://unix.stackexchange.com/questions/536619/is-it-possible-to-change-the-default-advertising-interval-in-bluez
+ hcitool bash https://github.com/floe/BTLE/blob/master/bluez_adv.sh
+
+ To changed the min advertisement interval to 200ms echo 320 | sudo tee /sys/kernel/debug/bluetooth/hci0/adv_min_interval.  
+ To changed the max advertisement interval to 300ms echo 480 | sudo tee /sys/kernel/debug/bluetooth/hci0/adv_max_interval.
+ The default is set to 2048.  2048 X 0.625ms = 1.28 seconds.
+
+ Looks like we can change the interval with the RegisgerAdvertisement command https://chromium.googlesource.com/chromiumos/third_party/bluez/+/chromeos-5.39/test/example-advertising-intervals and https://github.com/krichter722/bluez/blob/master/test/example-advertisement 
+ trying to find the parameter to pass here are some notes
+    https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/mgmt-api.txt#n2570
