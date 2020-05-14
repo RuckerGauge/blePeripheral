@@ -81,4 +81,5 @@ That’s it, your bound to your iPhone and off and running.  However, there is o
     https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/mgmt-api.txt#n2570
     looks like there is a patch for bluez Bluez PATCH v1 0/6] Add support of setting advertiing intervals https://www.spinics.net/lists/linux-bluetooth/msg84105.html
 
-Okay looks like we need to wait unitl this is implemented https://lkml.org/lkml/2020/3/30/1024 for the pi OS. 
+Okay looks like we need to wait unitl this is implemented https://lkml.org/lkml/2020/3/30/1024 for the pi OS. Appears to be available on android?? 
+    it works by adding two new methods to LEAdvertisingManager1
