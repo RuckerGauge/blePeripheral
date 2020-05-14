@@ -103,7 +103,8 @@ bPrl.on('ConnectionChange', (connected)=>{
     
     if(bPrl.areAnyCharacteristicsNotifying() == true){
       console.log('Restarting gatt services to cleanup leftover notifications...')
-      bPrl.restartGattService();
+      // bPrl.restartGattService();
+      bPrl.clearAllNotifications();
     };
   };
 });

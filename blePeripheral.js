@@ -89,6 +89,13 @@ class blePeripheral extends EventEmitter{
     logit('Reregistering Gatt Service...');
     this.gattService.registerGattService();
   };
+  /**
+   * calls clearNotify on all characteristics.  This should be called when a client disconnects
+   */
+  clearAllNotifications(){
+    logit('Clearing all notifications...');
+    this.gattService.clearAllNotifications(allCharacteristics);
+  }
 
   /** 
    * Checks all characteristics and returns true if any have iface.Notifying = true
