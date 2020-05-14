@@ -69,6 +69,10 @@ function main(DBus){
         console.error('Error calling Connected device properties', err);
       });
       break;
+
+      case '5':
+      console.log('Testing setting trusted to true');
+      bPrl.Device.setBooleanProperty('Trusted', true);
     
       default:
         console.log('no case for ' + cmdNum);
