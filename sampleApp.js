@@ -16,7 +16,7 @@ function main(DBus){
   bPrl.logCharacteristicsIO = true;
   console.log('Initialize charcteristics...');
   var isAuthorized =  bPrl.Characteristic('00000001-94f3-4011-be53-6ac36bf22cf1', 'isAuthorized', ["read","write-without-response"]);
-  var cmd =           bPrl.Characteristic('00000002-94f3-4011-be53-6ac36bf22cf1', 'cmd', ["read","write"]);
+  var cmd =           bPrl.Characteristic('00000002-94f3-4011-be53-6ac36bf22cf1', 'cmd', ["read","write","notify"]);
   var bigData =       bPrl.Characteristic('00000003-94f3-4011-be53-6ac36bf22cf1', 'bigData');
   var myIpAddress =   bPrl.Characteristic('00000004-94f3-4011-be53-6ac36bf22cf1', 'myIpAddress', ["encrypt-read"]);
   var cpuTemp =       bPrl.Characteristic('00000006-94f3-4011-be53-6ac36bf22cf1', 'cpuTemp', ["encrypt-read","notify"]);
@@ -52,7 +52,7 @@ function main(DBus){
       console.log('Display adapter properties:')
       bPrl.Adapter.logAllProperties()
       .then(rsltObj =>{
-        console.log('we Got it.')
+        cmd.notify(JSON.stringify(rsltObj))
       })
       .catch(err=>{
         console.error('Error calling Display adapter properties', err);
