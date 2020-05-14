@@ -50,12 +50,24 @@ function main(DBus){
 
       case '3':
       console.log('Display adapter properties:')
-      bPrl.Adapter.logAllProperties();
+      bPrl.Adapter.logAllProperties()
+      .then(rsltObj =>{
+        console.log('we Got it.')
+      })
+      .catch(err=>{
+        console.error('Error calling Display adapter properties', err);
+      });
       break;
 
       case '4':
       console.log('Connected device properties:')
-      bPrl.Device.logAllProperties(bPrl.client.devicePath);
+      bPrl.Device.logAllProperties(bPrl.client.devicePath)
+      .then(rsltObj =>{
+        console.log('we Got it.')
+      })
+      .catch(err=>{
+        console.error('Error calling Connected device properties', err);
+      });
       break;
     
       default:
