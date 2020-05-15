@@ -58,7 +58,7 @@ All classes have been rewritten to use the new dbus connection. I also rewrote t
  * sudo btmon
  * sudo dbus-monitor --system
 
- command line tools to view and call dbus methods
+ Command line tools to view and call dbus methods
  * gdbus introspect --system --dest com.sampleApp --object-path / --recurse  
  * gdbus call --system --dest org.bluez --object-path /org/bluez/hci0 --method org.bluez.GattManager1.RegisterApplication "/com/sampleApp" "{'string':<''>}"
  * gdbus call --system --dest org.bluez --object-path /org/bluez/hci0 --method org.bluez.GattManager1.RegisterApplication "/com/sampleApp" "{}"
