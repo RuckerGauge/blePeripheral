@@ -36,7 +36,7 @@ function main() {
 
     cmd.on('WriteValue', (device, arg1) => {
         // var cmdNum = String.fromCharCode(arg1);
-        var cmdNum = arg1;
+        var cmdNum = arg1.toString();
         console.log(device + ' has sent a new cmd = ' + cmdNum);
         switch (cmdNum) {
             case '1':
