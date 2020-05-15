@@ -79,6 +79,7 @@ class blePeripheral extends EventEmitter {
         logit('Reregistering Gatt Service...');
         this.gattService.registerGattService();
     };
+    
     /**
      * calls clearNotify on all characteristics.  This should be called when a client disconnects
      */
@@ -119,14 +120,13 @@ class blePeripheral extends EventEmitter {
 
     _connectionManager() {
         logit('setting up monitoring of org.bluez for events..');
-        let spawnedCmd = cp.spawn('/usr/bin/gdbus', ['monitor', '--system', '--dest', 'org.bluez'])
+        let spawnedCmd = cp.spawn('/usr/bin/gdbus', ['monitor', '--system', '--dest', 'org.bluez']);
         spawnedCmd.stdout.on('data', ((data) => {
             var strData = String(data);
             if (this.logAllDBusMessages) { logit(strData) };
             if (strData.trim().startsWith('/org/bluez/hci0/dev_')) {
                 let nodeId = strData.trim().split(':', 1)[0];
-                let devPars = strData.trim().split('org.bluez.Device1')[1].split('{')[1].split('}')[0]
-                // logit(nodeId + ' ' + devPars);
+                let devPars = strData.trim().split('org.bluez.Device1')[1].split('{')[1].split('}')[0];
                 if (devPars.includes("'ServicesResolved': <true>") || devPars.includes("'AddressType':")) {
                     this._emitConnectionChange(nodeId);
                 } else if (devPars.includes("'ServicesResolved': <false>")) {
@@ -163,7 +163,7 @@ class blePeripheral extends EventEmitter {
                     this.client.devicePath = nodeId;
                     this.client.paired = rslt[0];
                     this.client.name = rslt[1];
-                    this.client.connected = rslt[2]
+                    this.client.connected = rslt[2];
                     this.emit('ConnectionChange', this.client.connected, this.client.devicePath);
                     if (this.listenerCount('ConnectionChange') == 0) {
                         logit('Conneciton Event, time = ' + (new Date()).toLocaleTimeString());

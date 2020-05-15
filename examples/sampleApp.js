@@ -1,8 +1,8 @@
-const blePeripheral = require("./blePeripheral.js");
+const blePeripheral = require("../blePeripheral.js");
 const fs = require('fs');                        // Used to read CPU temperature in /sys/class/thermal/thermal_zone0/temp file.
 const cp = require('child_process');             // Used to spawn /bin/hostname -I to get IP Address.
 
-const serviceName = 'com.ssampleApp';                          // peripheral's DBus service name
+const serviceName = 'com.sampleApp';                          // peripheral's DBus service name
 const serviceUUID = '27b5244f-94f3-4011-be53-6ac36bf22cf1'    // UUID to advertise as an Bluetooh LE service
 
 var bigBuffer = Buffer.alloc(512, 'i');
@@ -12,14 +12,14 @@ bigBuffer[511] = 0xFF;
 console.log('Registering ->' + serviceName + '<- as a D-Bus system service...');
 const bPrl = new blePeripheral(serviceName, serviceUUID, main);
 
-function main(DBus) {
+function main() {
     bPrl.logCharacteristicsIO = true;
     console.log('Initialize charcteristics...');
-    var isAuthorized = bPrl.Characteristic('00000001-94f3-4011-be53-6ac36bf22cf1', 'isAuthorized', ["read", "write-without-response"]);
-    var cmd = bPrl.Characteristic('00000002-94f3-4011-be53-6ac36bf22cf1', 'cmd', ["read", "write", "notify"]);
-    var bigData = bPrl.Characteristic('00000003-94f3-4011-be53-6ac36bf22cf1', 'bigData');
-    var myIpAddress = bPrl.Characteristic('00000004-94f3-4011-be53-6ac36bf22cf1', 'myIpAddress', ["encrypt-read"]);
-    var cpuTemp = bPrl.Characteristic('00000006-94f3-4011-be53-6ac36bf22cf1', 'cpuTemp', ["encrypt-read", "notify"]);
+    var isAuthorized =  bPrl.Characteristic('00000001-94f3-4011-be53-6ac36bf22cf1', 'isAuthorized', ["read", "write-without-response"]);
+    var cmd =           bPrl.Characteristic('00000002-94f3-4011-be53-6ac36bf22cf1', 'cmd', ["read", "write", "notify"]);
+    var bigData =       bPrl.Characteristic('00000003-94f3-4011-be53-6ac36bf22cf1', 'bigData');
+    var myIpAddress =   bPrl.Characteristic('00000004-94f3-4011-be53-6ac36bf22cf1', 'myIpAddress', ["encrypt-read"]);
+    var cpuTemp =       bPrl.Characteristic('00000006-94f3-4011-be53-6ac36bf22cf1', 'cpuTemp', ["encrypt-read", "notify"]);
 
     console.log('Registering event handlers...');
 

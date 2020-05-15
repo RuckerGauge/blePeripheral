@@ -83,3 +83,5 @@ That’s it, your bound to your iPhone and off and running.  However, there is o
 
 Okay looks like we need to wait unitl this is implemented https://lkml.org/lkml/2020/3/30/1024 for the pi OS. Appears to be available on android?? 
     it works by adding two new methods to LEAdvertisingManager1
+
+requires gdbus
