@@ -15,7 +15,7 @@ var Client = {
     connected: false,
     paired: false,
     name: ""
-}
+};
 
 class blePeripheral extends EventEmitter {
     /**
@@ -23,7 +23,7 @@ class blePeripheral extends EventEmitter {
      * This class creates a LEAdvertisement packet with the serverUUID.  This advertisement packet will be visible to clients and will allow them to find the server and connect.   
      * This class controles the pairing property of the BT adapter.  By default pairing is disabled and can be enabled by calling the pairModeOn(true) method.  The pairing / bonding process is triggered when a user tries to access a secure characteristic. 
      * 
-     * emits **.on('ConnectionChange', (connected))** when a new Bluetooth LE client connects or disconnects. Only detects bonded devices.
+     * emits **.on('ConnectionChange', this.client.connected, this.client.devicePath)** when a new Bluetooth LE client connects or disconnects. Only detects bonded devices.
      * emits **.on('pairKey',(pKey, obj)** called with the pair key when a client tries to pair with server.  Set this.pairButtonPushed = true to allow user to pair with device.
      * 
      * @param {string} ServiceName Is the service name for the GATT server.  A GATT Server is a collection of Characteristics.  This Service Name will be hosted on the D-Bus system bus and must be referenced in a .conf file in the /etc/dbus-1/system.d directory (see the netConfig.conf for an example)
@@ -41,10 +41,10 @@ class blePeripheral extends EventEmitter {
         this.logAllDBusMessages = false;
         this.logCharacteristicsIO = false;
 
-        logit('Constructing dbus interface...')
+        logit('Constructing dbus interface...');
         this._dbusService = DBus.registerService('system', this.serviceName);
         this._rootNodeObj = this._dbusService.createObject(this.servicePath);
-        this._dBusClient = this._rootNodeObj.service.bus
+        this._dBusClient = this._rootNodeObj.service.bus;
 
         logit(`Successfully requested service name "${this.serviceName}"!`);
 
@@ -57,9 +57,9 @@ class blePeripheral extends EventEmitter {
         this.Adapter.pairModeOn(false);
 
         process.nextTick(() => {
-            logit('* * * * * * * callback to setup characteristics * * * * * * *')
-            callback()
-            logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
+            logit('* * * * * * * callback to setup characteristics * * * * * * *');
+            callback();
+            logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *');
             logit('Setup and initialize GATT service...');
             this.gattService.createObjManagerIface(allCharacteristics);
             this.gattService.registerGattService();
@@ -103,13 +103,14 @@ class blePeripheral extends EventEmitter {
      * 
      *  emits **.on('ReadValue', (device))** and **.on('WriteValue', (device, arg1)**, that can be consumed to intercept the reading and writting of .Value.  They will be emitted when a BLE central request to read or write a characteristic.
      *  
-     * * **UUID**: Is the unique UUID number for this characteristic. If you need a number visit https://www.uuidgenerator.net/
-     * * **node**: Is the node name for the characteristic (user friendly name)
-     * * **flags**: Is an optional array of strings used to determine the access to this characteristic.  See https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt#n236 for a list of supported flags. Default values are "encrypt-read","encrypt-write"
+     *  
+     * * **UUID**: example = '00000006-94f3-4011-be53-6ac36bf22cf1'
+     * * **node**: example = 'cpuTemp' 
+     * * **flags**: example = ["encrypt-read", "notify"]
      * 
-     * @param {string} UUID '00000001-94f3-4011-be53-6ac36bf22cf1'
-     * @param {string} node 'myVarName'
-     * @param {Array} flags [["encrypt-read", "notify", "encrypt-write"]]
+     * @param {string} UUID Is the unique UUID number for this characteristic. If you need a number visit https://www.uuidgenerator.net/
+     * @param {string} node Is the node name for the characteristic (user friendly name)
+     * @param {[string]} flags Are an optional array of strings used to determine the access to this characteristic.  See https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt#n236 for a list of supported flags. Default values are "encrypt-read","encrypt-write"
      */
     Characteristic(UUID, node, flags) {
         var x = new Characteristic(this._dbusService, this.servicePath, UUID, node, flags, this.logCharacteristicsIO);
