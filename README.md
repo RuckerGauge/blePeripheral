@@ -76,7 +76,7 @@ Another option appears to be changing the value in the adv_min_interval and adv_
  * To changed the max advertisement interval to 300ms echo 480 | sudo tee /sys/kernel/debug/bluetooth/hci0/adv_max_interval.
  * The default is set to 2048.  2048 X 0.625ms = 1.28 seconds.
 
-Came across this information for bluez Android.  It looks like they have a method in the advertisement class that will allow us to do that.  I hope this will be added to the standard version of bluez that runs on the Pi. 
+Came across this information for bluez Android.  It looks like they have a method in the advertisement class that will allow us to do it.  I hope this will be added to the standard version of bluez that runs on the Pi. 
 * RegisgerAdvertisement command https://chromium.googlesource.com/chromiumos/third_party/bluez/+/chromeos-5.39/test/
 * Node based example-advertising-intervals and https://github.com/krichter722/bluez/blob/master/test/example-advertisement 
 * looks like there is a patch for bluez Bluez PATCH v1 0/6 to add support of setting advertising intervals https://www.spinics.net/lists/linux-bluetooth/msg84105.html But I think this is just for Android
