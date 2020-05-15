@@ -23,12 +23,11 @@ class blePeripheral extends EventEmitter {
      * This class creates a LEAdvertisement packet with the serverUUID.  This advertisement packet will be visible to clients and will allow them to find the server and connect.   
      * This class controles the pairing property of the BT adapter.  By default pairing is disabled and can be enabled by calling the pairModeOn(true) method.  The pairing / bonding process is triggered when a user tries to access a secure characteristic. 
      * 
-     * emits **.on('ConnectionChange', this.client.connected, this.client.devicePath)** when a new Bluetooth LE client connects or disconnects. Only detects bonded devices.
-     * emits **.on('pairKey',(pKey, obj)** called with the pair key when a client tries to pair with server.  Set this.pairButtonPushed = true to allow user to pair with device.
+     * emits **.on('ConnectionChange', this.client.connected, this.client.devicePath)** when a new Bluetooth LE client connects or disconnects.
      * 
      * @param {string} ServiceName Is the service name for the GATT server.  A GATT Server is a collection of Characteristics.  This Service Name will be hosted on the D-Bus system bus and must be referenced in a .conf file in the /etc/dbus-1/system.d directory (see the netConfig.conf for an example)
      * @param {string} ServerUUID This is the UUID for the Bluetooth LE server.  If you need a number visit https://www.uuidgenerator.net/.
-     * @param {object} callback The callback is called once the server has been successfully registered on the system D-Bus.  The callback must configure at least one characteristic using the Characteristic method in this class (see sampleApp.js main() for an example).
+     * @param {function()} callback The callback is called once the server has been successfully registered on the system D-Bus.  The callback must configure at least one characteristic using the Characteristic method in this class (see sampleApp.js main() for an example).
      * @param {boolean} PrimaryService Set to true if this server is going to advertise its services (it is the primary service).  Set it to false if another app is already advertising a service. 
      */
     constructor(ServiceName = 'com.netConfig', ServerUUID = '4b1268a8-d692-41d6-b51a-d1730ea6b9d6', callback = function () { }, PrimaryService = true) {
@@ -100,9 +99,9 @@ class blePeripheral extends EventEmitter {
 
     /**
      * Creates a characteristic for a BLE GATT service.  These characteristics are based on the bluez D-Bus GATT API https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc/gatt-api.txt
+     * emits ReadValue and WriteValue that can be consumed to intercept the reading and writing of .Value.  They will be emitted when a BLE client request to read or write a characteristic.
      * 
-     *  emits **.on('ReadValue', (device))** and **.on('WriteValue', (device, arg1)**, that can be consumed to intercept the reading and writting of .Value.  They will be emitted when a BLE central request to read or write a characteristic.
-     *  
+     * on('ReadValue', device); on('WriteValue', device, arg1);
      *  
      * * **UUID**: example = '00000006-94f3-4011-be53-6ac36bf22cf1'
      * * **node**: example = 'cpuTemp' 

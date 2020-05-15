@@ -2,7 +2,7 @@ const blePeripheral = require("./blePeripheral.js");
 const fs = require('fs');                        // Used to read CPU temperature in /sys/class/thermal/thermal_zone0/temp file.
 const cp = require('child_process');             // Used to spawn /bin/hostname -I to get IP Address.
 
-const serviceName = 'com.sampleApp';                          // peripheral's DBus service name
+const serviceName = 'com.ssampleApp';                          // peripheral's DBus service name
 const serviceUUID = '27b5244f-94f3-4011-be53-6ac36bf22cf1'    // UUID to advertise as an Bluetooh LE service
 
 var bigBuffer = Buffer.alloc(512, 'i');
