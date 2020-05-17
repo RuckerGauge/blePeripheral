@@ -6,6 +6,10 @@ This is a Node.js class for creating a Bluetooth LE (Low Energy) peripheral base
 
 The primary goal of version 2 is to migrate away from the dependency on dbus-native. For the most part, existing programs that depend on blePeripheral.js V1 will continue to function with little to no change in V2.  See Version 2 details lower in this readme.
 
+
+
+
+
 ## Hardware Requirements
 
 * Raspberry Pi Zero W
@@ -18,7 +22,19 @@ To properly test this class, you will need an IOS device with the BLE developmen
 
 This class requires blueZ version 5.50 now included in latest version Raspbian Buster.  If you are using Buster you no longer need to update bluetooth on the Pi as outlined below.  However, I suggest you still look through the old Raspbian Stretch upgrade process for input on how to setup the Raspbian Buster on your Pi.
 
-Version 2 (June 2020) of this class requires gdbus.  It is part of the core buster install.
+### Version 2 requires libdbus, glib2.0, and gdbus.
+
+* **libdbus**
+
+    ```$ sudo apt-get install libdbus-1-dev```
+
+* **glib2.0**
+
+    ```$ sudo apt-get install libglib2.0-dev```
+
+* **gdbus**
+
+    ```gdbus``` is part of the core Raspbian Buster install. You shouldn't need to install it.
 
 ## Install and load sampleApp
 
