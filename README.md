@@ -20,9 +20,9 @@ To properly test this class, you will need an IOS device with the BLE developmen
 
 ## Software Requirements
 
-This class requires blueZ version 5.50 now included in latest version Raspbian Buster.  If you are using Buster you no longer need to update bluetooth on the Pi as outlined below.  However, I suggest you still look through the old Raspbian Stretch upgrade process for input on how to setup the Raspbian Buster on your Pi.
+This class requires blueZ version 5.50 now included in latest version Raspbian Buster.  If you are using Buster you no longer need to update bluetooth on the Pi.
 
-### Version 2 requires libdbus, glib2.0, and gdbus.
+### Version 2 requires libdbus, glib2.0, and gdbus
 
 * **libdbus**
 
