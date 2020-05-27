@@ -95,6 +95,7 @@ All classes have been rewritten to use the new dbus connection. I also rewrote t
 * gdbus call --system --dest org.bluez --object-path /org/bluez/hci0 --method org.freedesktop.DBus.Properties.GetAll org.bluez.Adapter1
 * gdbus call --system --dest com.gdtMan --object-path /com/gdtMan/gaugeAlert --method org.freedesktop.DBus.Properties.GetAll org.bluez.GattCharacteristic1
 * gdbus call --system --dest com.gdtMan --object-path /com/gdtMan/gaugeAlert --method org.freedesktop.DBus.Properties.Get org.bluez.GattCharacteristic1 Value
+* [More info on the GVarinet syntax for gdbus](https://developer.gnome.org/glib/stable/gvariant-text.html)
 
 ## Notes on advertisement interval
 
