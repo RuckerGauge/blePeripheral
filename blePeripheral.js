@@ -57,7 +57,7 @@ class blePeripheral extends EventEmitter {
 
         process.nextTick(() => {
             logit('* * * * * * * callback to setup characteristics * * * * * * *');
-            callback();
+            callback(this.rootNodeObj);
             logit('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *');
             logit('Setup and initialize GATT service...');
             this.gattService.createObjManagerIface(allCharacteristics);
