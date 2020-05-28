@@ -41,16 +41,16 @@ class blePeripheral extends EventEmitter {
         this.logCharacteristicsIO = false;
 
         logit('Constructing dbus interface...');
-        this._dbusService = DBus.registerService('system', this.serviceName);
-        this._rootNodeObj = this._dbusService.createObject(this.servicePath);
-        this.dBusClient = this._rootNodeObj.service.bus;
+        this.dbusService = DBus.registerService('system', this.serviceName);
+        this.rootNodeObj = this.dbusService.createObject(this.servicePath);
+        this.dBusClient = this.rootNodeObj.service.bus;
 
         logit(`Successfully requested service name "${this.serviceName}"!`);
 
         this.Device = new DeviceClass(this.dBusClient);
         this.Adapter = new AdapterClass(this.dBusClient);
-        this.gattService = new GattService(this._rootNodeObj, this.servicePath, this.serverUUID);
-        this.Advertisement = new Advertisement(this._rootNodeObj, this.servicePath, this.serverUUID);
+        this.gattService = new GattService(this.rootNodeObj, this.servicePath, this.serverUUID);
+        this.Advertisement = new Advertisement(this.rootNodeObj, this.servicePath, this.serverUUID);
 
         this._connectionManager();
         this.Adapter.pairModeOn(false);
@@ -114,7 +114,7 @@ class blePeripheral extends EventEmitter {
      */
     Characteristic(UUID, node, flags) {
         logit('creating characteristic for ' + UUID + ', ' + node + ', ' + flags);
-        var x = new Characteristic(this._dbusService, this.servicePath, UUID, node, flags, this.logCharacteristicsIO);
+        var x = new Characteristic(this.dbusService, this.servicePath, UUID, node, flags, this.logCharacteristicsIO);
         allCharacteristics.push(x);
         return (x);
     };
