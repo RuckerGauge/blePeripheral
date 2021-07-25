@@ -174,7 +174,7 @@ class blePeripheral extends EventEmitter {
                         logit('\t      paired : ' + this.client.paired);
                     };
                 } else {
-                    console.error('Error blePeripheral.js _emitConnectionChange promise resloved was not an array.  Result was ' + rslt);
+                    console.error('Error blePeripheral.js _emitConnectionChange promise resolved was not an array.  Result was ' + rslt);
                 };
             })
             .catch((err) => {
